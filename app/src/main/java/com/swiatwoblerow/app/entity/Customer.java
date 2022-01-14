@@ -8,28 +8,48 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-//@Table(name="shopdata")
+@Table(name="customer")
 public class Customer {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-//	@Column(name="id")
+	@Column(name="id")
 	private int id;
 	
-//	@Column(name="username")
+	@Column(name="username")
 	private String username;
 	
-//	@Column(name="password")
+	@Column(name="password")
 	private String password;
+	
+	@Column(name="first_name")
+	private String firstName;
+	
+	@Column(name="last_name")
+	private String lastName;
+	
+	@Column(name="address")
+	private int address;
+	
+	@Column(name="email")
+	private String email;
+	
+	@Column(name="telephone")
+	private String telephone;
 	
 	public Customer() {
 		
 	}
-
-	public Customer(int id, String username, String password) {
-		this.id = id;
+	
+	public Customer(String username, String password, String firstName, String lastName, int address, String email,
+			String telephone) {
 		this.username = username;
 		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.address = address;
+		this.email = email;
+		this.telephone = telephone;
 	}
 
 	public int getId() {
@@ -55,5 +75,44 @@ public class Customer {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public int getAddress() {
+		return address;
+	}
+
+	public void setAddress(int address) {
+		this.address = address;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getTelephone() {
+		return telephone;
+	}
+
+	public void setTelephone(String telephone) {
+		this.telephone = telephone;
+	}
 }

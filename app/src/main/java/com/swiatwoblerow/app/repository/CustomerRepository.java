@@ -6,4 +6,5 @@ import com.swiatwoblerow.app.entity.Customer;
 
 public interface CustomerRepository extends JpaRepository<Customer, Integer> {
 	
+	Customer findByUsername(String username);
 }

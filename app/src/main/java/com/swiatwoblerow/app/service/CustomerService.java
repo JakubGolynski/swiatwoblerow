@@ -1,15 +1,18 @@
 package com.swiatwoblerow.app.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import java.util.List;
 
-import com.swiatwoblerow.app.repository.CustomerRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-@Repository
-public class CustomerService{
-	
-	@Autowired
-	private CustomerRepository customerRepository;
-	
+import com.swiatwoblerow.app.entity.Customer;
+
+public interface CustomerService {
+	public List<Customer> findAll();
+	public Customer findById(int id);
+	public void save(Customer customer);
+	public void delete(Customer customer);
+	public UserDetails loadUserByUsername(String username)
+			throws UsernameNotFoundException;
 	
 }
