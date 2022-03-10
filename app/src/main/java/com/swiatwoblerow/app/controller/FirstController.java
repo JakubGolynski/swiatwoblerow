@@ -9,13 +9,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.swiatwoblerow.app.entity.Customer;
-import com.swiatwoblerow.app.service.CustomerService;
+import com.swiatwoblerow.app.service.interfaces.CustomerService;
 
 @Controller
 public class FirstController {
-	
-	@Autowired
-	private CustomerService customerService;
 	
 	@RequestMapping("/home")
 	public String mainPage() {
@@ -30,7 +27,6 @@ public class FirstController {
 	
 	@PostMapping("/addCustomerForm")
 	public String addCustomerSubmit(@ModelAttribute("customer")Customer customer) {
-		customerService.save(customer);
 		return "add-customer-form-result";
 	}
 	

@@ -1,23 +1,26 @@
 package com.swiatwoblerow.app.service;
 
 import java.util.Collection;
-import java.util.List;
+
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.swiatwoblerow.app.entity.Customer;
-
 
 public class CustomerPrincipal implements UserDetails {
 	
-	private Customer customer;
+	private static final long serialVersionUID = 1L;
 	
-	private List<GrantedAuthority> authorities;
+	private String username;
 	
+	private String password;
+	
+	private Collection<? extends GrantedAuthority> authorities;
 
-	public CustomerPrincipal(Customer customer, List<GrantedAuthority> authorities) {
-		this.customer = customer;
+	public CustomerPrincipal(String username, String password,
+			Collection<? extends GrantedAuthority> authorities) {
+		this.username = username;
+		this.password = password;
 		this.authorities = authorities;
 	}
 
@@ -28,12 +31,12 @@ public class CustomerPrincipal implements UserDetails {
 
 	@Override
 	public String getPassword() {
-		return customer.getPassword();
+		return password;
 	}
 
 	@Override
 	public String getUsername() {
-		return customer.getUsername();
+		return username;
 	}
 
 	@Override

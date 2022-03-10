@@ -1,10 +1,11 @@
-package com.swiatwoblerow.app.service;
+package com.swiatwoblerow.app.service.interfaces;
 
 import java.util.List;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import com.swiatwoblerow.app.dto.CustomerDto;
 import com.swiatwoblerow.app.entity.Customer;
 
 public interface CustomerService {
@@ -12,7 +13,7 @@ public interface CustomerService {
 	public Customer findById(int id);
 	public void save(Customer customer);
 	public void delete(Customer customer);
-	public UserDetails loadUserByUsername(String username)
+	UserDetails loadUserByUsername(String username)
 			throws UsernameNotFoundException;
-	
+	public CustomerDto login();
 }
