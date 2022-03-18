@@ -20,19 +20,10 @@ public class LoginController {
 	@PostMapping("/login")
 	public CustomerDto login(){
 		return customerService.login();
-//		{
-//		       "access_token":"2YotnFZFEjr1zCsicMWpAA",
-//		       "token_type":"Bearer"
-//		     }
 	}
-	
-//	@GetMapping("/login")
-//	public String loginForm(){
-//		return "GGG";
-//	}
 	
 	@GetMapping("/secured")
 	public String all() {
-		return "JEST";
+		return "This is secured page";
 	}
 }

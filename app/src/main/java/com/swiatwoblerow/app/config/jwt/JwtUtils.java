@@ -1,5 +1,7 @@
 package com.swiatwoblerow.app.config.jwt;
 
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +17,8 @@ import java.util.Date;
 @Component
 public class JwtUtils {
 	
+	private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
+	
 	@Value("${jwt.secretKey}")
 	private String secretKey;
 	
@@ -27,16 +31,15 @@ public class JwtUtils {
 			Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
 			return true;
 		}catch(ExpiredJwtException e) {
-//			logger.error("ss",e.getMessage());
-			
+			logger.error("Token has exipired",e.getMessage());
 		}catch(UnsupportedJwtException e) {
-//			logger.
+			logger.error("Token is unsupported",e.getMessage());
 		}catch(MalformedJwtException e) {
-//			logger.error("ss",e.getMessage());
+			logger.error("Inwalid JWT token",e.getMessage());
 		}catch(SignatureException e) {
-//			logger.error("ss",e.getMessage());
+			logger.error("Inwalid JWT token",e.getMessage());
 		}catch(IllegalArgumentException e) {
-//			logger.error("ss",e.getMessage());
+			logger.error("Inwalid JWT token",e.getMessage());
 		}
 		return false;
 	}
