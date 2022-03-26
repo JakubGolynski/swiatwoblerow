@@ -49,6 +49,8 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 			.and()
 			.authorizeRequests()
 				.antMatchers(HttpMethod.POST,"/login").permitAll()
+				.antMatchers(HttpMethod.GET,"/api/category/cars").permitAll()
+				.antMatchers(HttpMethod.GET,"/api/offer/").permitAll()
 				.anyRequest().authenticated()
 			.and()
 			.httpBasic();

@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -35,8 +36,9 @@ public class Customer {
 	@Column(name="last_name")
 	private String lastName;
 	
-	@Column(name="address")
-	private int address;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="address", referencedColumnName="id")
+	private CustomerAddress address;
 	
 	@Column(name="email")
 	private String email;
@@ -54,8 +56,8 @@ public class Customer {
 		
 	}
 	
-	public Customer(String username, String password, String firstName, String lastName, int address, String email,
-			String telephone) {
+	public Customer(String username, String password, String firstName, String lastName, CustomerAddress address,
+			String email, String telephone, Set<Role> roles) {
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
@@ -63,13 +65,14 @@ public class Customer {
 		this.address = address;
 		this.email = email;
 		this.telephone = telephone;
+		this.roles = roles;
 	}
 
-	public int getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -105,11 +108,11 @@ public class Customer {
 		this.lastName = lastName;
 	}
 
-	public int getAddress() {
+	public CustomerAddress getAddress() {
 		return address;
 	}
 
-	public void setAddress(int address) {
+	public void setAddress(CustomerAddress address) {
 		this.address = address;
 	}
 
@@ -136,5 +139,4 @@ public class Customer {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
-	
 }

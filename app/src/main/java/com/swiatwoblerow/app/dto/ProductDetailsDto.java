@@ -2,8 +2,8 @@ package com.swiatwoblerow.app.dto;
 
 import java.sql.Timestamp;
 
-public class ProductDto {
-	
+public class ProductDetailsDto {
+
 	private String name;
 	
 	private Double price;
@@ -12,18 +12,25 @@ public class ProductDto {
 	
 	private Timestamp createdAt;
 	
-	private Integer label;
+	private String username;
+	
+	private Integer quantity;
+	
+	private String message;
+	
+	public ProductDetailsDto() {
 
-	public ProductDto() {
-		
 	}
-
-	public ProductDto(String name, Double price, String localization, Timestamp createdAt, Integer label) {
+	
+	public ProductDetailsDto(String name, Double price, String localization, Timestamp createdAt, String username,
+			Integer quantity, String message) {
 		this.name = name;
 		this.price = price;
 		this.localization = localization;
 		this.createdAt = createdAt;
-		this.label = label;
+		this.username = username;
+		this.quantity = quantity;
+		this.message = message;
 	}
 
 	public String getName() {
@@ -58,12 +65,28 @@ public class ProductDto {
 		this.createdAt = createdAt;
 	}
 
-	public Integer getLabel() {
-		return label;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setLabel(Integer label) {
-		this.label = label;
+	public void setUsername(String username) {
+		this.username = username;
 	}
-	
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
 }
