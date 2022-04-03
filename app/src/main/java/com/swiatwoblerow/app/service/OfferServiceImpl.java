@@ -17,6 +17,8 @@ import com.swiatwoblerow.app.dto.ProductDto;
 import com.swiatwoblerow.app.entity.Customer;
 import com.swiatwoblerow.app.entity.Product;
 import com.swiatwoblerow.app.entity.ProductDetails;
+import com.swiatwoblerow.app.exceptions.MyUsernameNotFoundException;
+import com.swiatwoblerow.app.exceptions.NotFoundException;
 import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.ProductDetailsRepository;
 import com.swiatwoblerow.app.repository.ProductRepository;
@@ -69,12 +71,14 @@ public class OfferServiceImpl implements OfferService {
 		
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		Customer customer = customerRepository.findByUsername(username)
-				.orElseThrow(() -> new UsernameNotFoundException("User "
+				.orElseThrow(() -> new MyUsernameNotFoundException("User "
 						+ "not found with username: "+username));
 				
 		productDetails.setCustomer(customer);
 		productDetails.setQuantity(productDetailsDto.getQuantity());
 		productDetails.setMessage(productDetailsDto.getMessage());
+		productDetailsDto.setUsername(username);
+		productDetailsDto.setCreatedAt(product.getCreatedAt());
 		
 		productDetailsRepository.save(productDetails);
 		
@@ -85,14 +89,17 @@ public class OfferServiceImpl implements OfferService {
 	}
 	
 	@Override 
-	public ProductDetailsDto findById(Integer id) {
+	public ProductDetailsDto findById(Integer id) 
+											throws NotFoundException{
 		
 		ProductDetailsDto productDetailsDto = new ProductDetailsDto();
-		Product product = productRepository.getById(id);
+		Product product = productRepository.findById(id)
+				.orElseThrow(() -> new NotFoundException("Product with label "+
+		id.toString()+" not found"));
+				
 		productDetailsDto.setName(product.getName());
 		productDetailsDto.setPrice(product.getPrice());
 		productDetailsDto.setLocalization(product.getLocalization());
-		
 		productDetailsDto.setCreatedAt(product.getCreatedAt());
 		productDetailsDto.setUsername(product.getProductDetails().getCustomer().getUsername());
 		productDetailsDto.setQuantity(product.getProductDetails().getQuantity());

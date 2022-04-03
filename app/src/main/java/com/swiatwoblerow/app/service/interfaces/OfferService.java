@@ -5,9 +5,10 @@ import java.util.Map;
 
 import com.swiatwoblerow.app.dto.ProductDetailsDto;
 import com.swiatwoblerow.app.dto.ProductDto;
+import com.swiatwoblerow.app.exceptions.NotFoundException;
 
 public interface OfferService {
 	public ProductDetailsDto save(ProductDetailsDto productDetailsDto);
 	public List<ProductDto> findAll(Map<String,String> params);
-	public ProductDetailsDto findById(Integer id);
+	public ProductDetailsDto findById(Integer id)throws NotFoundException;
 }
