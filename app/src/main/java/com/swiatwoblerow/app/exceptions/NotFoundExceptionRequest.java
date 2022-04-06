@@ -1,13 +1,13 @@
 package com.swiatwoblerow.app.exceptions;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-public class MyUsernameNotFoundException extends UsernameNotFoundException{
+import org.springframework.http.HttpStatus;
+
+public class NotFoundExceptionRequest extends Exception{
 	
 	private HttpStatus status = HttpStatus.NOT_FOUND;
-	
-	public MyUsernameNotFoundException(String message) {
+
+	public NotFoundExceptionRequest(String message) {
 		super(message);
 	}
 

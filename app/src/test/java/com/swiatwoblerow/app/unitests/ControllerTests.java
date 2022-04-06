@@ -27,7 +27,7 @@ import com.swiatwoblerow.app.config.jwt.JwtAuthenticationEntryPoint;
 import com.swiatwoblerow.app.config.jwt.JwtUtils;
 import com.swiatwoblerow.app.dto.ProductDetailsDto;
 import com.swiatwoblerow.app.dto.ProductDto;
-import com.swiatwoblerow.app.exceptions.NotFoundException;
+import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
 import com.swiatwoblerow.app.service.CustomerServiceImpl;
 import com.swiatwoblerow.app.service.OfferServiceImpl;
 
@@ -74,7 +74,7 @@ public class ControllerTests {
 	
 	@Test
 	public void shouldProductDetailsDtoThrowNotFoundException() throws Exception{
-		NotFoundException exception = new NotFoundException("Product with label "+
+		NotFoundExceptionRequest exception = new NotFoundExceptionRequest("Product with label "+
 						" not found");
 		given(offerService.findById(1)).willThrow(exception);
 		

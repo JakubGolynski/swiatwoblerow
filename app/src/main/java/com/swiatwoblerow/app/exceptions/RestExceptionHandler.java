@@ -1,6 +1,9 @@
 package com.swiatwoblerow.app.exceptions;
 
+import java.sql.Timestamp;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
@@ -9,17 +12,23 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 	
 	
-	@ExceptionHandler(NotFoundException.class)
+	@ExceptionHandler(value= {NotFoundExceptionRequest.class, UsernameNotFoundException.class})
 	protected ResponseEntity<Object> handleEntityNotFound(
-			NotFoundException ex){
-		return new ResponseEntity<>(ex,ex.getStatus());
+			Exception ex){
+		NotFoundException exception = new NotFoundException(
+				ex.getMessage(),
+				new Timestamp(System.currentTimeMillis()));
+		return new ResponseEntity<>(exception,exception.getStatus());
 	}
 	
-	@ExceptionHandler(MyUsernameNotFoundException.class)
-	protected ResponseEntity<Object> handleUsernameNotFoundException(
-			MyUsernameNotFoundException ex){
-		return new ResponseEntity<>(ex,ex.getStatus());
-	}
+//	@ExceptionHandler(UsernameNotFoundException.class)
+//	protected ResponseEntity<Object> handleUsernameNotFoundException(
+//			UsernameNotFoundException ex){
+//		NotFoundException exception = new NotFoundException(
+//				ex.getMessage(),
+//				new Timestamp(System.currentTimeMillis()));
+//		return new ResponseEntity<>(exception,exception.getStatus());
+//	}
 	
 //	private ResponseEntity<Object> buildResponseEntity(NotFoundException ex){
 //		return new ResponseEntity<>(ex,ex.getStatus());

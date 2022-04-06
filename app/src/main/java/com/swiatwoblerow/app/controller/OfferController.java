@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.swiatwoblerow.app.dto.ProductDetailsDto;
-import com.swiatwoblerow.app.exceptions.NotFoundException;
+import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
 import com.swiatwoblerow.app.service.OfferServiceImpl;
 
 @RestController
@@ -21,7 +21,7 @@ public class OfferController {
 	
 	@GetMapping("/")
 	public ProductDetailsDto findById(@RequestParam(name="label")Integer id) 
-												throws NotFoundException{
+												throws NotFoundExceptionRequest{
 		return offerService.findById(id);
 	}
 	

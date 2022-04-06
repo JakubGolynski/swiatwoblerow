@@ -17,8 +17,7 @@ import com.swiatwoblerow.app.dto.ProductDto;
 import com.swiatwoblerow.app.entity.Customer;
 import com.swiatwoblerow.app.entity.Product;
 import com.swiatwoblerow.app.entity.ProductDetails;
-import com.swiatwoblerow.app.exceptions.MyUsernameNotFoundException;
-import com.swiatwoblerow.app.exceptions.NotFoundException;
+import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
 import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.ProductDetailsRepository;
 import com.swiatwoblerow.app.repository.ProductRepository;
@@ -71,7 +70,7 @@ public class OfferServiceImpl implements OfferService {
 		
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		Customer customer = customerRepository.findByUsername(username)
-				.orElseThrow(() -> new MyUsernameNotFoundException("User "
+				.orElseThrow(() -> new UsernameNotFoundException("User "
 						+ "not found with username: "+username));
 				
 		productDetails.setCustomer(customer);
@@ -90,11 +89,11 @@ public class OfferServiceImpl implements OfferService {
 	
 	@Override 
 	public ProductDetailsDto findById(Integer id) 
-											throws NotFoundException{
+											throws NotFoundExceptionRequest{
 		
 		ProductDetailsDto productDetailsDto = new ProductDetailsDto();
 		Product product = productRepository.findById(id)
-				.orElseThrow(() -> new NotFoundException("Product with label "+
+				.orElseThrow(() -> new NotFoundExceptionRequest("Product with label "+
 		id.toString()+" not found"));
 				
 		productDetailsDto.setName(product.getName());
