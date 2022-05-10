@@ -45,17 +45,25 @@ public class ProductDetails {
 				inverseJoinColumns = @JoinColumn(name="customer_id"))
 	private List<Customer> thumbsDown = new ArrayList<>();
 	
+	@Column(name="quantity_thumbsup")
+	private Integer quantityThumbsUp;
+	
+	@Column(name="quantity_thumbsdown")
+	private Integer quantityThumbsDown;
+	
 	public ProductDetails() {
 		
 	}
 
 	public ProductDetails(Customer customer, Integer quantity, String message, List<Customer> thumbsUp,
-			List<Customer> thumbsDown) {
+			List<Customer> thumbsDown, Integer quantityThumbsUp, Integer quantityThumbsDown) {
 		this.customer = customer;
 		this.quantity = quantity;
 		this.message = message;
 		this.thumbsUp = thumbsUp;
 		this.thumbsDown = thumbsDown;
+		this.quantityThumbsUp = quantityThumbsUp;
+		this.quantityThumbsDown = quantityThumbsDown;
 	}
 
 	public Integer getId() {
@@ -104,6 +112,22 @@ public class ProductDetails {
 
 	public void setThumbsDown(List<Customer> thumbsDown) {
 		this.thumbsDown = thumbsDown;
+	}
+
+	public Integer getQuantityThumbsUp() {
+		return quantityThumbsUp;
+	}
+
+	public void setQuantityThumbsUp(Integer quantityThumbsUp) {
+		this.quantityThumbsUp = quantityThumbsUp;
+	}
+
+	public Integer getQuantityThumbsDown() {
+		return quantityThumbsDown;
+	}
+
+	public void setQuantityThumbsDown(Integer quantityThumbsDown) {
+		this.quantityThumbsDown = quantityThumbsDown;
 	}
 	
 }

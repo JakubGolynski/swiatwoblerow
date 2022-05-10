@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -50,18 +51,23 @@ public class Product {
 				inverseJoinColumns = @JoinColumn(name="condition_id"))
 	private List<Condition> productCondition = new ArrayList<>();
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="category_id")
+	private Category category;
+	
 	public Product() {
 		
 	}
 
-	public Product(String name, Double price, String localization, Timestamp createdAt, ProductDetails productDetails,
-			List<Condition> productCondition) {
+	public Product(@Length(max = 50) String name, Double price, String localization, Timestamp createdAt,
+			ProductDetails productDetails, List<Condition> productCondition, Category category) {
 		this.name = name;
 		this.price = price;
 		this.localization = localization;
 		this.createdAt = createdAt;
 		this.productDetails = productDetails;
 		this.productCondition = productCondition;
+		this.category = category;
 	}
 
 	public Integer getId() {
@@ -120,4 +126,12 @@ public class Product {
 		this.productCondition = productCondition;
 	}
 
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+	
 }
