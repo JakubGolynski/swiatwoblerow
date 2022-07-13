@@ -26,8 +26,8 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 	@Autowired
 	private CustomerRepository customerRepository;
 	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+//	@Autowired
+//	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	private JwtUtils jwtUtils;
@@ -55,38 +55,22 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 		customer.setUsername(username);
 		customer.setTokenType("Bearer");
 		customer.setAccessToken(jwtUtils.generateJwtToken(username));
+		List<String> roles = SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+				.stream().map(role -> role.getAuthority()).collect(Collectors.toList());
+		customer.setRoles(roles);
 		return customer;
-	}
-
-	@Override
-	public List<Customer> findAll() {
-		return customerRepository.findAll();
 	}
 	
 	@Override
-	public Customer findById(int id) {
-		Optional<Customer> result = customerRepository.findById(id);
-		
-		Customer theCustomer = null;
-		
-		if(result.isPresent()) {
-			theCustomer = result.get();
-		}else {
-			throw new RuntimeException("Employee not found with id = "+id);
-		}
-		return theCustomer;
+	public CustomerDto getCurrentLoggedInCustomer() {
+		CustomerDto customer = new CustomerDto();
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		customer.setUsername(username);
+		customer.setTokenType("Bearer");
+		customer.setAccessToken(jwtUtils.generateJwtToken(username));
+		List<String> roles = SecurityContextHolder.getContext().getAuthentication().getAuthorities()
+				.stream().map(role -> role.getAuthority()).collect(Collectors.toList());
+		customer.setRoles(roles);
+		return customer; 
 	}
-
-	@Override
-	public void save(Customer customer) {
-		String encodedPassword = passwordEncoder.encode(customer.getPassword());
-		customer.setPassword(encodedPassword);
-		customerRepository.save(customer);
-	}
-
-	@Override
-	public void delete(Customer customer) {
-		customerRepository.save(customer);
-	}
-
 }

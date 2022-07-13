@@ -1,5 +1,8 @@
 package com.swiatwoblerow.app.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CustomerDto {
 	
 	private String username;
@@ -14,18 +17,22 @@ public class CustomerDto {
 
 	private String tokenType;
 	
+	private List<String> roles = new ArrayList<>();
+
 	public CustomerDto() {
 
 	}
 
-	public CustomerDto(String username, String firstName, String lastName, String email,
-			String accessToken, String tokenType) {
+	public CustomerDto(String username, String firstName, String lastName, String email, String accessToken,
+			String tokenType, List<String> roles) {
+		super();
 		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 		this.accessToken = accessToken;
 		this.tokenType = tokenType;
+		this.roles = roles;
 	}
 
 	public String getUsername() {
@@ -74,6 +81,14 @@ public class CustomerDto {
 
 	public void setTokenType(String tokenType) {
 		this.tokenType = tokenType;
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 	
 }
