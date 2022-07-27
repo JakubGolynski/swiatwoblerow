@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>	
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"> 
+
+	<changeSet id="2" author="Goly">
+		<insert tableName="role" schemaName="shoproject">
+			<column name="name" value="ROLE_USER"/>
+		</insert>
+		<insert tableName="role" schemaName="shoproject">
+			<column name="name" value="ROLE_MODERATOR"/>
+		</insert>
+		<insert tableName="role" schemaName="shoproject">
+			<column name="name" value="ROLE_ADMIN"/>
+		</insert>
+		<insert tableName="condition" schemaName="shoproject">
+			<column name="name" value="NEW"/>
+		</insert>
+		<insert tableName="condition" schemaName="shoproject">
+			<column name="name" value="DAMAGED"/>
+		</insert>
+		<insert tableName="condition" schemaName="shoproject">
+			<column name="name" value="USED"/>
+		</insert>
+		<insert tableName="country" schemaName="shoproject">
+			<column name="name" value="Poland"/>
+		</insert>
+		<insert tableName="country" schemaName="shoproject">
+			<column name="name" value="Germany"/>
+		</insert>
+		<insert tableName="country" schemaName="shoproject">
+			<column name="name" value="Spain"/>
+		</insert>
+		<insert tableName="country" schemaName="shoproject">
+			<column name="name" value="Russia"/>
+		</insert>
+		<insert tableName="country" schemaName="shoproject">
+			<column name="name" value="USA"/>
+		</insert>
+	</changeSet>
+	<changeSet id="3" author="Goly">
+		<insert tableName="address" schemaName="shoproject">
+			<column name="city" value="Warsaw"/>
+			<column name="street" value="Aleje Jerozolimskie"/>
+			<column name="house_number" value="45"/>
+			<column name="country_id" value="1"/>
+		</insert>
+		<insert tableName="address" schemaName="shoproject">
+			<column name="city" value="Warsaw"/>
+			<column name="street" value="Emilii Plater"/>
+			<column name="house_number" value="105A"/>
+			<column name="country_id" value="1"/>
+		</insert>
+	</changeSet>
+	<changeSet id="4" author="Goly">
+		<insert tableName="customer" schemaName="shoproject">
+			<column name="username" value="goly"/>
+			<column name="password" value="$2a$12$pTUMC0sOtm3pU3a8bezWIOmEXQgGUAxAb8zpoIYcZ5pAyiMBG/H7e"/>
+			<column name="first_name" value="Jakub"/>
+			<column name="last_name" value="Golynski"/>
+			<column name="email" value="email1@gmail.com"/>
+			<column name="telephone" value="515-152-123"/>
+			<column name="address_id" value="1"/>
+		</insert>
+		<insert tableName="customer" schemaName="shoproject">
+			<column name="username" value="user"/>
+			<column name="password" value="$2a$12$ySjONcOABYwPQ.suw3y3H.QEbwpKBncv9VxlnD22IzFvx/oVAXtDW"/>
+			<column name="first_name" value="Piotr"/>
+			<column name="last_name" value="Kowalski"/>
+			<column name="email" value="email2@gmail.com"/>
+			<column name="telephone" value="665-152-123"/>
+			<column name="address_id" value="1"/>
+		</insert>
+		<insert tableName="customer" schemaName="shoproject">
+			<column name="username" value="moderator"/>
+			<column name="password" value="$2a$12$ntpsCb9ZhXGo6EzqWs/Vmuh0GdlJyQJArAMAWIC58jRXoIoyKv.2O"/>
+			<column name="first_name" value="Andrzej"/>
+			<column name="last_name" value="Ostrowski"/>
+			<column name="email" value="email3@gmail.com"/>
+			<column name="telephone" value="625-112-122"/>
+			<column name="address_id" value="2"/>
+		</insert>
+	</changeSet>
+</databaseChangeLog>

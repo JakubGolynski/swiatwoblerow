@@ -14,18 +14,21 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Length;
 
+import lombok.Data;
+
 @Entity
 @Table(name="product")
+@Data
 public class Product {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="id")
+	@Column(name="product_id")
 	private Integer id;
 	
 	@Length(max=50)
@@ -35,103 +38,52 @@ public class Product {
 	@Column(name="price")
 	private Double price;
 	
-	@Column(name="localization")
-	private String localization;
-	
 	@Column(name="created_at")
 	private Timestamp createdAt;
 	
-	@OneToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="product_details_id",referencedColumnName="id")
-	private ProductDetails productDetails;
+	@Column(name="quantity")
+	private Integer quantity;
+	
+	@Column(name="message")
+	private String message;
+	
+	@Column(name="rating")
+	private Double rating;
 	
 	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(name="product_condition",
 				joinColumns = @JoinColumn(name="product_id"),
 				inverseJoinColumns = @JoinColumn(name="condition_id"))
-	private List<Condition> productCondition = new ArrayList<>();
+	private List<Condition> productConditions = new ArrayList<>();
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="category_id")
 	private Category category;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="customer_id")
+	private Customer customer;
+	
+	@OneToMany(fetch = FetchType.LAZY,mappedBy="product")
+	private List<Review> reviews = new ArrayList<>();
+	
 	public Product() {
 		
 	}
 
-	public Product(@Length(max = 50) String name, Double price, String localization, Timestamp createdAt,
-			ProductDetails productDetails, List<Condition> productCondition, Category category) {
+	public Product(@Length(max = 50) String name, Double price, Timestamp createdAt, Integer quantity, String message,
+			Double rating, List<Condition> productConditions, Category category, Customer customer,
+			List<Review> reviews) {
 		this.name = name;
 		this.price = price;
-		this.localization = localization;
 		this.createdAt = createdAt;
-		this.productDetails = productDetails;
-		this.productCondition = productCondition;
+		this.quantity = quantity;
+		this.message = message;
+		this.rating = rating;
+		this.productConditions = productConditions;
 		this.category = category;
+		this.customer = customer;
+		this.reviews = reviews;
 	}
 
-	public Integer getId() {
-		return id;
-	}
-
-	public void setId(Integer id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Double getPrice() {
-		return price;
-	}
-
-	public void setPrice(Double price) {
-		this.price = price;
-	}
-
-	public String getLocalization() {
-		return localization;
-	}
-
-	public void setLocalization(String localization) {
-		this.localization = localization;
-	}
-
-	public Timestamp getCreatedAt() {
-		return createdAt;
-	}
-
-	public void setCreatedAt(Timestamp createdAt) {
-		this.createdAt = createdAt;
-	}
-
-	public ProductDetails getProductDetails() {
-		return productDetails;
-	}
-
-	public void setProductDetails(ProductDetails productDetails) {
-		this.productDetails = productDetails;
-	}
-
-	public List<Condition> getProductCondition() {
-		return productCondition;
-	}
-
-	public void setProductCondition(List<Condition> productCondition) {
-		this.productCondition = productCondition;
-	}
-
-	public Category getCategory() {
-		return category;
-	}
-
-	public void setCategory(Category category) {
-		this.category = category;
-	}
-	
 }

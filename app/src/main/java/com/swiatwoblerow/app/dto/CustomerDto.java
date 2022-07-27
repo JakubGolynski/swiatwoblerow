@@ -3,9 +3,15 @@ package com.swiatwoblerow.app.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Data;
+
+
+@Data
 public class CustomerDto {
 	
 	private String username;
+	
+	private String password;
 	
 	private String firstName;
 	
@@ -13,9 +19,11 @@ public class CustomerDto {
 	
 	private String email;
 	
-	private String accessToken;
-
-	private String tokenType;
+	private String telephone;
+	
+	private String jwtToken;
+	
+	private AddressDto customerAddress;
 	
 	private List<String> roles = new ArrayList<>();
 
@@ -23,71 +31,16 @@ public class CustomerDto {
 
 	}
 
-	public CustomerDto(String username, String firstName, String lastName, String email, String accessToken,
-			String tokenType, List<String> roles) {
-		super();
+	public CustomerDto(String username, String password, String firstName, String lastName, String email,
+			String telephone, String jwtToken, AddressDto customerAddress, List<String> roles) {
 		this.username = username;
+		this.password = password;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
-		this.accessToken = accessToken;
-		this.tokenType = tokenType;
-		this.roles = roles;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getAccessToken() {
-		return accessToken;
-	}
-
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
-	}
-
-	public String getTokenType() {
-		return tokenType;
-	}
-
-	public void setTokenType(String tokenType) {
-		this.tokenType = tokenType;
-	}
-
-	public List<String> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(List<String> roles) {
+		this.telephone = telephone;
+		this.jwtToken = jwtToken;
+		this.customerAddress = customerAddress;
 		this.roles = roles;
 	}
 	

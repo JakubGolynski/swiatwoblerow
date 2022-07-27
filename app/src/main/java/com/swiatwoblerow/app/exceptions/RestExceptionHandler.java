@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.swiatwoblerow.app.exceptions.dtos.BadCredentialsExceptionDto;
+import com.swiatwoblerow.app.exceptions.dtos.NotFoundExceptionDto;
+
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 	
@@ -16,22 +19,18 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 	@ExceptionHandler(value= {NotFoundExceptionRequest.class, UsernameNotFoundException.class})
 	protected ResponseEntity<Object> handleEntityNotFound(
 			Exception ex){
-		NotFoundException exception = new NotFoundException(
+		NotFoundExceptionDto exception = new NotFoundExceptionDto(
 				ex.getMessage(),
 				new Timestamp(System.currentTimeMillis()));
 		return new ResponseEntity<>(exception,exception.getStatus());
 	}
 	
-//	@ExceptionHandler(UsernameNotFoundException.class)
-//	protected ResponseEntity<Object> handleUsernameNotFoundException(
-//			UsernameNotFoundException ex){
-//		NotFoundException exception = new NotFoundException(
-//				ex.getMessage(),
-//				new Timestamp(System.currentTimeMillis()));
-//		return new ResponseEntity<>(exception,exception.getStatus());
-//	}
-	
-//	private ResponseEntity<Object> buildResponseEntity(NotFoundException ex){
-//		return new ResponseEntity<>(ex,ex.getStatus());
-//	}
+	@ExceptionHandler(value= {BadCredentialsException.class})
+	protected ResponseEntity<Object> handleCustomBadCredentials(
+			Exception ex){
+		BadCredentialsExceptionDto exception = new BadCredentialsExceptionDto(
+				ex.getMessage(),
+				new Timestamp(System.currentTimeMillis()));
+		return new ResponseEntity<>(exception,exception.getStatus());
+	}
 }

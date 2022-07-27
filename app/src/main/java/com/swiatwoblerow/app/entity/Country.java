@@ -10,24 +10,23 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name="condition")
+@Table(name="country")
 @Data
-public class Condition {
+public class Country {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	@Column(name="condition_id")
+	@Column(name="country_id")
 	private Integer id;
 	
 	@Column(name="name")
 	private String name;
 
-	public Condition() {
+	public Country() {
 		
 	}
-	
-	public Condition(String name) {
+
+	public Country(String name) {
 		this.name = name;
 	}
-
 }

@@ -16,13 +16,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-import org.springframework.web.filter.CorsFilter;
 
-import com.swiatwoblerow.app.config.jwt.CustomBasicAuthenticationFilter;
 import com.swiatwoblerow.app.config.jwt.JWTAuthorizationFilter;
 import com.swiatwoblerow.app.config.jwt.JwtAuthenticationEntryPoint;
-import com.swiatwoblerow.app.exceptions.ExceptionHandlerFilter;
 import com.swiatwoblerow.app.service.CustomerServiceImpl;
 
 @Configuration
@@ -52,33 +48,24 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET,"/api/home").permitAll()
 				.antMatchers(HttpMethod.GET,"/error").permitAll()
 			.anyRequest().authenticated().and()
-			.cors()
-			.and()
+			.cors().and()
 			.csrf().disable()
-			.httpBasic()
-			.authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
-			.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and()
 			.sessionManagement()
-			.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+			.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+			.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
 			
 		http.addFilterBefore(jwtTokenAuthorizationFilter(),UsernamePasswordAuthenticationFilter.class);
 	}
+	
+	@Override @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 	
 	@Bean
 	public JWTAuthorizationFilter jwtTokenAuthorizationFilter() {
 		return new JWTAuthorizationFilter();
 	}
-	
-	@Bean
-	public ExceptionHandlerFilter exceptionHandlerFilter() {
-		return new ExceptionHandlerFilter();
-	}
-	
-//	@Bean
-//	public CustomBasicAuthenticationFilter customBasicAuthenticationFilter(
-//			AuthenticationManager authenticationManager) {
-//		return new CustomBasicAuthenticationFilter(authenticationManager,jwtAuthenticationEntryPoint);
-//	}
 	
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
