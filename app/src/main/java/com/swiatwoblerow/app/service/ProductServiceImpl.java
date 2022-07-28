@@ -7,11 +7,14 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.swiatwoblerow.app.dto.ProductDto;
+import com.swiatwoblerow.app.entity.Address;
 import com.swiatwoblerow.app.entity.Category;
 import com.swiatwoblerow.app.entity.Condition;
 import com.swiatwoblerow.app.entity.Customer;
@@ -22,6 +25,9 @@ import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.ProductRepository;
 import com.swiatwoblerow.app.service.interfaces.MappingConverter;
 import com.swiatwoblerow.app.service.interfaces.ProductService;
+import org.springframework.data.domain.Sort;
+
+
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -76,16 +82,23 @@ public class ProductServiceImpl implements ProductService {
 	public List<ProductDto> getProducts(Map<String, String> params) throws NotFoundExceptionRequest{
 		
 		Product productExample = new Product();
+		Customer customer = new Customer();
+		customer.setAddress(new Address());
+		productExample.setCustomer(customer);
 		productExample.setName(params.getOrDefault("search", null));
+		productExample.getCustomer().getAddress().setCity(params.getOrDefault("city", null));
 		Example<Product> example = Example.of(productExample,ExampleMatcher
 				.matchingAll()
 				.withMatcher("name", ExampleMatcher
 						.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING))
-				.withMatcher("localization", ExampleMatcher
+				.withMatcher("city", ExampleMatcher
 						.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING))
 				.withIgnoreCase());
 		
-		return productRepository.findAll(example).stream()
+		Pageable pageable = PageRequest.of(Integer.valueOf(params.getOrDefault("page", "0")),
+				Integer.valueOf(params.getOrDefault("size", "20")), Sort.by("name").descending());
+		
+		return productRepository.findAll(example,pageable).stream()
 			.map(product -> new ProductDto(product.getId(),product.getName(),
 					product.getPrice(),product.getCreatedAt(),product.getQuantity(),
 					product.getMessage(),product.getRating(),
