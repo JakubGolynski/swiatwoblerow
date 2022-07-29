@@ -10,10 +10,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.swiatwoblerow.app.dto.CustomerDto;
 
 public interface CustomerService {
-	UserDetails loadUserByUsername(String username)
-			throws UsernameNotFoundException;
-	public CustomerDto login(CustomerDto customerDto) throws BadCredentialsException;
-	public CustomerDto getLoggedCustomer();
+	UserDetails loadUserByUsername(String username) throws UsernameNotFoundException;
+	public CustomerDto login(CustomerDto customerDto) throws BadCredentialsException,UsernameNotFoundException;
+	public CustomerDto getLoggedCustomer() throws UsernameNotFoundException;
 	public List<CustomerDto> getCustomers();
 	public CustomerDto getCustomer(Integer id) throws UsernameNotFoundException;
 	public CustomerDto addCustomer(CustomerDto customerDto);

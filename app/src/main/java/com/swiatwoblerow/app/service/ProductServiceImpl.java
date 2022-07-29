@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +12,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.swiatwoblerow.app.dto.ProductDto;
-import com.swiatwoblerow.app.entity.Address;
 import com.swiatwoblerow.app.entity.Category;
 import com.swiatwoblerow.app.entity.Condition;
 import com.swiatwoblerow.app.entity.Customer;
@@ -23,6 +20,7 @@ import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
 import com.swiatwoblerow.app.repository.CategoryRepository;
 import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.ProductRepository;
+import com.swiatwoblerow.app.service.interfaces.CategoryService;
 import com.swiatwoblerow.app.service.interfaces.MappingConverter;
 import com.swiatwoblerow.app.service.interfaces.ProductService;
 import org.springframework.data.domain.Sort;
@@ -40,15 +38,18 @@ public class ProductServiceImpl implements ProductService {
 	
 	private CustomerRepository customerRepository;
 	
+	private CategoryService categoryService;
+	
 	private CategoryRepository categoryRepository;
 
 	public ProductServiceImpl(MappingConverter mappingConverter, CustomerServiceImpl customerService,
-			ProductRepository productRepository, CustomerRepository customerRepository,
+			ProductRepository productRepository, CustomerRepository customerRepository, CategoryService categoryService,
 			CategoryRepository categoryRepository) {
 		this.mappingConverter = mappingConverter;
 		this.customerService = customerService;
 		this.productRepository = productRepository;
 		this.customerRepository = customerRepository;
+		this.categoryService = categoryService;
 		this.categoryRepository = categoryRepository;
 	}
 
@@ -68,45 +69,80 @@ public class ProductServiceImpl implements ProductService {
 		product.setProductConditions(
 				productDto.getProductConditions().stream().map(
 						condition -> new Condition(condition)).collect(Collectors.toList()));
-		Category category = categoryRepository.findByName(productDto.getCategory())
-				.orElseThrow(() -> new NotFoundExceptionRequest("Category with name "+
-						productDto.getCategory()+ " not found"));
+		Category category = categoryService.getCategory(productDto.getCategory());
 		product.setCategory(category);
 		product.setCustomer(customer);
-		
 		productRepository.save(product);
+		
+		productDto.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		productDto.setRating(5.0);
+		productDto.setProductOwner(customerService.getCustomer(customer.getId()));
 		return productDto;
 	}
 
 	@Override
 	public List<ProductDto> getProducts(Map<String, String> params) throws NotFoundExceptionRequest{
 		
-		Product productExample = new Product();
-		Customer customer = new Customer();
-		customer.setAddress(new Address());
-		productExample.setCustomer(customer);
-		productExample.setName(params.getOrDefault("search", null));
-		productExample.getCustomer().getAddress().setCity(params.getOrDefault("city", null));
-		Example<Product> example = Example.of(productExample,ExampleMatcher
-				.matchingAll()
-				.withMatcher("name", ExampleMatcher
-						.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING))
-				.withMatcher("city", ExampleMatcher
-						.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING))
-				.withIgnoreCase());
+//		Product productExample = new Product();
+//		Customer customer = new Customer();
+//		Category category = new Category();
+//		customer.setAddress(new Address());
+//		productExample.setCustomer(customer);
+//		productExample.setCategory(category);;
+//		productExample.getCustomer().getAddress().setCity(params.getOrDefault("city", null));
+//		productExample.setName(params.getOrDefault("search", null));
+////		productExample.setPrice(params.getOrDefault(Double.valueOf("price_from"), null));
+//		productExample.getCategory().setName(params.getOrDefault("category", null));
+//		
+//		Example<Product> example = Example.of(productExample,ExampleMatcher
+//				.matchingAll()
+//				.withMatcher("name", ExampleMatcher
+//						.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING))
+//				.withMatcher("city", ExampleMatcher
+//						.GenericPropertyMatcher.of(ExampleMatcher.StringMatcher.CONTAINING))
+////				.withMatcher("price", ExampleMatcher
+////						.GenericPropertyMatcher.of(ExampleMatcher))
+//				.withIgnoreCase());
+		
+//		ProductSpecification name = 
+//			      new ProductSpecification(new SearchCriteria("name", SearchOperation.CONTAIN,
+//			    		  params.getOrDefault("search", ""),""));
+//		ProductSpecification city = 
+//			      new ProductSpecification(new SearchCriteria("city", SearchOperation.CONTAIN,
+//			    		  params.getOrDefault("city", ""),""));
 		
 		Pageable pageable = PageRequest.of(Integer.valueOf(params.getOrDefault("page", "0")),
-				Integer.valueOf(params.getOrDefault("size", "20")), Sort.by("name").descending());
+				Integer.valueOf(params.getOrDefault("size", "20")), Sort.by("createdAt").descending());
 		
-		return productRepository.findAll(example,pageable).stream()
-			.map(product -> new ProductDto(product.getId(),product.getName(),
-					product.getPrice(),product.getCreatedAt(),product.getQuantity(),
-					product.getMessage(),product.getRating(),
-					customerService.getCustomer(product.getCustomer().getId()),
-					product.getCategory().getName(),
-					mappingConverter.convertReviewsToReviewDtos(product.getReviews()),
-					mappingConverter.convertConditionsToTheirNames(product.getProductConditions())))
-			.collect(Collectors.toList());
+		String name = params.getOrDefault("name", "");
+		Double priceFrom = Double.valueOf(params.getOrDefault("price_from", "0"));
+		Double priceTo = Double.valueOf(params.getOrDefault("price_to", "1000000000"));
+		Double ratingFrom = Double.valueOf(params.getOrDefault("rating_from", "0"));
+		String categoryName = params.getOrDefault("category", null);
+		if(categoryName != null) {
+			Category category = categoryService.getCategory(categoryName);
+			return productRepository.findAllByNameContainingIgnoreCaseAndPriceBetweenAndRatingGreaterThanEqualAndCategory
+					(name,priceFrom, priceTo,ratingFrom, category,pageable).stream()
+					.map(product -> new ProductDto(product.getId(),product.getName(),
+							product.getPrice(),product.getCreatedAt(),product.getQuantity(),
+							product.getMessage(),product.getRating(),
+							customerService.getCustomer(product.getCustomer().getId()),
+							product.getCategory().getName(),
+							mappingConverter.convertReviewsToReviewDtos(product.getReviews()),
+							mappingConverter.convertConditionsToTheirNames(product.getProductConditions())))
+					.collect(Collectors.toList());
+		}else {
+			return productRepository.findAllByNameContainingIgnoreCaseAndPriceBetweenAndRatingGreaterThanEqual
+					(name,priceFrom, priceTo,ratingFrom, pageable).stream()
+					.map(product -> new ProductDto(product.getId(),product.getName(),
+							product.getPrice(),product.getCreatedAt(),product.getQuantity(),
+							product.getMessage(),product.getRating(),
+							customerService.getCustomer(product.getCustomer().getId()),
+							product.getCategory().getName(),
+							mappingConverter.convertReviewsToReviewDtos(product.getReviews()),
+							mappingConverter.convertConditionsToTheirNames(product.getProductConditions())))
+					.collect(Collectors.toList());
+		}
 	}
 
 	@Override

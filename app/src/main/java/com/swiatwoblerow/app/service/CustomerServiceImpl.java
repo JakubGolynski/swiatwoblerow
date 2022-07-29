@@ -26,6 +26,7 @@ import com.swiatwoblerow.app.entity.Customer;
 import com.swiatwoblerow.app.entity.Role;
 import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.service.interfaces.CustomerService;
+import com.swiatwoblerow.app.service.interfaces.MappingConverter;
 
 @Service("customerServiceImpl")
 public class CustomerServiceImpl implements CustomerService, UserDetailsService {
@@ -36,11 +37,14 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 	
 	private JwtUtils jwtUtils;
 	
+	private MappingConverter mappingConverter;
+	
 	public CustomerServiceImpl(AuthenticationManager authenticationManager, CustomerRepository customerRepository,
-			JwtUtils jwtUtils) {
+			JwtUtils jwtUtils, MappingConverter mappingConverter) {
 		this.authenticationManager = authenticationManager;
 		this.customerRepository = customerRepository;
 		this.jwtUtils = jwtUtils;
+		this.mappingConverter = mappingConverter;
 	}
 
 	@Override
@@ -60,16 +64,29 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 	}
 	
 	@Override
-	public CustomerDto login(CustomerDto customerDto) throws BadCredentialsException{
+	public CustomerDto login(CustomerDto customerDto) throws BadCredentialsException,UsernameNotFoundException{
 		UsernamePasswordAuthenticationToken tokenAuthetication = 
 				new UsernamePasswordAuthenticationToken(customerDto.getUsername(),customerDto.getPassword());
 		Authentication authetication = authenticationManager.authenticate(tokenAuthetication);
 		SecurityContextHolder.getContext().setAuthentication(authetication);
-		return getLoggedCustomer();
+		
+		CustomerPrincipal customerPrincipal = (CustomerPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Customer customer = customerRepository.findByUsername(customerPrincipal.getUsername()).orElseThrow(
+				() -> new UsernameNotFoundException("User not found with username "+ customerPrincipal.getUsername()));
+		CustomerDto returnCustomerDto = new CustomerDto();
+		returnCustomerDto.setUsername(customer.getUsername());
+		returnCustomerDto.setFirstName(customer.getFirstName());
+		returnCustomerDto.setLastName(customer.getLastName());
+		returnCustomerDto.setEmail(customer.getEmail());
+		returnCustomerDto.setTelephone(customer.getTelephone());
+		returnCustomerDto.setJwtToken(jwtUtils.generateJwtToken(customerPrincipal.getUsername()));
+		returnCustomerDto.setCustomerAddress(mappingConverter.convertAddressToAddressDto(customer.getAddress()));
+		returnCustomerDto.setRoles(mappingConverter.convertRolesToTheirNames(customer.getRoles()));
+		return returnCustomerDto;
 	}
 	
 	@Override
-	public CustomerDto getLoggedCustomer(){
+	public CustomerDto getLoggedCustomer() throws UsernameNotFoundException{
 		CustomerDto customerDto = new CustomerDto();
 		CustomerPrincipal customerPrincipal = (CustomerPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Customer customer = customerRepository.findByUsername(customerPrincipal.getUsername()).orElseThrow(
@@ -78,14 +95,8 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 		customerDto.setFirstName(customer.getFirstName());
 		customerDto.setLastName(customer.getLastName());
 		customerDto.setEmail(customer.getEmail());
-		Address address = customer.getAddress();
-		customerDto.setCustomerAddress(new AddressDto(address.getId(),
-				address.getCity(),address.getStreet(),address.getHouseNumber(),
-				address.getCountry().getName()));
-		customerDto.setJwtToken(jwtUtils.generateJwtToken(customerPrincipal.getUsername()));
-		List<String> roles = customerPrincipal.getAuthorities()
-				.stream().map(role -> role.getAuthority()).collect(Collectors.toList());
-		customerDto.setRoles(roles);
+		customerDto.setCustomerAddress(mappingConverter.convertAddressToAddressDto(customer.getAddress()));
+		customerDto.setRoles(mappingConverter.convertRolesToTheirNames(customer.getRoles()));
 		return customerDto; 
 	}
 	
@@ -100,8 +111,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 						new AddressDto(customer.getAddress().getId(),
 								customer.getAddress().getCity(),customer.getAddress().getStreet(),
 								customer.getAddress().getHouseNumber(),customer.getAddress().getCountry().getName()),
-						customer.getRoles()
-						.stream().map(role -> role.getName()).collect(Collectors.toList())))
+						mappingConverter.convertRolesToTheirNames(customer.getRoles())))
 				.collect(Collectors.toList());
 	}
 
@@ -115,12 +125,8 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 		customerDto.setFirstName(customer.getFirstName());
 		customerDto.setLastName(customer.getLastName());
 		customerDto.setEmail(customer.getEmail());
-		Address address = customer.getAddress();
-		customerDto.setCustomerAddress(new AddressDto(address.getId(),
-				address.getCity(),address.getStreet(),address.getHouseNumber(),
-				address.getCountry().getName()));
-		customerDto.setRoles(customer.getRoles().stream().map(
-				role -> role.getName()).collect(Collectors.toList()));
+		customerDto.setCustomerAddress(mappingConverter.convertAddressToAddressDto(customer.getAddress()));
+		customerDto.setRoles(mappingConverter.convertRolesToTheirNames(customer.getRoles()));
 		return customerDto; 
 	}
 
