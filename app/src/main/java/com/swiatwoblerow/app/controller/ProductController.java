@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.swiatwoblerow.app.dto.ProductDto;
+import com.swiatwoblerow.app.dto.ReviewDto;
 import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
 import com.swiatwoblerow.app.service.interfaces.ProductService;
 
@@ -31,13 +32,18 @@ public class ProductController {
 	}
 	
 	@GetMapping("/{id}")
-	public ProductDto getProduct(@PathVariable int id, @RequestParam Map<String,String> params) throws NotFoundExceptionRequest{
+	public ProductDto getProduct(@PathVariable int id) throws NotFoundExceptionRequest{
 		return productService.getProduct(id);
 	}
 	
 	@PostMapping
 	public ProductDto addProduct(@RequestBody ProductDto productDto) throws NotFoundExceptionRequest{
 		return productService.addProduct(productDto);
+	}
+	
+	@GetMapping("/{id}/reviews")
+	public List<ReviewDto> getReviews(@PathVariable int id) {
+		return null;
 	}
 	
 }

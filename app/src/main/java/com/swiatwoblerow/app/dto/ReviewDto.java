@@ -20,7 +20,7 @@ public class ReviewDto {
 	
 	private int quantityThumbsDown = 0;
 	
-	private String reviewOwnerUsername;
+	private String ownerUsername;
 	
 	private List<String> customersWhoLikedReview = new ArrayList<>();
 	
@@ -31,13 +31,13 @@ public class ReviewDto {
 	}
 
 	public ReviewDto(int id, String message, Timestamp createdAt, int quantityThumbsUp, int quantityThumbsDown,
-			String reviewOwnerUsername, List<String> customersWhoLikedReview, List<String> customersWhoDislikedReview) {
+			String ownerUsername, List<String> customersWhoLikedReview, List<String> customersWhoDislikedReview) {
 		this.id = id;
 		this.message = message;
 		this.createdAt = createdAt;
 		this.quantityThumbsUp = quantityThumbsUp;
 		this.quantityThumbsDown = quantityThumbsDown;
-		this.reviewOwnerUsername = reviewOwnerUsername;
+		this.ownerUsername = ownerUsername;
 		this.customersWhoLikedReview = customersWhoLikedReview;
 		this.customersWhoDislikedReview = customersWhoDislikedReview;
 	}

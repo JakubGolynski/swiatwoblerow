@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.swiatwoblerow.app.exceptions.dtos.BadCredentialsExceptionDto;
-import com.swiatwoblerow.app.exceptions.dtos.NotFoundExceptionDto;
+import com.swiatwoblerow.app.exceptions.dto.BadCredentialsExceptionDto;
+import com.swiatwoblerow.app.exceptions.dto.NotFoundExceptionDto;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler{

@@ -45,11 +45,11 @@ public class Customer {
 	@Column(name="telephone")
 	private String telephone;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="address_id")
 	private Address address;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable( name="customer_role",
 				joinColumns = @JoinColumn(name="customer_id"),
 				inverseJoinColumns = @JoinColumn(name="role_id"))

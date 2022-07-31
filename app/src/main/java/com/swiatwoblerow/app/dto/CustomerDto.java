@@ -23,16 +23,16 @@ public class CustomerDto {
 	
 	private String jwtToken;
 	
-	private AddressDto customerAddress;
+	private AddressDto address;
 	
-	private List<String> roles = new ArrayList<>();
+	private List<RoleDto> roles = new ArrayList<>();
 
 	public CustomerDto() {
 
 	}
 
 	public CustomerDto(String username, String password, String firstName, String lastName, String email,
-			String telephone, String jwtToken, AddressDto customerAddress, List<String> roles) {
+			String telephone, String jwtToken, AddressDto address, List<RoleDto> roles) {
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
@@ -40,7 +40,7 @@ public class CustomerDto {
 		this.email = email;
 		this.telephone = telephone;
 		this.jwtToken = jwtToken;
-		this.customerAddress = customerAddress;
+		this.address = address;
 		this.roles = roles;
 	}
 	

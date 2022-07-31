@@ -13,13 +13,13 @@ public class AddressDto {
 	
 	private String houseNumber;
 	
-	private String country;
+	private CountryDto country;
 	
 	public AddressDto() {
 		
 	}
 
-	public AddressDto(int id, String city, String street, String houseNumber, String country) {
+	public AddressDto(int id, String city, String street, String houseNumber, CountryDto country) {
 		this.id = id;
 		this.city = city;
 		this.street = street;

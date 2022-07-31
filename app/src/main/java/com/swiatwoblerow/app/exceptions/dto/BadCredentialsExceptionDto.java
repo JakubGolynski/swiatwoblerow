@@ -1,4 +1,4 @@
-package com.swiatwoblerow.app.exceptions.dtos;
+package com.swiatwoblerow.app.exceptions.dto;
 
 import java.sql.Timestamp;
 
@@ -7,17 +7,17 @@ import org.springframework.http.HttpStatus;
 import lombok.Data;
 
 @Data
-public class NotFoundExceptionDto{
+public class BadCredentialsExceptionDto{
 	
-	private HttpStatus status = HttpStatus.NOT_FOUND;
+	private HttpStatus status = HttpStatus.UNAUTHORIZED;
 	
 	private String message;
 	
 	private Timestamp timestamp;
-
-	public NotFoundExceptionDto(String message, Timestamp timestamp) {
+	
+	public BadCredentialsExceptionDto(String message, Timestamp timestamp) {
 		this.message = message;
 		this.timestamp = timestamp;
 	}
-
+	
 }

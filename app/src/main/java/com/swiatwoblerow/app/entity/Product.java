@@ -50,19 +50,19 @@ public class Product {
 	@Column(name="rating")
 	private Double rating;
 	
-	@ManyToMany(fetch=FetchType.LAZY)
+	@ManyToMany(fetch=FetchType.EAGER)
 	@JoinTable(name="product_condition",
 				joinColumns = @JoinColumn(name="product_id"),
 				inverseJoinColumns = @JoinColumn(name="condition_id"))
-	private List<Condition> productConditions = new ArrayList<>();
+	private List<Condition> conditions = new ArrayList<>();
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="category_id")
 	private Category category;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="customer_id")
-	private Customer customer;
+	private Customer owner;
 	
 	@OneToMany(fetch = FetchType.LAZY,mappedBy="product")
 	private List<Review> reviews = new ArrayList<>();
@@ -72,7 +72,7 @@ public class Product {
 	}
 
 	public Product(@Length(max = 50) String name, Double price, Timestamp createdAt, Integer quantity, String message,
-			Double rating, List<Condition> productConditions, Category category, Customer customer,
+			Double rating, List<Condition> conditions, Category category, Customer owner,
 			List<Review> reviews) {
 		this.name = name;
 		this.price = price;
@@ -80,9 +80,9 @@ public class Product {
 		this.quantity = quantity;
 		this.message = message;
 		this.rating = rating;
-		this.productConditions = productConditions;
+		this.conditions = conditions;
 		this.category = category;
-		this.customer = customer;
+		this.owner = owner;
 		this.reviews = reviews;
 	}
 

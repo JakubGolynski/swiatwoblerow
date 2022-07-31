@@ -40,11 +40,11 @@ public class Review {
 	@Column(name="quantity_thumbs_down")
 	private int quantityThumbsDown = 0;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="customer_id")
-	private Customer reviewOwner;
+	private Customer owner;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="product_id")
 	private Product product;
 	
@@ -64,13 +64,13 @@ public class Review {
 		
 	}
 
-	public Review(String message, Timestamp createdAt, int quantityThumbsUp, int quantityThumbsDown, Customer reviewOwner,
+	public Review(String message, Timestamp createdAt, int quantityThumbsUp, int quantityThumbsDown, Customer owner,
 			Product product, List<Customer> customersWhoLikedReview, List<Customer> customersWhoDislikedReview) {
 		this.message = message;
 		this.createdAt = createdAt;
 		this.quantityThumbsUp = quantityThumbsUp;
 		this.quantityThumbsDown = quantityThumbsDown;
-		this.reviewOwner = reviewOwner;
+		this.owner = owner;
 		this.product = product;
 		this.customersWhoLikedReview = customersWhoLikedReview;
 		this.customersWhoDislikedReview = customersWhoDislikedReview;

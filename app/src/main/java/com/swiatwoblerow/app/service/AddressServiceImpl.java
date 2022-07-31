@@ -28,7 +28,7 @@ public class AddressServiceImpl implements AddressService {
 		address.setCity(addressDto.getCity());
 		address.setStreet(addressDto.getStreet());
 		address.setHouseNumber(addressDto.getHouseNumber());
-		Country country = countryRepository.findByName(addressDto.getCountry())
+		Country country = countryRepository.findByName(addressDto.getCountry().getName())
 				.orElseThrow(() -> new NotFoundExceptionRequest("Country "+
 						"with name "+addressDto.getCountry() +" does not exist"));
 		address.setCountry(country);

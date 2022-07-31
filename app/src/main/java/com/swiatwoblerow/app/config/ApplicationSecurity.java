@@ -57,7 +57,8 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 		http.addFilterBefore(jwtTokenAuthorizationFilter(),UsernamePasswordAuthenticationFilter.class);
 	}
 	
-	@Override @Bean
+	@Override
+	@Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
