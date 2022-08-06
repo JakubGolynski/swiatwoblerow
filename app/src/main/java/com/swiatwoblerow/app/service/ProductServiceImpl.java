@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.swiatwoblerow.app.dto.CustomerDto;
 import com.swiatwoblerow.app.dto.ProductDto;
 import com.swiatwoblerow.app.entity.Category;
 import com.swiatwoblerow.app.entity.Condition;
@@ -22,15 +23,13 @@ import com.swiatwoblerow.app.repository.CategoryRepository;
 import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.ProductRepository;
 import com.swiatwoblerow.app.repository.specification.ProductSpecification;
+import com.swiatwoblerow.app.service.filter.PaginationFilter;
+import com.swiatwoblerow.app.service.filter.ProductFilter;
 import com.swiatwoblerow.app.service.interfaces.ProductService;
 import org.springframework.data.domain.Sort;
 
-
-
 @Service
 public class ProductServiceImpl implements ProductService {
-	
-	private CustomerServiceImpl customerService;
 	
 	private ProductRepository productRepository;
 	
@@ -40,10 +39,8 @@ public class ProductServiceImpl implements ProductService {
 	
 	private ModelMapper modelMapper;
 
-	public ProductServiceImpl(CustomerServiceImpl customerService,
-			ProductRepository productRepository, CustomerRepository customerRepository,
+	public ProductServiceImpl(ProductRepository productRepository, CustomerRepository customerRepository,
 			CategoryRepository categoryRepository, ModelMapper modelMapper) {
-		this.customerService = customerService;
 		this.productRepository = productRepository;
 		this.customerRepository = customerRepository;
 		this.categoryRepository = categoryRepository;
@@ -65,7 +62,7 @@ public class ProductServiceImpl implements ProductService {
 		product.setRating(5.0);
 		product.setConditions(
 				productDto.getConditions().stream().map(
-						condition -> new Condition(condition)).collect(Collectors.toList()));
+						condition -> new Condition(condition.getName())).collect(Collectors.toSet()));
 		Category category = categoryRepository.findByName(productDto.getCategory().getName()).orElseThrow(
 				() -> new NotFoundExceptionRequest("Category with name "+
 						productDto.getCategory().getName()+" does not exist"));
@@ -75,27 +72,20 @@ public class ProductServiceImpl implements ProductService {
 		
 		productDto.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		productDto.setRating(5.0);
-		productDto.setOwner(customerService.getCustomer(customer.getId()));
+		productDto.setOwner(modelMapper.map(customer, CustomerDto.class));
 		return productDto;
 	}
 
 	@Override
-	public List<ProductDto> getProducts(Map<String, String> params) throws NotFoundExceptionRequest{
-		String name = params.getOrDefault("name", "");
-		Double priceFrom = Double.valueOf(params.getOrDefault("price_from", "0"));
-		Double priceTo = Double.valueOf(params.getOrDefault("price_to", "1000000000"));
-		Double ratingFrom = Double.valueOf(params.getOrDefault("rating_from", "0"));
-		String category = params.getOrDefault("category", "");
-		String city = params.getOrDefault("city", "");
+	public List<ProductDto> getProducts(ProductFilter productFilter) throws NotFoundExceptionRequest{
+		Pageable pageable = PageRequest.of(productFilter.getPage(),
+				productFilter.getSize());
 		
-		Pageable pageable = PageRequest.of(Integer.valueOf(params.getOrDefault("page", "0")),
-				Integer.valueOf(params.getOrDefault("size", "20")), Sort.by("createdAt").descending());
-		
-		return productRepository.findAll(ProductSpecification.isNameLike(name)
-					.and(ProductSpecification.isPriceBetween(priceFrom,priceTo))
-					.and(ProductSpecification.isRatingGreaterThan(ratingFrom))
-					.and(ProductSpecification.isCategoryEqual(category))
-					.and(ProductSpecification.isCityEqual(city)),pageable).stream()
+		return productRepository.findAll(ProductSpecification.isNameLike(productFilter.getName())
+					.and(ProductSpecification.isPriceBetween(productFilter.getPriceFrom(),productFilter.getPriceTo()))
+					.and(ProductSpecification.isRatingGreaterThan(productFilter.getRatingFrom()))
+					.and(ProductSpecification.isCategoryEqual(productFilter.getCategory()))
+					.and(ProductSpecification.isCityEqual(productFilter.getCity())),pageable).stream()
 				.map(product -> modelMapper.map(product, ProductDto.class))
 				.collect(Collectors.toList());
 	}

@@ -2,7 +2,9 @@ package com.swiatwoblerow.app.entity;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -54,7 +56,7 @@ public class Product {
 	@JoinTable(name="product_condition",
 				joinColumns = @JoinColumn(name="product_id"),
 				inverseJoinColumns = @JoinColumn(name="condition_id"))
-	private List<Condition> conditions = new ArrayList<>();
+	private Set<Condition> conditions = new HashSet<>();
 	
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="category_id")
@@ -64,16 +66,25 @@ public class Product {
 	@JoinColumn(name="customer_id")
 	private Customer owner;
 	
+	@Column(name="quantity_reviews")
+	private Integer quantityReviews;
+	
 	@OneToMany(fetch = FetchType.LAZY,mappedBy="product")
 	private List<Review> reviews = new ArrayList<>();
+	
+	@Column(name="quantity_ratings")
+	private Integer quantityRatings;
+	
+	@OneToMany(fetch = FetchType.LAZY,mappedBy="product")
+	private List<Rating> ratings = new ArrayList<>();
 	
 	public Product() {
 		
 	}
 
 	public Product(@Length(max = 50) String name, Double price, Timestamp createdAt, Integer quantity, String message,
-			Double rating, List<Condition> conditions, Category category, Customer owner,
-			List<Review> reviews) {
+			Double rating, Set<Condition> conditions, Category category, Customer owner, Integer quantityReviews,
+			List<Review> reviews, Integer quantityRatings, List<Rating> ratings) {
 		this.name = name;
 		this.price = price;
 		this.createdAt = createdAt;
@@ -83,7 +94,10 @@ public class Product {
 		this.conditions = conditions;
 		this.category = category;
 		this.owner = owner;
+		this.quantityReviews = quantityReviews;
 		this.reviews = reviews;
+		this.quantityRatings = quantityRatings;
+		this.ratings = ratings;
 	}
 
 }

@@ -16,7 +16,7 @@ import com.swiatwoblerow.app.exceptions.dto.NotFoundExceptionDto;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 	
 	
-	@ExceptionHandler(value= {NotFoundExceptionRequest.class, UsernameNotFoundException.class})
+	@ExceptionHandler(value= {NotFoundExceptionRequest.class, UsernameNotFoundException.class, NullPointerException.class})
 	protected ResponseEntity<Object> handleEntityNotFound(
 			Exception ex){
 		NotFoundExceptionDto exception = new NotFoundExceptionDto(

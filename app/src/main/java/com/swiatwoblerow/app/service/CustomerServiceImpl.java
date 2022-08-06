@@ -77,16 +77,6 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 		return returnCustomerDto;
 	}
 	
-	@Override
-	public CustomerDto getLoggedCustomer() throws UsernameNotFoundException{
-		CustomerPrincipal customerPrincipal = (CustomerPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Customer customer = customerRepository.findByUsername(customerPrincipal.getUsername()).orElseThrow(
-				() -> new UsernameNotFoundException("User not found with username "+ customerPrincipal.getUsername()));
-		
-		CustomerDto customerDto = modelMapper.map(customer, CustomerDto.class);
-		return customerDto; 
-	}
-	
 	@Override 
 	public List<CustomerDto> getCustomers(){
 		

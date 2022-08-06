@@ -7,7 +7,7 @@ import com.swiatwoblerow.app.entity.Product;
 public class ProductSpecification {
 	
 	public static Specification<Product> isNameLike(String name) {
-		if(name.isEmpty()) {
+		if(name == null) {
 			return (root, query, builder) -> {
 				return builder.conjunction();
 		    };
@@ -18,9 +18,9 @@ public class ProductSpecification {
 	    };
 	}
 	
-	public static Specification<Product> isPriceBetween(Double price_from, Double price_to) {
+	public static Specification<Product> isPriceBetween(Double priceFrom, Double priceTo) {
 	    return (root, query, builder) -> {
-		    return builder.between(root.<Double>get("price"), price_from, price_to);
+		    return builder.between(root.<Double>get("price"), priceFrom, priceTo);
 	    };
 	}
 	
@@ -36,7 +36,7 @@ public class ProductSpecification {
 	}
 	
 	public static Specification<Product> isCategoryEqual(String category) {
-		if(category.isEmpty()) {
+		if(category == null) {
 			return (root, query, builder) -> {
 				return builder.conjunction();
 		    };
@@ -47,7 +47,7 @@ public class ProductSpecification {
 	}
 	
 	public static Specification<Product> isCityEqual(String city) {
-		if(city.isEmpty()) {
+		if(city == null) {
 			return (root, query, builder) -> {
 			    return builder.conjunction();
 		    };

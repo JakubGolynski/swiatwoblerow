@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class CountryDto {
 	
-	private int id;
+	private Integer id;
 	
 	private String name;
 	
@@ -13,7 +13,7 @@ public class CountryDto {
 		
 	}
 	
-	public CountryDto(int id, String name) {
+	public CountryDto(Integer id, String name) {
 		this.id = id;
 		this.name = name;
 	}

@@ -3,17 +3,17 @@ package com.swiatwoblerow.app.dto;
 import lombok.Data;
 
 @Data
-public class RoleDto {
+public class ConditionDto {
 	
 	private Integer id;
 	
 	private String name;
 	
-	public RoleDto() {
+	public ConditionDto() {
 		
 	}
 	
-	public RoleDto(Integer id, String name) {
+	public ConditionDto(Integer id, String name) {
 		this.id = id;
 		this.name = name;
 	}

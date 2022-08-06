@@ -2,7 +2,9 @@ package com.swiatwoblerow.app.entity;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -52,20 +54,20 @@ public class Review {
 	@JoinTable(name="review_thumbs_up",
 				joinColumns = @JoinColumn(name="review_id"),
 				inverseJoinColumns = @JoinColumn(name="customer_id"))
-	private List<Customer> customersWhoLikedReview = new ArrayList<>();
+	private Set<Customer> customersWhoLikedReview = new HashSet<>();
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name="review_thumbs_down",
 				joinColumns = @JoinColumn(name="review_id"),
 				inverseJoinColumns = @JoinColumn(name="customer_id"))
-	private List<Customer> customersWhoDislikedReview = new ArrayList<>();
+	private Set<Customer> customersWhoDislikedReview = new HashSet<>();
 	
 	public Review() {
 		
 	}
 
 	public Review(String message, Timestamp createdAt, int quantityThumbsUp, int quantityThumbsDown, Customer owner,
-			Product product, List<Customer> customersWhoLikedReview, List<Customer> customersWhoDislikedReview) {
+			Product product, Set<Customer> customersWhoLikedReview, Set<Customer> customersWhoDislikedReview) {
 		this.message = message;
 		this.createdAt = createdAt;
 		this.quantityThumbsUp = quantityThumbsUp;

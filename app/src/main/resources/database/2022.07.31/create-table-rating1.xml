@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>	
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"> 
+	
+	<changeSet id="12" author="Goly">
+		<createTable tableName="rating" schemaName="shoproject">
+				<column name="rating_id" type="integer" autoIncrement="true"
+					incrementBy="1" startWith="1"> 
+					<constraints primaryKey="true" nullable="false" unique="true"/>
+				</column>
+				<column name="value" type="tinyint"> 
+					<constraints nullable="false"/>
+				</column>
+				<column name="created_at" type="timestamp" defaultValueComputed="current_timestamp"> 
+					<constraints nullable="false"/>
+				</column>
+				<column name="customer_id" type="integer">
+					<constraints references="customer(customer_id)" foreignKeyName="rating_customer_id_fkey" referencedTableSchemaName="shoproject"/>
+				</column>
+				<column name="product_id" type="integer">
+					<constraints references="product(product_id)" foreignKeyName="rating_product_id_fkey" referencedTableSchemaName="shoproject"/>
+				</column>
+			</createTable>
+	</changeSet>
+</databaseChangeLog>

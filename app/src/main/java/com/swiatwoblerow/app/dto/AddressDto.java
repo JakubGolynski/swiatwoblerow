@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class AddressDto {
 	
-	private int id;
+	private Integer id;
 	
 	private String city;
 	
@@ -19,7 +19,7 @@ public class AddressDto {
 		
 	}
 
-	public AddressDto(int id, String city, String street, String houseNumber, CountryDto country) {
+	public AddressDto(Integer id, String city, String street, String houseNumber, CountryDto country) {
 		this.id = id;
 		this.city = city;
 		this.street = street;

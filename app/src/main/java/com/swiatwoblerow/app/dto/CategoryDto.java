@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class CategoryDto {
 	
-	private int id;
+	private Integer id;
 	
 	private String name;
 	
@@ -13,7 +13,7 @@ public class CategoryDto {
 		
 	}
 	
-	public CategoryDto(int id, String name) {
+	public CategoryDto(Integer id, String name) {
 		this.id = id;
 		this.name = name;
 	}

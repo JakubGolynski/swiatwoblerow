@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class ProductDto {
 	
-	private int id;
+	private Integer id;
 	
 	private String name;
 	
@@ -23,19 +23,23 @@ public class ProductDto {
 	
 	private Double rating;
 	
+	private Integer quantityRatings;
+	
+	private Integer quantityReviews;
+	
 	private CustomerDto owner;
 	
 	private CategoryDto category;
 	
-	private List<String> conditions = new ArrayList<>();
-
+	private List<ConditionDto> conditions = new ArrayList<>();
+	
 	public ProductDto() {
 		
 	}
 
-	public ProductDto(int id, String name, Double price, Timestamp createdAt, Integer quantity, String message,
+	public ProductDto(Integer id, String name, Double price, Timestamp createdAt, Integer quantity, String message,
 			Double rating, CustomerDto owner, CategoryDto category,
-			List<String> conditions) {
+			List<ConditionDto> conditions) {
 		this.id = id;
 		this.name = name;
 		this.price = price;
