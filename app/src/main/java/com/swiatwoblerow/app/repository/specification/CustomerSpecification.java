@@ -6,7 +6,7 @@ import com.swiatwoblerow.app.entity.Customer;
 
 public class CustomerSpecification {
 	public static Specification<Customer> isFirstNameLike(String firstName) {
-		if(firstName.isEmpty()) {
+		if(firstName == null) {
 			return (root, query, builder) -> {
 				return builder.conjunction();
 		    };
@@ -18,7 +18,7 @@ public class CustomerSpecification {
 	}
 	
 	public static Specification<Customer> isLastNameLike(String lastName) {
-		if(lastName.isEmpty()) {
+		if(lastName == null) {
 			return (root, query, builder) -> {
 				return builder.conjunction();
 		    };
@@ -30,7 +30,7 @@ public class CustomerSpecification {
 	}
 	
 	public static Specification<Customer> isUsernameNameLike(String username) {
-		if(username.isEmpty()) {
+		if(username == null) {
 			return (root, query, builder) -> {
 				return builder.conjunction();
 		    };
@@ -42,7 +42,7 @@ public class CustomerSpecification {
 	}
 	
 	public static Specification<Customer> isCityEqual(String city) {
-		if(city.isEmpty()) {
+		if(city == null) {
 			return (root, query, builder) -> {
 			    return builder.conjunction();
 		    };

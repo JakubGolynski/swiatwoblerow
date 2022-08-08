@@ -15,6 +15,7 @@ import com.swiatwoblerow.app.entity.Customer;
 import com.swiatwoblerow.app.entity.Product;
 import com.swiatwoblerow.app.entity.Review;
 import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
+import com.swiatwoblerow.app.exceptions.TooManyInsertException;
 import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.ProductRepository;
 import com.swiatwoblerow.app.repository.ReviewRepository;
@@ -50,7 +51,7 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public ReviewDto addReview(Integer productId, ReviewDto reviewDto) throws UsernameNotFoundException,NotFoundExceptionRequest{
+	public ReviewDto addReview(Integer productId, ReviewDto reviewDto) throws UsernameNotFoundException,NotFoundExceptionRequest,TooManyInsertException{
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		Customer customer = customerRepository.findByUsername(username)
 				.orElseThrow(() -> new UsernameNotFoundException("User "
@@ -59,6 +60,10 @@ public class ReviewServiceImpl implements ReviewService {
 				.orElseThrow(() -> new NotFoundExceptionRequest("Product with id "+
 						productId+" not found"));
 		
+		List<Review> reviewList = product.getReviews();
+		if(this.hasCustomerAlreadyAddedReview(reviewList, username)) {
+			throw new TooManyInsertException("Customer can add only one review to certain product");
+		}
 		Review review = new Review();
 		review.setMessage(reviewDto.getMessage());
 		review.setCreatedAt(new Timestamp(System.currentTimeMillis()));
@@ -173,6 +178,14 @@ public class ReviewServiceImpl implements ReviewService {
 				review.getCustomersWhoDislikedReview().stream().map(
 						customer -> customer.getUsername()).collect(Collectors.toList()));
 		return thumbDto;
+	}
+	
+	@Override
+	public boolean hasCustomerAlreadyAddedReview(List<Review> reviewList, String customerUsername) {
+		List<String> customerUsernames = reviewList.stream().map(
+				review -> review.getOwner().getUsername()).collect(Collectors.toList());
+		
+		return customerUsernames.contains(customerUsername);
 	}
 
 }

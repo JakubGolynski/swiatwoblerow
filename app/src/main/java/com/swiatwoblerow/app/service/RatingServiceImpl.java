@@ -50,13 +50,13 @@ public class RatingServiceImpl implements RatingService{
 		Rating rating = new Rating(ratingDto.getValue(),
 				new Timestamp(System.currentTimeMillis()),customer,product);
 		
+		ratingRepository.save(rating);
+		
 		Integer quantityRatings = product.getQuantityRatings();
 		product.setQuantityRatings(quantityRatings+1);
-
-		ratingDto = modelMapper.map(rating, RatingDto.class);
 		
-		ratingRepository.save(rating);
 		productRepository.save(product);
+		ratingDto = modelMapper.map(rating, RatingDto.class);
 		return ratingDto;
 	}
 

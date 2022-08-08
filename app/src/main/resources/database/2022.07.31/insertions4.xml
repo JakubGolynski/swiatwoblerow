@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>	
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"> 
+
+
+	<changeSet id="14" author="Goly">
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Bardzo polecam, telefon został błyskawicznie dostarczony"/>
+			<column name="quantity_thumbs_up" value="0"/> 
+			<column name="quantity_thumbs_down" value="0"/> 
+			<column name="customer_id" value="2"/>
+			<column name="product_id" type="5"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Telefon zasługuje na pochwałę, jestem naprawdę zadowolony"/>
+			<column name="quantity_thumbs_up" value="0"/> 
+			<column name="quantity_thumbs_down" value="0"/> 
+			<column name="customer_id" value="3"/>
+			<column name="product_id" type="5"/>
+		</insert>
+	</changeSet>
+	
+	<changeSet id="15" author="Goly">
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="4"/> 
+			<column name="customer_id" value="2"/>
+			<column name="product_id" value="5"/>
+		</insert>
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="3"/> 
+			<column name="customer_id" value="3"/>
+			<column name="product_id" value="5"/>
+		</insert>
+	</changeSet>
+</databaseChangeLog>

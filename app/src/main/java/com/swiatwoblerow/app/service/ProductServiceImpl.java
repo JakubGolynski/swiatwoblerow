@@ -2,7 +2,6 @@ package com.swiatwoblerow.app.service;
 
 import java.sql.Timestamp;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -23,7 +22,6 @@ import com.swiatwoblerow.app.repository.CategoryRepository;
 import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.ProductRepository;
 import com.swiatwoblerow.app.repository.specification.ProductSpecification;
-import com.swiatwoblerow.app.service.filter.PaginationFilter;
 import com.swiatwoblerow.app.service.filter.ProductFilter;
 import com.swiatwoblerow.app.service.interfaces.ProductService;
 import org.springframework.data.domain.Sort;
@@ -78,8 +76,9 @@ public class ProductServiceImpl implements ProductService {
 
 	@Override
 	public List<ProductDto> getProducts(ProductFilter productFilter) throws NotFoundExceptionRequest{
+		
 		Pageable pageable = PageRequest.of(productFilter.getPage(),
-				productFilter.getSize());
+				productFilter.getSize(), Sort.by(productFilter.getSort()));
 		
 		return productRepository.findAll(ProductSpecification.isNameLike(productFilter.getName())
 					.and(ProductSpecification.isPriceBetween(productFilter.getPriceFrom(),productFilter.getPriceTo()))

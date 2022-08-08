@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import com.swiatwoblerow.app.exceptions.dto.BadCredentialsExceptionDto;
 import com.swiatwoblerow.app.exceptions.dto.NotFoundExceptionDto;
+import com.swiatwoblerow.app.exceptions.dto.TooManyInsertExceptionDto;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler{
@@ -32,5 +33,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 				ex.getMessage(),
 				new Timestamp(System.currentTimeMillis()));
 		return new ResponseEntity<>(exception,exception.getStatus());
+	}
+	
+	@ExceptionHandler(value= {TooManyInsertException.class})
+	protected ResponseEntity<Object> handleTooManyInsert(Exception ex){
+		TooManyInsertExceptionDto exception = new TooManyInsertExceptionDto(
+				ex.getMessage(), new Timestamp(System.currentTimeMillis()));
+		return new ResponseEntity<>(exception, exception.getStatus());
 	}
 }

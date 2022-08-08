@@ -1,7 +1,9 @@
 package com.swiatwoblerow.app.service.filter;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import lombok.Data;
 
@@ -25,6 +27,8 @@ public class ProductFilter {
 	private Integer page = 0;
 	
 	private Integer size = 20;
+	
+	private String sort = "createdAt";
 	
 	public ProductFilter() {
 		
