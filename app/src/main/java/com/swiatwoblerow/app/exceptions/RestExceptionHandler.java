@@ -35,7 +35,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<>(exception,exception.getStatus());
 	}
 	
-	@ExceptionHandler(value= {TooManyInsertException.class})
+	@ExceptionHandler(value= {TooManyInsertException.class, CustomerIsNotOwnerException.class})
 	protected ResponseEntity<Object> handleTooManyInsert(Exception ex){
 		TooManyInsertExceptionDto exception = new TooManyInsertExceptionDto(
 				ex.getMessage(), new Timestamp(System.currentTimeMillis()));

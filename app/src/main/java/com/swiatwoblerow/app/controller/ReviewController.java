@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.swiatwoblerow.app.dto.ReviewDto;
 import com.swiatwoblerow.app.dto.ThumbDto;
+import com.swiatwoblerow.app.exceptions.CustomerIsNotOwnerException;
 import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
 import com.swiatwoblerow.app.exceptions.TooManyInsertException;
 import com.swiatwoblerow.app.service.interfaces.ReviewService;
@@ -42,32 +43,32 @@ public class ReviewController {
 	
 	@DeleteMapping("/products/{productId}/reviews/{reviewId}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void deleteReview(@PathVariable int reviewId) throws NotFoundExceptionRequest{
+	public void deleteReview(@PathVariable int reviewId) throws NotFoundExceptionRequest, NullPointerException,CustomerIsNotOwnerException {
 		reviewService.deleteReview(reviewId);
 	}
 	
 	@PostMapping("/products/{productId}/reviews/{reviewId}/thumbsup")
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public void addThumbUp(@PathVariable int reviewId) throws NotFoundExceptionRequest{
+	public void addThumbUp(@PathVariable int reviewId) throws UsernameNotFoundException, NotFoundExceptionRequest,TooManyInsertException{
 		reviewService.addThumbUp(reviewId);
 	}
 	
-	@DeleteMapping("/products/{productId}/reviews/{reviewId}/thumbsup/{thumbUpId}")
+	@DeleteMapping("/products/{productId}/reviews/{reviewId}/thumbsup")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void deleteThumbUp(@PathVariable int reviewId,@PathVariable int thumbUpId) throws NotFoundExceptionRequest{
-		reviewService.deleteThumbUp(reviewId,thumbUpId);
+	public void deleteThumbUp(@PathVariable int reviewId) throws NotFoundExceptionRequest,CustomerIsNotOwnerException{
+		reviewService.deleteThumbUp(reviewId);
 	}
 	
 	@PostMapping("/products/{productId}/reviews/{reviewId}/thumbsdown")
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public void addThumbDown(@PathVariable int reviewId) throws NotFoundExceptionRequest{
+	public void addThumbDown(@PathVariable int reviewId) throws NotFoundExceptionRequest,TooManyInsertException{
 		reviewService.addThumbDown(reviewId);
 	}
 	
-	@DeleteMapping("/products/{productId}/reviews/{reviewId}/thumbsdown/{thumbDownId}")
+	@DeleteMapping("/products/{productId}/reviews/{reviewId}/thumbsdown")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void deleteThumbDown(@PathVariable int reviewId,@PathVariable int thumbDownId) throws NotFoundExceptionRequest{
-		reviewService.deleteThumbDown(reviewId,thumbDownId);
+	public void deleteThumbDown(@PathVariable int reviewId) throws NotFoundExceptionRequest,CustomerIsNotOwnerException{
+		reviewService.deleteThumbDown(reviewId);
 	}
 	
 	@GetMapping("/products/{productId}/reviews/{reviewId}/thumbs")

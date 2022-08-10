@@ -13,7 +13,9 @@ import com.swiatwoblerow.app.dto.RatingDto;
 import com.swiatwoblerow.app.entity.Customer;
 import com.swiatwoblerow.app.entity.Product;
 import com.swiatwoblerow.app.entity.Rating;
+import com.swiatwoblerow.app.exceptions.CustomerIsNotOwnerException;
 import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
+import com.swiatwoblerow.app.exceptions.TooManyInsertException;
 import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.ProductRepository;
 import com.swiatwoblerow.app.repository.RatingRepository;
@@ -39,7 +41,7 @@ public class RatingServiceImpl implements RatingService{
 	}
 
 	@Override
-	public RatingDto addRating(Integer productId, RatingDto ratingDto) throws NotFoundExceptionRequest {
+	public RatingDto addRating(Integer productId, RatingDto ratingDto) throws NotFoundExceptionRequest,TooManyInsertException {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		Customer customer = customerRepository.findByUsername(username)
 				.orElseThrow(() -> new UsernameNotFoundException("User "
@@ -47,24 +49,34 @@ public class RatingServiceImpl implements RatingService{
 		Product product = productRepository.findById(productId)
 				.orElseThrow(() -> new NotFoundExceptionRequest("Product with id "+
 						productId+" not found"));
-		Rating rating = new Rating(ratingDto.getValue(),
-				new Timestamp(System.currentTimeMillis()),customer,product);
 		
-		ratingRepository.save(rating);
 		
+		Rating existingRating = ratingRepository.findByOwnerAndProduct(customer, product).orElse(null);
+		if(existingRating != null) {
+			throw new TooManyInsertException("Customer can add only one rating to certain product,"
+					+ " existing ratingId: "+existingRating.getId());
+		}
 		Integer quantityRatings = product.getQuantityRatings();
 		product.setQuantityRatings(quantityRatings+1);
-		
+		Rating rating = new Rating(ratingDto.getValue(),
+				new Timestamp(System.currentTimeMillis()),customer,product);
+		ratingRepository.save(rating);
 		productRepository.save(product);
-		ratingDto = modelMapper.map(rating, RatingDto.class);
-		return ratingDto;
+		RatingDto returnRatingDto = modelMapper.map(rating, RatingDto.class);
+		return returnRatingDto;
 	}
 
 	@Override
-	public void deleteRating(Integer ratingId) throws NotFoundExceptionRequest, NullPointerException {
+	public void deleteRating(Integer ratingId) throws NotFoundExceptionRequest, NullPointerException,CustomerIsNotOwnerException {
+		CustomerPrincipal customerPrincipal = (CustomerPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Customer customer = customerRepository.findByUsername(customerPrincipal.getUsername()).orElseThrow(
+				() -> new UsernameNotFoundException("User not found with username "+ customerPrincipal.getUsername()));
 		Rating rating = ratingRepository.findById(ratingId).orElseThrow(
 				() -> new NotFoundExceptionRequest("Rating with id "+
 						ratingId+" not found"));
+		if(!rating.getOwner().getUsername().equals(customer.getUsername())) {
+			throw new CustomerIsNotOwnerException("Customer can only delete ratings that he owns");
+		}
 		ratingRepository.delete(rating);
 	}
 

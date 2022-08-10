@@ -1,7 +1,9 @@
 package com.swiatwoblerow.app.service;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -14,6 +16,7 @@ import com.swiatwoblerow.app.dto.ThumbDto;
 import com.swiatwoblerow.app.entity.Customer;
 import com.swiatwoblerow.app.entity.Product;
 import com.swiatwoblerow.app.entity.Review;
+import com.swiatwoblerow.app.exceptions.CustomerIsNotOwnerException;
 import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
 import com.swiatwoblerow.app.exceptions.TooManyInsertException;
 import com.swiatwoblerow.app.repository.CustomerRepository;
@@ -60,9 +63,10 @@ public class ReviewServiceImpl implements ReviewService {
 				.orElseThrow(() -> new NotFoundExceptionRequest("Product with id "+
 						productId+" not found"));
 		
-		List<Review> reviewList = product.getReviews();
-		if(this.hasCustomerAlreadyAddedReview(reviewList, username)) {
-			throw new TooManyInsertException("Customer can add only one review to certain product");
+		Review existingReview = reviewRepository.findByOwnerAndProduct(customer, product).orElse(null);
+		if(existingReview != null) {
+			throw new TooManyInsertException("Customer can add only one review to certain product,"
+					+ " existing reviewId: "+existingReview.getId());
 		}
 		Review review = new Review();
 		review.setMessage(reviewDto.getMessage());
@@ -78,91 +82,129 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 	
 	@Override
-	public void deleteReview(Integer reviewId) throws NotFoundExceptionRequest, NullPointerException {
+	public void deleteReview(Integer reviewId) throws NotFoundExceptionRequest, NullPointerException,CustomerIsNotOwnerException {
+		CustomerPrincipal customerPrincipal = (CustomerPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Customer customer = customerRepository.findByUsername(customerPrincipal.getUsername()).orElseThrow(
+				() -> new UsernameNotFoundException("User not found with username "+ customerPrincipal.getUsername()));
 		Review review = reviewRepository.findById(reviewId).orElseThrow(
 				() -> new NotFoundExceptionRequest("Review with id "+
 						reviewId+" not found"));
+		
+		if(!review.getOwner().getUsername().equals(customer.getUsername())) {
+			throw new CustomerIsNotOwnerException("Customer can only delete reviews that he owns");
+		}
 		reviewRepository.delete(review);
 		return;
 	}
 
 	@Override
-	public void addThumbUp(Integer reviewId) throws UsernameNotFoundException, NotFoundExceptionRequest {
-		CustomerPrincipal customerPrincipal = (CustomerPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Customer customer = customerRepository.findByUsername(customerPrincipal.getUsername()).orElseThrow(
-				() -> new UsernameNotFoundException("User not found with username "+ customerPrincipal.getUsername()));
+	public void addThumbUp(Integer reviewId) throws UsernameNotFoundException, NotFoundExceptionRequest,TooManyInsertException {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		Customer customer = customerRepository.findByUsername(username).orElseThrow(
+				() -> new UsernameNotFoundException("User not found with username "+ username));
 		Review review = reviewRepository.findById(reviewId).orElseThrow(
 				() -> new NotFoundExceptionRequest("Review with id "+
 						reviewId+" not found"));
+		Set<Customer> customersWhoMaybeLikedReview = new HashSet<>();
+		customersWhoMaybeLikedReview.add(customer);
+		int countCustomerWhoAddedThumbUp = reviewRepository
+				.countByIdAndCustomersWhoLikedReviewIn(reviewId, customersWhoMaybeLikedReview);
+		int countCustomerWhoAddedThumbDown = reviewRepository
+				.countByIdAndCustomersWhoDislikedReviewIn(reviewId, customersWhoMaybeLikedReview);
+		
+		if(countCustomerWhoAddedThumbUp > 0) {
+			throw new TooManyInsertException("Customer can add only one thumb up to certain review");
+		}
+		if(countCustomerWhoAddedThumbDown > 0) {
+			int quantityThumbsDown = review.getQuantityThumbsDown();
+			review.getCustomersWhoDislikedReview().remove(customer);
+			review.setQuantityThumbsDown(quantityThumbsDown-1);
+		}
+		
 		int quantityThumbsUp = review.getQuantityThumbsUp();
-		
-		if(review.getCustomersWhoLikedReview().contains(customer) == false) {
-			quantityThumbsUp = quantityThumbsUp+1;
-		}
-		
 		review.getCustomersWhoLikedReview().add(customer);
-		review.setQuantityThumbsUp(quantityThumbsUp);
+		review.setQuantityThumbsUp(quantityThumbsUp+1);
 		reviewRepository.save(review);
 		return;
 	}
 
 	@Override
-	public void deleteThumbUp(Integer reviewId, Integer thumbUpId) throws UsernameNotFoundException,NotFoundExceptionRequest {
+	public void deleteThumbUp(Integer reviewId) throws UsernameNotFoundException,NotFoundExceptionRequest, NullPointerException,CustomerIsNotOwnerException{
 		CustomerPrincipal customerPrincipal = (CustomerPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Customer customer = customerRepository.findByUsername(customerPrincipal.getUsername()).orElseThrow(
 				() -> new UsernameNotFoundException("User not found with username "+ customerPrincipal.getUsername()));
 		Review review = reviewRepository.findById(reviewId).orElseThrow(
 				() -> new NotFoundExceptionRequest("Review with id "+
 						reviewId+" not found"));
+		Set<Customer> customersWhoMaybeLikedReview = new HashSet<>();
+		customersWhoMaybeLikedReview.add(customer);
+		int countCustomerWhoAddedThumbUp = reviewRepository
+				.countByIdAndCustomersWhoLikedReviewIn(reviewId, customersWhoMaybeLikedReview);
+		
+		if(countCustomerWhoAddedThumbUp <= 0) {
+			throw new CustomerIsNotOwnerException("Customer does not own thumb up "
+					+ "in review with reviewId: "+ reviewId);
+		}
+		
 		int quantityThumbsUp = review.getQuantityThumbsUp();
-		
-		if(review.getCustomersWhoLikedReview().contains(customer)) {
-			quantityThumbsUp = quantityThumbsUp-1;
-		}
-		
 		review.getCustomersWhoLikedReview().remove(customer);
-		review.setQuantityThumbsUp(quantityThumbsUp);
+		review.setQuantityThumbsUp(quantityThumbsUp-1);
 		reviewRepository.save(review);
 		return;
 	}
 
 	@Override
-	public void addThumbDown(Integer reviewId) throws UsernameNotFoundException, NotFoundExceptionRequest {
+	public void addThumbDown(Integer reviewId) throws UsernameNotFoundException, NotFoundExceptionRequest,TooManyInsertException {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		Customer customer = customerRepository.findByUsername(username).orElseThrow(
+				() -> new UsernameNotFoundException("User not found with username "+ username));
+		Review review = reviewRepository.findById(reviewId).orElseThrow(
+				() -> new NotFoundExceptionRequest("Review with id "+
+						reviewId+" not found"));
+		Set<Customer> customersWhoMaybeDislikedReview = new HashSet<>();
+		customersWhoMaybeDislikedReview.add(customer);
+		int countCustomerWhoAddedThumbDown = reviewRepository
+				.countByIdAndCustomersWhoDislikedReviewIn(reviewId, customersWhoMaybeDislikedReview);
+		int countCustomerWhoAddedThumbUp = reviewRepository
+				.countByIdAndCustomersWhoLikedReviewIn(reviewId, customersWhoMaybeDislikedReview);
+		
+		if(countCustomerWhoAddedThumbDown > 0) {
+			throw new TooManyInsertException("Customer can add only one thumb down to certain review");
+		}
+		if(countCustomerWhoAddedThumbUp > 0) {
+			int quantityThumbsUp = review.getQuantityThumbsUp();
+			review.getCustomersWhoLikedReview().remove(customer);
+			review.setQuantityThumbsUp(quantityThumbsUp-1);
+		}
+		
+		int quantityThumbsDown = review.getQuantityThumbsDown();
+		review.getCustomersWhoDislikedReview().add(customer);
+		review.setQuantityThumbsDown(quantityThumbsDown+1);
+		reviewRepository.save(review);
+		return;
+	}
+
+	@Override
+	public void deleteThumbDown(Integer reviewId) throws UsernameNotFoundException,NotFoundExceptionRequest,NullPointerException,CustomerIsNotOwnerException {
 		CustomerPrincipal customerPrincipal = (CustomerPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Customer customer = customerRepository.findByUsername(customerPrincipal.getUsername()).orElseThrow(
 				() -> new UsernameNotFoundException("User not found with username "+ customerPrincipal.getUsername()));
 		Review review = reviewRepository.findById(reviewId).orElseThrow(
 				() -> new NotFoundExceptionRequest("Review with id "+
 						reviewId+" not found"));
-		int quantityThumbsDown = review.getQuantityThumbsDown();
+		Set<Customer> customersWhoMaybeDislikedReview = new HashSet<>();
+		customersWhoMaybeDislikedReview.add(customer);
+		int countCustomerWhoAddedThumDown = reviewRepository
+				.countByIdAndCustomersWhoLikedReviewIn(reviewId, customersWhoMaybeDislikedReview);
 		
-		if(review.getCustomersWhoDislikedReview().contains(customer) == false) {
-			quantityThumbsDown = quantityThumbsDown+1;
+		if(countCustomerWhoAddedThumDown <= 0) {
+			throw new CustomerIsNotOwnerException("\"Customer does not own thumb down "
+					+ "in review with reviewId: "+ reviewId);
 		}
 		
-		review.getCustomersWhoLikedReview().add(customer);
-		review.setQuantityThumbsUp(quantityThumbsDown);
-		reviewRepository.save(review);
-		return;
-	}
-
-	@Override
-	public void deleteThumbDown(Integer reviewId, Integer thumbDownId) throws UsernameNotFoundException,NotFoundExceptionRequest {
-		CustomerPrincipal customerPrincipal = (CustomerPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Customer customer = customerRepository.findByUsername(customerPrincipal.getUsername()).orElseThrow(
-				() -> new UsernameNotFoundException("User not found with username "+ customerPrincipal.getUsername()));
-		Review review = reviewRepository.findById(reviewId).orElseThrow(
-				() -> new NotFoundExceptionRequest("Review with id "+
-						reviewId+" not found"));
-		
 		int quantityThumbsDown = review.getQuantityThumbsDown();
-		
-		if(review.getCustomersWhoDislikedReview().contains(customer)) {
-			quantityThumbsDown = quantityThumbsDown-1;
-		}
-		
-		review.getCustomersWhoLikedReview().remove(customer);
-		review.setQuantityThumbsUp(quantityThumbsDown);
+		review.getCustomersWhoDislikedReview().remove(customer);
+		review.setQuantityThumbsDown(quantityThumbsDown-1);
 		reviewRepository.save(review);
 		return;
 	}
@@ -178,14 +220,6 @@ public class ReviewServiceImpl implements ReviewService {
 				review.getCustomersWhoDislikedReview().stream().map(
 						customer -> customer.getUsername()).collect(Collectors.toList()));
 		return thumbDto;
-	}
-	
-	@Override
-	public boolean hasCustomerAlreadyAddedReview(List<Review> reviewList, String customerUsername) {
-		List<String> customerUsernames = reviewList.stream().map(
-				review -> review.getOwner().getUsername()).collect(Collectors.toList());
-		
-		return customerUsernames.contains(customerUsername);
 	}
 
 }

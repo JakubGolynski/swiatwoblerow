@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.swiatwoblerow.app.dto.ProductDto;
 import com.swiatwoblerow.app.dto.RatingDto;
+import com.swiatwoblerow.app.exceptions.CustomerIsNotOwnerException;
 import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
+import com.swiatwoblerow.app.exceptions.TooManyInsertException;
 import com.swiatwoblerow.app.service.filter.ProductFilter;
 import com.swiatwoblerow.app.service.interfaces.ProductService;
 import com.swiatwoblerow.app.service.interfaces.RatingService;
@@ -52,13 +54,13 @@ public class ProductController {
 	
 	@PostMapping("/products/{id}/ratings")
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public RatingDto addRating(@PathVariable int id,@RequestBody RatingDto ratingDto) throws NotFoundExceptionRequest{
+	public RatingDto addRating(@PathVariable int id,@RequestBody RatingDto ratingDto) throws NotFoundExceptionRequest,TooManyInsertException{
 		return ratingService.addRating(id,ratingDto);
 	}
 	
 	@DeleteMapping("/products/{productId}/ratings/{ratingId}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void deleteRating(@PathVariable int ratingId) throws NotFoundExceptionRequest{
+	public void deleteRating(@PathVariable int ratingId) throws NotFoundExceptionRequest,CustomerIsNotOwnerException{
 		ratingService.deleteRating(ratingId);
 	}
 	
