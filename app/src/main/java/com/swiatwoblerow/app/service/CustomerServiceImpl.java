@@ -19,7 +19,9 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.swiatwoblerow.app.config.jwt.JwtUtils;
+import com.swiatwoblerow.app.dto.AddressDto;
 import com.swiatwoblerow.app.dto.CustomerDto;
+import com.swiatwoblerow.app.dto.RoleDto;
 import com.swiatwoblerow.app.entity.Address;
 import com.swiatwoblerow.app.entity.Country;
 import com.swiatwoblerow.app.entity.Customer;
@@ -111,7 +113,20 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 				address,roles
 				);
 		customerRepository.save(customer);
-		return customerDto;
+		CustomerDto returnCustomerDto = new CustomerDto();
+		
+		returnCustomerDto.setUsername(customerDto.getUsername());
+		returnCustomerDto.setFirstName(customerDto.getFirstName());
+		returnCustomerDto.setLastName(customerDto.getLastName());
+		returnCustomerDto.setEmail(customerDto.getEmail());
+		returnCustomerDto.setTelephone(customerDto.getTelephone());
+		AddressDto addressDto = modelMapper.map(address, AddressDto.class);
+		returnCustomerDto.setAddress(addressDto);
+		Set<RoleDto> rolesDto = roles.stream().map(
+				role -> modelMapper.map(role, RoleDto.class)).collect(Collectors.toSet());
+		returnCustomerDto.setRoles(rolesDto);
+		
+		return returnCustomerDto;
 	}
 	
 }

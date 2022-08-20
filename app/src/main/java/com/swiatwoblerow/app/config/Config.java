@@ -25,7 +25,7 @@ public class Config {
 		
 		modelMapper.typeMap(Review.class, ReviewDto.class)
 		.<String>addMapping(src -> src.getOwner().getUsername(),
-				(dest,value) -> dest.setOwnerUsername(value));
+				(dest,value) -> dest.setOwnerUsername(value));	
 	    return modelMapper;
 	}
 }

@@ -2,6 +2,7 @@ package com.swiatwoblerow.app.service;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -11,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.swiatwoblerow.app.dto.CategoryDto;
+import com.swiatwoblerow.app.dto.ConditionDto;
 import com.swiatwoblerow.app.dto.CustomerDto;
 import com.swiatwoblerow.app.dto.ProductDto;
 import com.swiatwoblerow.app.entity.Category;
@@ -19,6 +22,7 @@ import com.swiatwoblerow.app.entity.Customer;
 import com.swiatwoblerow.app.entity.Product;
 import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
 import com.swiatwoblerow.app.repository.CategoryRepository;
+import com.swiatwoblerow.app.repository.ConditionRepository;
 import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.ProductRepository;
 import com.swiatwoblerow.app.repository.specification.ProductSpecification;
@@ -35,13 +39,16 @@ public class ProductServiceImpl implements ProductService {
 	
 	private CategoryRepository categoryRepository;
 	
+	private ConditionRepository conditionRepository;
+	
 	private ModelMapper modelMapper;
 
 	public ProductServiceImpl(ProductRepository productRepository, CustomerRepository customerRepository,
-			CategoryRepository categoryRepository, ModelMapper modelMapper) {
+			CategoryRepository categoryRepository, ConditionRepository conditionRepository, ModelMapper modelMapper) {
 		this.productRepository = productRepository;
 		this.customerRepository = customerRepository;
 		this.categoryRepository = categoryRepository;
+		this.conditionRepository = conditionRepository;
 		this.modelMapper = modelMapper;
 	}
 
@@ -58,20 +65,21 @@ public class ProductServiceImpl implements ProductService {
 		product.setQuantity(productDto.getQuantity());
 		product.setMessage(productDto.getMessage());
 		product.setRating(5.0);
-		product.setConditions(
-				productDto.getConditions().stream().map(
-						condition -> new Condition(condition.getName())).collect(Collectors.toSet()));
+		Set<String> conditionNamesFromDto = productDto.getConditions().stream().map(
+				condition -> condition.getName()).collect(Collectors.toSet());
+		Set<Condition> conditions = conditionRepository.findByNameIn(conditionNamesFromDto);
+		product.setConditions(conditions);
 		Category category = categoryRepository.findByName(productDto.getCategory().getName()).orElseThrow(
 				() -> new NotFoundExceptionRequest("Category with name "+
 						productDto.getCategory().getName()+" does not exist"));
 		product.setCategory(category);
 		product.setOwner(customer);
+		product.setQuantityReviews(0);
+		product.setQuantityRatings(0);
 		productRepository.save(product);
 		
-		productDto.setCreatedAt(new Timestamp(System.currentTimeMillis()));
-		productDto.setRating(5.0);
-		productDto.setOwner(modelMapper.map(customer, CustomerDto.class));
-		return productDto;
+		ProductDto returnProductDto = modelMapper.map(product, ProductDto.class);
+		return returnProductDto;
 	}
 
 	@Override

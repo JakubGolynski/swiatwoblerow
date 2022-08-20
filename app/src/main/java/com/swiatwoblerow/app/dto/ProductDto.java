@@ -1,8 +1,8 @@
 package com.swiatwoblerow.app.dto;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import lombok.Data;
 
@@ -31,7 +31,7 @@ public class ProductDto {
 	
 	private CategoryDto category;
 	
-	private List<ConditionDto> conditions = new ArrayList<>();
+	private Set<ConditionDto> conditions = new HashSet<>();
 	
 	public ProductDto() {
 		
@@ -39,7 +39,7 @@ public class ProductDto {
 
 	public ProductDto(Integer id, String name, Double price, Timestamp createdAt, Integer quantity, String message,
 			Double rating, CustomerDto owner, CategoryDto category,
-			List<ConditionDto> conditions) {
+			Set<ConditionDto> conditions) {
 		this.id = id;
 		this.name = name;
 		this.price = price;

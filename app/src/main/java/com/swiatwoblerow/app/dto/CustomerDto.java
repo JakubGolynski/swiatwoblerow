@@ -1,7 +1,7 @@
 package com.swiatwoblerow.app.dto;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import lombok.Data;
 
@@ -25,14 +25,14 @@ public class CustomerDto {
 	
 	private AddressDto address;
 	
-	private List<RoleDto> roles = new ArrayList<>();
+	private Set<RoleDto> roles = new HashSet<>();
 
 	public CustomerDto() {
 
 	}
 
 	public CustomerDto(String username, String password, String firstName, String lastName, String email,
-			String telephone, String jwtToken, AddressDto address, List<RoleDto> roles) {
+			String telephone, String jwtToken, AddressDto address, Set<RoleDto> roles) {
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
