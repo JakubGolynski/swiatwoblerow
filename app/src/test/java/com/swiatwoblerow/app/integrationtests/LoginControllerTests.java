@@ -18,22 +18,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 @AutoConfigureMockMvc
 public class LoginControllerTests {
 	
-//	@Autowired
-//	private MockMvc mvc;
-//	
+	@Autowired
+	private MockMvc mvc;
+	
 //	@Test
 //	public void afterSucessfullLoginReturnToken() throws Exception{
 //		mvc.perform(MockMvcRequestBuilders.post("/login")
 //				.characterEncoding("utf-8")
-//				.header(HttpHeaders.AUTHORIZATION, "Basic "+ new String(Base64.getEncoder().encodeToString("giga:giga".getBytes()))))
+//				.content("{\"username\":\"goly\",\"password\":\"goly\"}"))
 //				.andExpect(status().isOk())
 //				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
-//				.andExpect(jsonPath("$.tokenType").value("Bearer"))
-//				.andExpect(jsonPath("$.password").doesNotExist())
-//				.andExpect(jsonPath("$.accessToken").exists())
+////				.andExpect(jsonPath("$.tokenType").value("Bearer"))
+////				.andExpect(jsonPath("$.password").doesNotExist())
+////				.andExpect(jsonPath("$.accessToken").exists())
 //				.andDo(print());
 //	}
-//	
+	
 //	@Test
 //	public void afterUnsucessfullLoginReturnUnauthorized() throws Exception{
 //		mvc.perform(MockMvcRequestBuilders.post("/login")

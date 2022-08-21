@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.swiatwoblerow.app.dto.CustomerDto;
+import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
 import com.swiatwoblerow.app.service.CustomerServiceImpl;
 
 @RestController
@@ -33,7 +34,7 @@ public class CustomerController {
 	}
 	
 	@PostMapping
-	public CustomerDto addCustomer(@RequestBody CustomerDto customerDto) {
+	public CustomerDto addCustomer(@RequestBody CustomerDto customerDto) throws NotFoundExceptionRequest {
 		return customerService.addCustomer(customerDto);
 	}
 }

@@ -26,6 +26,9 @@ import com.swiatwoblerow.app.entity.Address;
 import com.swiatwoblerow.app.entity.Country;
 import com.swiatwoblerow.app.entity.Customer;
 import com.swiatwoblerow.app.entity.Role;
+import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
+import com.swiatwoblerow.app.repository.AddressRepository;
+import com.swiatwoblerow.app.repository.CountryRepository;
 import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.service.interfaces.CustomerService;
 
@@ -36,14 +39,21 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 	
 	private CustomerRepository customerRepository;
 	
+	private AddressRepository addressRepository;
+	
+	private CountryRepository countryRepository;
+	
 	private JwtUtils jwtUtils;
 	
 	private ModelMapper modelMapper;
-	
+
 	public CustomerServiceImpl(AuthenticationManager authenticationManager, CustomerRepository customerRepository,
-			JwtUtils jwtUtils, ModelMapper modelMapper) {
+			AddressRepository addressRepository, CountryRepository countryRepository, JwtUtils jwtUtils,
+			ModelMapper modelMapper) {
 		this.authenticationManager = authenticationManager;
 		this.customerRepository = customerRepository;
+		this.addressRepository = addressRepository;
+		this.countryRepository = countryRepository;
 		this.jwtUtils = jwtUtils;
 		this.modelMapper = modelMapper;
 	}
@@ -97,7 +107,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 	}
 
 	@Override
-	public CustomerDto addCustomer(CustomerDto customerDto) {
+	public CustomerDto addCustomer(CustomerDto customerDto) throws NotFoundExceptionRequest{
 		Set<Role> roles = new HashSet<>();
 		roles.add(new Role("ROLE_USER"));
 		Address address = new Address();
@@ -105,7 +115,12 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 		address.setCity(customerDto.getAddress().getCity());
 		address.setStreet(customerDto.getAddress().getStreet());
 		address.setHouseNumber(customerDto.getAddress().getHouseNumber());
-		address.setCountry(new Country(customerDto.getAddress().getHouseNumber()));
+		Country country = countryRepository.findByName(customerDto.getAddress().getCountry().getName())
+				.orElseThrow(() -> new NotFoundExceptionRequest("Country "+
+						"with name "+customerDto.getAddress().getCountry().getName() +" does not exist"));
+		
+		address.setCountry(country);
+		addressRepository.save(address);
 		Customer customer = new Customer(
 				customerDto.getUsername(),customerDto.getPassword(),
 				customerDto.getFirstName(),customerDto.getLastName(),
