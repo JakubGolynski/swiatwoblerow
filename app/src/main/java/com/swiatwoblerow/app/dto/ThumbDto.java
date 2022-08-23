@@ -1,22 +1,22 @@
 package com.swiatwoblerow.app.dto;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import lombok.Data;
 
 @Data
 public class ThumbDto {
 	
-	private List<String> customersWhoLikedReview = new ArrayList<>();
+	private Set<String> customersWhoLikedReview = new HashSet<>();
 	
-	private List<String> customersWhoDislikedReview = new ArrayList<>();
+	private Set<String> customersWhoDislikedReview = new HashSet<>();
 	
 	public ThumbDto() {
 		
 	}
 
-	public ThumbDto(List<String> customersWhoLikedReview, List<String> customersWhoDislikedReview) {
+	public ThumbDto(Set<String> customersWhoLikedReview, Set<String> customersWhoDislikedReview) {
 		this.customersWhoLikedReview = customersWhoLikedReview;
 		this.customersWhoDislikedReview = customersWhoDislikedReview;
 	}

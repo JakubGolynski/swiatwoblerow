@@ -198,7 +198,7 @@ public class ReviewServiceImpl implements ReviewService {
 				.countByIdAndCustomersWhoLikedReviewIn(reviewId, customersWhoMaybeDislikedReview);
 		
 		if(countCustomerWhoAddedThumDown <= 0) {
-			throw new CustomerIsNotOwnerException("\"Customer does not own thumb down "
+			throw new CustomerIsNotOwnerException("Customer does not own thumb down "
 					+ "in review with reviewId: "+ reviewId);
 		}
 		
@@ -216,9 +216,9 @@ public class ReviewServiceImpl implements ReviewService {
 						reviewId+" not found"));
 		ThumbDto thumbDto = new ThumbDto(
 				review.getCustomersWhoLikedReview().stream().map(
-						customer -> customer.getUsername()).collect(Collectors.toList()),
+						customer -> customer.getUsername()).collect(Collectors.toSet()),
 				review.getCustomersWhoDislikedReview().stream().map(
-						customer -> customer.getUsername()).collect(Collectors.toList()));
+						customer -> customer.getUsername()).collect(Collectors.toSet()));
 		return thumbDto;
 	}
 

@@ -30,6 +30,7 @@ import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
 import com.swiatwoblerow.app.repository.AddressRepository;
 import com.swiatwoblerow.app.repository.CountryRepository;
 import com.swiatwoblerow.app.repository.CustomerRepository;
+import com.swiatwoblerow.app.repository.RoleRepository;
 import com.swiatwoblerow.app.service.interfaces.CustomerService;
 
 @Service("customerServiceImpl")
@@ -42,6 +43,8 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 	private AddressRepository addressRepository;
 	
 	private CountryRepository countryRepository;
+	
+	private RoleRepository roleRepository;
 	
 	private JwtUtils jwtUtils;
 	
@@ -109,9 +112,10 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 	@Override
 	public CustomerDto addCustomer(CustomerDto customerDto) throws NotFoundExceptionRequest{
 		Set<Role> roles = new HashSet<>();
-		roles.add(new Role("ROLE_USER"));
+		Role roleUser = roleRepository.findByName("ROLE_USER").orElse(null);
+		roles.add(roleUser);
 		Address address = new Address();
-		address.setId(customerDto.getAddress().getId());
+		
 		address.setCity(customerDto.getAddress().getCity());
 		address.setStreet(customerDto.getAddress().getStreet());
 		address.setHouseNumber(customerDto.getAddress().getHouseNumber());

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.swiatwoblerow.app.dto.CategoryDto;
 import com.swiatwoblerow.app.entity.Category;
+import com.swiatwoblerow.app.exceptions.AlreadyExistsException;
 import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
 import com.swiatwoblerow.app.repository.CategoryRepository;
 import com.swiatwoblerow.app.service.interfaces.CategoryService;
@@ -25,9 +26,14 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public String addCategory(String category) {
-		// jakie exceptions wyrzuca gdy dana kategoria jest juz w bazie ?? ??? ??
-		return null;
+	public CategoryDto addCategory(String category) throws AlreadyExistsException{
+		Category checkIfCategoryAlreadyExist = categoryRepository.findByName(category).orElse(null);
+		if(checkIfCategoryAlreadyExist != null) {
+			throw new AlreadyExistsException("category with name "+category+" already exists in database");
+		}
+		Category newCategory = new Category(category);
+		categoryRepository.save(newCategory);
+		return modelMapper.map(newCategory, CategoryDto.class);
 	}
 	
 	@Override

@@ -12,9 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.swiatwoblerow.app.dto.CategoryDto;
-import com.swiatwoblerow.app.dto.ConditionDto;
-import com.swiatwoblerow.app.dto.CustomerDto;
 import com.swiatwoblerow.app.dto.ProductDto;
 import com.swiatwoblerow.app.entity.Category;
 import com.swiatwoblerow.app.entity.Condition;
