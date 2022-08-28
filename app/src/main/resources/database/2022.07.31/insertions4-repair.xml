@@ -10,7 +10,7 @@
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"> 
 
 
-	<changeSet id="16" author="Goly">
+	<changeSet id="18" author="Goly">
 		<delete tableName="review" schemaName="shoproject">
 			<where>review_id=3</where>
 		</delete>
@@ -19,7 +19,7 @@
 		</delete>
 	</changeSet>
 	
-	<changeSet id="17" author="Goly">
+	<changeSet id="19" author="Goly">
 		<insert tableName="review" schemaName="shoproject">
 			<column name="message" value="Bardzo polecam, telefon został błyskawicznie dostarczony"/>
 			<column name="quantity_thumbs_up" value="0"/> 

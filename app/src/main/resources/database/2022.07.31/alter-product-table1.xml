@@ -9,7 +9,7 @@
 		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"> 
 	
-	<changeSet id="13" author="Goly">
+	<changeSet id="15" author="Goly">
 		<addColumn schemaName= "shoproject" tableName="product" >
 		<column name="quantity_reviews" type="integer" defaultValue="0">
 			<constraints nullable="false"/>  

@@ -9,13 +9,13 @@
 		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"> 
 	
-	<changeSet id="12" author="Goly">
+	<changeSet id="14" author="Goly">
 		<createTable tableName="rating" schemaName="shoproject">
 				<column name="rating_id" type="integer" autoIncrement="true"
 					incrementBy="1" startWith="1"> 
 					<constraints primaryKey="true" nullable="false" unique="true"/>
 				</column>
-				<column name="value" type="tinyint"> 
+				<column name="value" type="smallint"> 
 					<constraints nullable="false"/>
 				</column>
 				<column name="created_at" type="timestamp" defaultValueComputed="current_timestamp"> 

@@ -9,5 +9,10 @@
 		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"> 
 
-	<includeAll path="database"/>	
+	<changeSet id="11" author="Goly">
+		<update tableName="category">
+      		<column name="name" value="electronic_devices"/>
+      		<where>category_id=2</where>
+      	</update>
+	</changeSet>
 </databaseChangeLog>

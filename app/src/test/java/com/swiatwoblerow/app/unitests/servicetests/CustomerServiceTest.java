@@ -8,8 +8,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -7,9 +7,9 @@
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
 		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
-		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"> 
+		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">	
 
-	<changeSet id="1" author="Goly">
+	<changeSet id="3" author="Goly">
 		<createTable tableName="category" schemaName="shoproject">
 		
 			<column name="category_id" type="integer" autoIncrement="true"
@@ -192,10 +192,10 @@
 		<createTable tableName="review_thumbs_down" schemaName="shoproject">
 		
 			<column name="review_id" type="integer">
-				<constraints references="review(review_id)" foreignKeyName="review_thumbs_up_review_id_fkey" referencedTableSchemaName="shoproject" primaryKey="true"/>
+				<constraints references="review(review_id)" foreignKeyName="review_thumbs_down_review_id_fkey" referencedTableSchemaName="shoproject" primaryKey="true"/>
 			</column>
 			<column name="customer_id" type="integer">
-				<constraints references="customer(customer_id)" foreignKeyName="review_thumbs_up_customer_id_fkey" referencedTableSchemaName="shoproject" primaryKey="true"/>
+				<constraints references="customer(customer_id)" foreignKeyName="review_thumbs_down_customer_id_fkey" referencedTableSchemaName="shoproject" primaryKey="true"/>
 			</column>
 			
 		</createTable>

@@ -8,11 +8,15 @@
 		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
 		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"> 
-
-	<changeSet id="8" author="Goly">
-		<update tableName="address" schemaName="shoproject">
-      		<column name="city" value="Cracow"/>
-      		<where>address_id=2</where>
-      	</update>
+	
+	<changeSet id="15" author="Goly">
+		<addColumn tableName="product" >
+		<column name="quantity_reviews" type="integer" defaultValue="0">
+			<constraints nullable="false"/>  
+		</column>
+		<column name="quantity_ratings" type="integer" defaultValue="0">
+			<constraints nullable="false" />  
+		</column>  
+	</addColumn> 
 	</changeSet>
 </databaseChangeLog>

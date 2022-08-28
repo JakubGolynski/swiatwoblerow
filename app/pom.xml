@@ -43,13 +43,6 @@
 		    <version>0.9.1</version>
 		</dependency>
 		
-		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
-		<dependency>
-		    <groupId>com.h2database</groupId>
-		    <artifactId>h2</artifactId>
-		    <scope>test</scope>
-		</dependency>
-		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
@@ -89,22 +82,20 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+		<dependency>
+		    <groupId>com.h2database</groupId>
+		    <artifactId>h2</artifactId>
+		    <scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
 			<plugin>
-		     <!--start with basic information to get Liquibase plugin:
-		     include <groupId>, <artifactID>, and <version> elements-->
 		     <groupId>org.liquibase</groupId>
 		     <artifactId>liquibase-maven-plugin</artifactId>
 		     <configuration>
-		     	<!--<changeLogFile>liquibase-changelog.xml</changeLogFile>
-				<url>jdbc:postgresql://localhost:5432/swiatwoblerow_database?currentSchema=shoproject</url>
-				<username>postgres</username>
-				<password>Maslo123</password> -->
-		        <!--set values for Liquibase properties and settings
-		        for example, the location of a properties file to use-->
 		        <propertyFile>liquibase.properties</propertyFile>
 		     </configuration>
 		      </plugin>

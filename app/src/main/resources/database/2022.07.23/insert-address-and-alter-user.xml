@@ -9,7 +9,7 @@
 		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"> 
 
-	<changeSet id="8" author="Goly">
+	<changeSet id="10" author="Goly">
 		<update tableName="address" schemaName="shoproject">
       		<column name="city" value="Cracow"/>
       		<where>address_id=2</where>
