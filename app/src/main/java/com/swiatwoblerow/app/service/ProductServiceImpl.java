@@ -85,11 +85,15 @@ public class ProductServiceImpl implements ProductService {
 		Pageable pageable = PageRequest.of(productFilter.getPage(),
 				productFilter.getSize(), Sort.by(productFilter.getSort()));
 		
-		return productRepository.findAll(ProductSpecification.isNameLike(productFilter.getName())
+		Set<String> conditions = productFilter.getConditions().stream().collect(Collectors.toSet());
+		
+		return productRepository.findAll(
+				ProductSpecification.isNameLike(productFilter.getName())
 					.and(ProductSpecification.isPriceBetween(productFilter.getPriceFrom(),productFilter.getPriceTo()))
 					.and(ProductSpecification.isRatingGreaterThan(productFilter.getRatingFrom()))
 					.and(ProductSpecification.isCategoryEqual(productFilter.getCategory()))
-					.and(ProductSpecification.isCityEqual(productFilter.getCity())),pageable).stream()
+					.and(ProductSpecification.isCityEqual(productFilter.getCity()))
+					.and(ProductSpecification.isConditionMember(conditions)),pageable).stream()
 				.map(product -> modelMapper.map(product, ProductDto.class))
 				.collect(Collectors.toList());
 	}

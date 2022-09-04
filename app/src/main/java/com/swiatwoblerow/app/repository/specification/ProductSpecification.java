@@ -1,5 +1,7 @@
 package com.swiatwoblerow.app.repository.specification;
 
+import java.util.Set;
+
 import org.springframework.data.jpa.domain.Specification;
 
 import com.swiatwoblerow.app.entity.Product;
@@ -57,14 +59,14 @@ public class ProductSpecification {
 	    };
 	}
 	
-//	public static Specification<Product> isConditionMember(String city) {
-//		if(city.isEmpty()) {
-//			return (root, query, builder) -> {
-//			    return builder.conjunction();
-//		    };
-//		}
-//	    return (root, query, builder) -> {
-//		    return builder.equal(root.<String>get("owner").get("address").get("city"), city);
-//	    };
-//	}
+	public static Specification<Product> isConditionMember(Set<String> conditions) {
+		if(conditions.isEmpty()) {
+			return (root, query, builder) -> {
+			    return builder.conjunction();
+		    };
+		}
+	    return (root, query, builder) -> {
+		    return root.join("conditions").get("name").in(conditions);
+	    };
+	}
 }

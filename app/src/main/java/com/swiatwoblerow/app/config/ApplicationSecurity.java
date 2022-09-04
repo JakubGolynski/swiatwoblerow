@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -44,8 +45,12 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 			.authorizeRequests()
 				.antMatchers(HttpMethod.POST,"/login").permitAll()
 				.antMatchers(HttpMethod.GET,"/products/**").permitAll()
-//				.antMatchers(HttpMethod.GET,"/categories/**").permitAll()
-				.antMatchers(HttpMethod.GET,"/api/home").permitAll()
+				.antMatchers(HttpMethod.GET,"/countries/**").permitAll()
+				.antMatchers(HttpMethod.POST,"/countries").hasAnyRole("ROLE_ADMIN","ROLE_MODERATOR")
+				.antMatchers(HttpMethod.GET,"/categories/**").permitAll()
+				.antMatchers(HttpMethod.POST,"/categories").hasAnyRole("ROLE_ADMIN","ROLE_MODERATOR")
+				.antMatchers(HttpMethod.GET,"/customers/**").hasAnyRole("ROLE_ADMIN","ROLE_MODERATOR")
+				.antMatchers(HttpMethod.GET,"/reviews/**").permitAll()
 				.antMatchers(HttpMethod.GET,"/error").permitAll()
 			.anyRequest().authenticated().and()
 			.cors().and()
@@ -56,6 +61,16 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 			
 		http.addFilterBefore(jwtTokenAuthorizationFilter(),UsernamePasswordAuthenticationFilter.class);
 	}
+	
+	@Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/v2/api-docs",
+                                   "/configuration/ui",
+                                   "/swagger-resources/**",
+                                   "/configuration/security",
+                                   "/swagger-ui.html",
+                                   "/webjars/**");
+    }
 	
 	@Override
 	@Bean

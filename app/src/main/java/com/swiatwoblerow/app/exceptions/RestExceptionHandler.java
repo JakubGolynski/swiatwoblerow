@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import com.swiatwoblerow.app.exceptions.dto.AlreadyExistsExceptionDto;
 import com.swiatwoblerow.app.exceptions.dto.BadCredentialsExceptionDto;
+import com.swiatwoblerow.app.exceptions.dto.CustomerIsNotOwnerExceptionDto;
 import com.swiatwoblerow.app.exceptions.dto.NotFoundExceptionDto;
 import com.swiatwoblerow.app.exceptions.dto.TooManyInsertExceptionDto;
 
@@ -35,9 +37,23 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 		return new ResponseEntity<>(exception,exception.getStatus());
 	}
 	
-	@ExceptionHandler(value= {TooManyInsertException.class, CustomerIsNotOwnerException.class})
+	@ExceptionHandler(value= {TooManyInsertException.class})
 	protected ResponseEntity<Object> handleTooManyInsert(Exception ex){
 		TooManyInsertExceptionDto exception = new TooManyInsertExceptionDto(
+				ex.getMessage(), new Timestamp(System.currentTimeMillis()));
+		return new ResponseEntity<>(exception, exception.getStatus());
+	}
+	
+	@ExceptionHandler(value= {CustomerIsNotOwnerException.class})
+	protected ResponseEntity<Object> handleCustomerIsNotOwner(Exception ex){
+		CustomerIsNotOwnerExceptionDto exception = new CustomerIsNotOwnerExceptionDto(
+				ex.getMessage(), new Timestamp(System.currentTimeMillis()));
+		return new ResponseEntity<>(exception, exception.getStatus());
+	}
+	
+	@ExceptionHandler(value= {AlreadyExistsException.class})
+	protected ResponseEntity<Object> handleAlreadyExists(Exception ex){
+		AlreadyExistsExceptionDto exception = new AlreadyExistsExceptionDto(
 				ex.getMessage(), new Timestamp(System.currentTimeMillis()));
 		return new ResponseEntity<>(exception, exception.getStatus());
 	}
