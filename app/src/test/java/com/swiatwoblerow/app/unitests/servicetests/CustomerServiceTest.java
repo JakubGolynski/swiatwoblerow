@@ -14,7 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import static org.mockito.Mockito.when;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,10 +65,6 @@ public class CustomerServiceTest {
 	private ModelMapper modelMapper = new ModelMapper();
 	
 	private CustomerServiceImpl customerService;
-	
-	@BeforeAll
-	public static void setModelMapper() {
-	}
 	
 	@BeforeEach
 	void setUp() {
