@@ -26,7 +26,9 @@ import com.swiatwoblerow.app.entity.Address;
 import com.swiatwoblerow.app.entity.Country;
 import com.swiatwoblerow.app.entity.Customer;
 import com.swiatwoblerow.app.entity.Role;
+import com.swiatwoblerow.app.exceptions.AlreadyExistsException;
 import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
+import com.swiatwoblerow.app.exceptions.NullArgumentException;
 import com.swiatwoblerow.app.repository.AddressRepository;
 import com.swiatwoblerow.app.repository.CountryRepository;
 import com.swiatwoblerow.app.repository.CustomerRepository;
@@ -51,12 +53,13 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 	private ModelMapper modelMapper;
 
 	public CustomerServiceImpl(AuthenticationManager authenticationManager, CustomerRepository customerRepository,
-			AddressRepository addressRepository, CountryRepository countryRepository, JwtUtils jwtUtils,
-			ModelMapper modelMapper) {
+			AddressRepository addressRepository, CountryRepository countryRepository, RoleRepository roleRepository,
+			JwtUtils jwtUtils, ModelMapper modelMapper) {
 		this.authenticationManager = authenticationManager;
 		this.customerRepository = customerRepository;
 		this.addressRepository = addressRepository;
 		this.countryRepository = countryRepository;
+		this.roleRepository = roleRepository;
 		this.jwtUtils = jwtUtils;
 		this.modelMapper = modelMapper;
 	}
@@ -110,9 +113,20 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 	}
 
 	@Override
-	public CustomerDto addCustomer(CustomerDto customerDto) throws NotFoundExceptionRequest{
+	public CustomerDto addCustomer(CustomerDto customerDto) throws NotFoundExceptionRequest, AlreadyExistsException{
+		Customer customerWithGivenUsername = customerRepository.findByUsername(customerDto.getUsername()).orElse(null);
+		if(customerWithGivenUsername != null) {
+			throw new AlreadyExistsException("Username "+customerDto.getUsername()+" is already in use");
+		}
+		
+		Customer customerWithGivenEmail = customerRepository.findByEmail(customerDto.getEmail()).orElse(null);
+		if(customerWithGivenEmail != null) {
+			throw new AlreadyExistsException("Email "+customerDto.getEmail()+" is already in use");
+		}
+		
 		Set<Role> roles = new HashSet<>();
-		Role roleUser = roleRepository.findByName("ROLE_USER").orElse(null);
+		Role roleUser = roleRepository.findByName("ROLE_USER").orElseThrow(
+				() -> new NotFoundExceptionRequest("ROLE_USER does not exist in database"));
 		roles.add(roleUser);
 		Address address = new Address();
 		

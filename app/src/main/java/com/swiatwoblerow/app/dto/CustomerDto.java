@@ -3,6 +3,8 @@ package com.swiatwoblerow.app.dto;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.NotEmpty;
+
 import lombok.Data;
 
 
@@ -11,14 +13,18 @@ public class CustomerDto {
 	
 	private Integer id;
 	
+	@NotEmpty(message="username cannot be null or empty")
 	private String username;
 	
 	private String password;
 	
+	@NotEmpty(message="first name cannot be null or empty")
 	private String firstName;
 	
+	@NotEmpty(message="last name cannot be null or empty")
 	private String lastName;
 	
+	@NotEmpty(message="email cannot be null or empty")
 	private String email;
 	
 	private String telephone;

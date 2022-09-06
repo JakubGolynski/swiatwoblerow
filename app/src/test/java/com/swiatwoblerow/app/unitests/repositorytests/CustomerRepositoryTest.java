@@ -36,14 +36,14 @@ public class CustomerRepositoryTest {
 	private CountryRepository countryRepository;
 	
 	@Test
-	public void customerShouldBeNullIfRepositoryIsEmpty() {
+	public void findByUsernameReturnsNull() {
 		String customerName = "testł!@#Username";
 		Customer customer = customerRepository.findByUsername(customerName).orElse(null);
 		assertThat(customer).isNull();
 	}
 	
 	@Test
-	public void shouldThrowExceptionIfRepositoryIsEmpty() throws UsernameNotFoundException{
+	public void findByUsernameThrowsException() throws UsernameNotFoundException{
 		String customerName = "testł!@#Username";
 		assertThatThrownBy(() -> {
 			Customer customer = customerRepository.findByUsername(customerName)
@@ -56,7 +56,7 @@ public class CustomerRepositoryTest {
 	}
 	
 	@Test
-	public void shouldFindCustomerIfRepositoryIsNotEmpty() {
+	public void findByUsernameSuccess() {
 		Customer customer = new Customer();
 		String customerName = "test!@#łUsername";
 		customer.setUsername(customerName);
@@ -72,12 +72,12 @@ public class CustomerRepositoryTest {
 		address.setHouseNumber("471A");
 		addressRepository.save(address);
 		
-		Country country = new Country("Poland");
+		Country country = new Country("Poland2");
 		countryRepository.save(country);
 		address.setCountry(country);
 		customer.setAddress(address);
 		
-		Role roleUser = new Role("ROLE_USER");
+		Role roleUser = new Role("ROLE_USER2");
 		roleRepository.save(roleUser);
 		
 		Set<Role> roles = new HashSet<>();
@@ -89,5 +89,55 @@ public class CustomerRepositoryTest {
 		Customer expectedCustomer = customerRepository.findByUsername(customerName).orElse(null);
 		
 		assertThat(customer).isEqualTo(expectedCustomer);
+	}
+	
+	@Test
+	public void findByUsernameFail() {
+		String customerName = "test!@#łUsername";
+		Customer expectedCustomer = customerRepository.findByUsername(customerName).orElse(null);
+		assertThat(expectedCustomer).isNull();
+	}
+	
+	@Test
+	public void findByEmailSuccess() {
+		Customer customer = new Customer();
+		String customerEmail = "test!@#łEmail";
+		customer.setUsername("test!@#łUsername");
+		customer.setPassword("testłPassword");
+		customer.setFirstName("testł!@#");
+		customer.setLastName("testł!@#");
+		customer.setEmail(customerEmail);
+		customer.setTelephone("+48512806005");
+		
+		Address address = new Address();
+		address.setCity("Warsaw");
+		address.setStreet("Piłsudskiego");
+		address.setHouseNumber("471A");
+		addressRepository.save(address);
+		
+		Country country = new Country("Poland2");
+		countryRepository.save(country);
+		address.setCountry(country);
+		customer.setAddress(address);
+		
+		Role roleUser = new Role("ROLE_USER2");
+		roleRepository.save(roleUser);
+		
+		Set<Role> roles = new HashSet<>();
+		roles.add(roleUser);
+		customer.setRoles(roles);
+		customerRepository.save(customer);
+		
+		customerRepository.save(customer);
+		Customer expectedCustomer = customerRepository.findByEmail(customerEmail).orElse(null);
+		
+		assertThat(customer).isEqualTo(expectedCustomer);
+	}
+	
+	@Test
+	public void findByEmailFail() {
+		String customerEmail = "test!@#łUsername";
+		Customer expectedCustomer = customerRepository.findByEmail(customerEmail).orElse(null);
+		assertThat(expectedCustomer).isNull();
 	}
 }
