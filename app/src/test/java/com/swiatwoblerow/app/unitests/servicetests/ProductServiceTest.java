@@ -14,9 +14,11 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -218,8 +220,63 @@ public class ProductServiceTest {
 	}
 	
 	@Test
-	public void addProductFail() {
-		// ??????????????????????????? how do i know if user is logged in (in unit test securitycontextholder is not present i guess)
+	public void addProductFailCustomerDoesNotExist() {
+		Product product = new Product();
+		
+		Customer customer = new Customer();
+		String customerName = "test!@#łUsername";
+		customer.setUsername(customerName);
+
+		// when and necessary variables	
+		
+		Authentication authentication = Mockito.mock(Authentication.class);
+		when(authentication.getName()).thenReturn(customerName);
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+		SecurityContextHolder.setContext(securityContext);
+		
+		ProductDto productDto = modelMapper.map(product, ProductDto.class);
+		
+		//then 
+		UsernameNotFoundException exception = assertThrows(UsernameNotFoundException.class,
+				() -> {
+					productService.addProduct(productDto);
+				});
+		
+		assertThat(exception.getMessage()).isEqualTo("User "
+				+ "not found with username: "+customerName);
+	}
+	
+	@Test
+	public void addProductFailCategoryDoesNotExist() {
+		Product product = new Product();
+		Category category = new Category("test!@#Product");
+		product.setCategory(category);
+		
+		Customer customer = new Customer();
+		String customerName = "test!@#łUsername";
+		customer.setUsername(customerName);
+
+		// when and necessary variables	
+		when(customerRepository.findByUsername(customerName)).thenReturn(Optional.of(customer));
+		
+		Authentication authentication = Mockito.mock(Authentication.class);
+		when(authentication.getName()).thenReturn(customerName);
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+		SecurityContextHolder.setContext(securityContext);
+		
+		ProductDto productDto = modelMapper.map(product, ProductDto.class);
+		
+		//then 
+		NotFoundExceptionRequest exception = assertThrows(NotFoundExceptionRequest.class,
+				() -> {
+					productService.addProduct(productDto);
+				});
+		
+		assertThat(exception.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
+		assertThat(exception.getMessage()).isEqualTo("Category with name "+
+				category.getName()+" does not exist");
 	}
 	
 }
