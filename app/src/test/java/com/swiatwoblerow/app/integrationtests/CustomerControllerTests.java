@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.swiatwoblerow.app.dto.CountryDto;
 import com.swiatwoblerow.app.dto.CustomerDto;
 import com.swiatwoblerow.app.entity.Address;
+import com.swiatwoblerow.app.entity.Category;
 import com.swiatwoblerow.app.entity.Country;
 import com.swiatwoblerow.app.entity.Customer;
 import com.swiatwoblerow.app.entity.Role;
@@ -84,6 +85,9 @@ public class CustomerControllerTests {
 		Set<Role> roles = new HashSet<>();
 		roles.add(roleUser);
 		customer.setRoles(roles);
+		
+		Set<Category> managedCategories = new HashSet<>();
+		customer.setManagedCategories(managedCategories);
 		customerRepository.save(customer);
 		
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get("/customers/"+customer.getId())

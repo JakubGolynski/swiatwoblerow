@@ -4,9 +4,28 @@ import java.util.Set;
 
 import org.springframework.data.jpa.domain.Specification;
 
+import com.swiatwoblerow.app.entity.Address;
+import com.swiatwoblerow.app.entity.Customer;
 import com.swiatwoblerow.app.entity.Product;
 
+import javax.persistence.criteria.Fetch;
+import javax.persistence.criteria.JoinType;
+
 public class ProductSpecification {
+	
+	public static Specification<Product> fetchEagerEntites(){
+		return (root, query, builder) -> {
+			root.fetch("category",JoinType.LEFT);
+			root.fetch("conditions",JoinType.LEFT);
+			Fetch<Product,Customer> customerFetch = root.fetch("owner",JoinType.LEFT);
+			customerFetch.fetch("address",JoinType.LEFT);
+			customerFetch.fetch("roles",JoinType.LEFT);
+			customerFetch.fetch("managedCategories",JoinType.LEFT);
+			Fetch<Customer,Address> addressJoin = customerFetch.fetch("address",JoinType.LEFT);
+			addressJoin.fetch("country",JoinType.LEFT);
+			return builder.conjunction();
+		};
+	}
 	
 	public static Specification<Product> isNameLike(String name) {
 		if(name == null) {

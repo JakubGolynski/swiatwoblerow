@@ -30,6 +30,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import com.swiatwoblerow.app.config.jwt.JwtUtils;
 import com.swiatwoblerow.app.dto.CustomerDto;
 import com.swiatwoblerow.app.entity.Address;
+import com.swiatwoblerow.app.entity.Category;
 import com.swiatwoblerow.app.entity.Country;
 import com.swiatwoblerow.app.entity.Customer;
 import com.swiatwoblerow.app.entity.Role;
@@ -96,6 +97,8 @@ public class CustomerServiceTest {
 		
 		Set<Role> roles = new HashSet<>();
 		roles.add(roleUser);
+		Set<Category> managedCategories = new HashSet<>();
+		customer.setManagedCategories(managedCategories);
 		customer.setRoles(roles);
 		
 		List<GrantedAuthority> authorities =
@@ -143,6 +146,8 @@ public class CustomerServiceTest {
 		Set<Role> roles = new HashSet<>();
 		roles.add(roleUser);
 		customer1.setRoles(roles);
+		Set<Category> managedCategories = new HashSet<>();
+		customer1.setManagedCategories(managedCategories);
 		
 		Customer customer2 = new Customer();
 		String customer2Name = "test!@#łUsername";
@@ -154,7 +159,9 @@ public class CustomerServiceTest {
 		customer2.setTelephone("+48512806005");
 		
 		customer2.setAddress(address);
-		customer1.setRoles(roles);
+		customer2.setRoles(roles);
+		customer2.setManagedCategories(managedCategories);
+		
 		
 		List<Customer> customers = new ArrayList<>();
 		
@@ -198,6 +205,8 @@ public class CustomerServiceTest {
 		Set<Role> roles = new HashSet<>();
 		roles.add(roleUser);
 		customer.setRoles(roles);
+		Set<Category> managedCategories = new HashSet<>();
+		customer.setManagedCategories(managedCategories);
 		
 		Optional<Customer> optionalCustomer = Optional.of(customer);
 		
@@ -248,6 +257,8 @@ public class CustomerServiceTest {
 		Set<Role> roles = new HashSet<>();
 		roles.add(roleUser);
 		customer.setRoles(roles);
+		Set<Category> managedCategories = new HashSet<>();
+		customer.setManagedCategories(managedCategories);
 		
 		CustomerDto customerDto = modelMapper.map(customer, CustomerDto.class);
 		

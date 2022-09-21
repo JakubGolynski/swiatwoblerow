@@ -1,11 +1,13 @@
 package com.swiatwoblerow.app.service;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -22,7 +24,10 @@ import com.swiatwoblerow.app.repository.CategoryRepository;
 import com.swiatwoblerow.app.repository.ConditionRepository;
 import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.ProductRepository;
+import com.swiatwoblerow.app.repository.jpql.JpqlProductRepository;
+import com.swiatwoblerow.app.repository.projections.OnlyProductIds;
 import com.swiatwoblerow.app.repository.specification.ProductSpecification;
+import com.swiatwoblerow.app.repository.specification.CustomerSpecification;
 import com.swiatwoblerow.app.service.filter.ProductFilter;
 import com.swiatwoblerow.app.service.interfaces.ProductService;
 import org.springframework.data.domain.Sort;
@@ -32,6 +37,8 @@ public class ProductServiceImpl implements ProductService {
 	
 	private ProductRepository productRepository;
 	
+	private JpqlProductRepository jpqlProductRepository;
+	
 	private CustomerRepository customerRepository;
 	
 	private CategoryRepository categoryRepository;
@@ -40,9 +47,11 @@ public class ProductServiceImpl implements ProductService {
 	
 	private ModelMapper modelMapper;
 
-	public ProductServiceImpl(ProductRepository productRepository, CustomerRepository customerRepository,
-			CategoryRepository categoryRepository, ConditionRepository conditionRepository, ModelMapper modelMapper) {
+	public ProductServiceImpl(ProductRepository productRepository, JpqlProductRepository jpqlProductRepository,
+			CustomerRepository customerRepository, CategoryRepository categoryRepository,
+			ConditionRepository conditionRepository, ModelMapper modelMapper) {
 		this.productRepository = productRepository;
+		this.jpqlProductRepository = jpqlProductRepository;
 		this.customerRepository = customerRepository;
 		this.categoryRepository = categoryRepository;
 		this.conditionRepository = conditionRepository;
@@ -87,15 +96,30 @@ public class ProductServiceImpl implements ProductService {
 		
 		Set<String> conditions = productFilter.getConditions().stream().collect(Collectors.toSet());
 		
-		return productRepository.findAll(
-				ProductSpecification.isNameLike(productFilter.getName())
-					.and(ProductSpecification.isPriceBetween(productFilter.getPriceFrom(),productFilter.getPriceTo()))
-					.and(ProductSpecification.isRatingGreaterThan(productFilter.getRatingFrom()))
-					.and(ProductSpecification.isCategoryEqual(productFilter.getCategory()))
-					.and(ProductSpecification.isCityEqual(productFilter.getCity()))
-					.and(ProductSpecification.isConditionMember(conditions)),pageable).stream()
-				.map(product -> modelMapper.map(product, ProductDto.class))
-				.collect(Collectors.toList());
+//		Page<OnlyProductIds> ids = productRepository.findAllIds(
+//				ProductSpecification.isNameLike(productFilter.getName())
+//				.and(ProductSpecification.isPriceBetween(productFilter.getPriceFrom(),productFilter.getPriceTo()))
+//				.and(ProductSpecification.isRatingGreaterThan(productFilter.getRatingFrom()))
+//				.and(ProductSpecification.isCategoryEqual(productFilter.getCategory()))
+//				.and(ProductSpecification.isCityEqual(productFilter.getCity()))
+//				.and(ProductSpecification.isConditionMember(conditions))
+//				.and(ProductSpecification.fetchEagerEntites()),pageable);
+		
+//		return productRepository.findAll(
+//				ProductSpecification.isNameLike(productFilter.getName())
+//					.and(ProductSpecification.isPriceBetween(productFilter.getPriceFrom(),productFilter.getPriceTo()))
+//					.and(ProductSpecification.isRatingGreaterThan(productFilter.getRatingFrom()))
+//					.and(ProductSpecification.isCategoryEqual(productFilter.getCategory()))
+//					.and(ProductSpecification.isCityEqual(productFilter.getCity()))
+//					.and(ProductSpecification.isConditionMember(conditions))
+//					.and(ProductSpecification.fetchEagerEntites()),pageable).stream()
+//				.map(product -> modelMapper.map(product, ProductDto.class))
+//				.collect(Collectors.toList());
+		jpqlProductRepository.setProductFilter(productFilter);
+		jpqlProductRepository.prepareStringQuery();
+		return jpqlProductRepository.executeTypedQuery().stream()
+				.map(id -> new ProductDto(id,null,null,null,null,null,null
+						,null,null,null)).collect(Collectors.toList());
 	}
 
 	@Override

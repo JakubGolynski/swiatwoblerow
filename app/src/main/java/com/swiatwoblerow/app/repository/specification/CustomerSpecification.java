@@ -5,6 +5,7 @@ import org.springframework.data.jpa.domain.Specification;
 import com.swiatwoblerow.app.entity.Customer;
 
 public class CustomerSpecification {
+	
 	public static Specification<Customer> isFirstNameLike(String firstName) {
 		if(firstName == null) {
 			return (root, query, builder) -> {

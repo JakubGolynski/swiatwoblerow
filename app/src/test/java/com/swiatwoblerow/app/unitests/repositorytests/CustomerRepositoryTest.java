@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.swiatwoblerow.app.entity.Address;
+import com.swiatwoblerow.app.entity.Category;
 import com.swiatwoblerow.app.entity.Country;
 import com.swiatwoblerow.app.entity.Customer;
 import com.swiatwoblerow.app.entity.Role;
@@ -82,6 +83,8 @@ public class CustomerRepositoryTest {
 		
 		Set<Role> roles = new HashSet<>();
 		roles.add(roleUser);
+		Set<Category> managedCategories = new HashSet<>();
+		customer.setManagedCategories(managedCategories);
 		customer.setRoles(roles);
 		customerRepository.save(customer);
 		
@@ -125,6 +128,8 @@ public class CustomerRepositoryTest {
 		
 		Set<Role> roles = new HashSet<>();
 		roles.add(roleUser);
+		Set<Category> managedCategories = new HashSet<>();
+		customer.setManagedCategories(managedCategories);
 		customer.setRoles(roles);
 		customerRepository.save(customer);
 		

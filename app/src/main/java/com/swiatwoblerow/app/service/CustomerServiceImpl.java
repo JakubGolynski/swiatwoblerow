@@ -23,12 +23,12 @@ import com.swiatwoblerow.app.dto.AddressDto;
 import com.swiatwoblerow.app.dto.CustomerDto;
 import com.swiatwoblerow.app.dto.RoleDto;
 import com.swiatwoblerow.app.entity.Address;
+import com.swiatwoblerow.app.entity.Category;
 import com.swiatwoblerow.app.entity.Country;
 import com.swiatwoblerow.app.entity.Customer;
 import com.swiatwoblerow.app.entity.Role;
 import com.swiatwoblerow.app.exceptions.AlreadyExistsException;
 import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
-import com.swiatwoblerow.app.exceptions.NullArgumentException;
 import com.swiatwoblerow.app.repository.AddressRepository;
 import com.swiatwoblerow.app.repository.CountryRepository;
 import com.swiatwoblerow.app.repository.CustomerRepository;
@@ -139,12 +139,13 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 		
 		address.setCountry(country);
 		addressRepository.save(address);
+		Set<Category> managedCategories = new HashSet<>();
 		Customer customer = new Customer(
 				customerDto.getUsername(),customerDto.getPassword(),
 				customerDto.getFirstName(),customerDto.getLastName(),
 				customerDto.getEmail(),customerDto.getTelephone(),
-				address,roles
-				);
+				address,roles,managedCategories);
+		
 		customerRepository.save(customer);
 		CustomerDto returnCustomerDto = new CustomerDto();
 		

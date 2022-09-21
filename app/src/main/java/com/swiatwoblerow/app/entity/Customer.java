@@ -55,12 +55,18 @@ public class Customer {
 				inverseJoinColumns = @JoinColumn(name="role_id"))
 	private Set<Role> roles = new HashSet<>();
 	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name="customer_category",
+				joinColumns = @JoinColumn(name="customer_id"),
+				inverseJoinColumns = @JoinColumn(name="category_id"))
+	private Set<Category> managedCategories = new HashSet<>();
+	
 	public Customer() {
 		
 	}
 
 	public Customer(String username, String password, String firstName, String lastName, String email, String telephone,
-			Address address, Set<Role> roles) {
+			Address address, Set<Role> roles, Set<Category> managedCategories) {
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
@@ -69,6 +75,7 @@ public class Customer {
 		this.telephone = telephone;
 		this.address = address;
 		this.roles = roles;
+		this.managedCategories = managedCategories;
 	}
-	
+
 }

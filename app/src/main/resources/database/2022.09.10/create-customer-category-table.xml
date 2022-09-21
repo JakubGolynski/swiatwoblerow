@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>	
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
+		
+	<changeSet id="19" author="Goly">
+		<createTable tableName="customer_category" schemaName="shoproject">
+		
+			<column name="customer_id" type="integer">
+				<constraints references="customer(customer_id)" foreignKeyName="customer_category_customer_id_fkey" referencedTableSchemaName="shoproject" primaryKey="true"/>
+			</column>
+			<column name="category_id" type="integer">
+				<constraints references="category(category_id)" foreignKeyName="customer_category_category_id_fkey" referencedTableSchemaName="shoproject" primaryKey="true"/>
+			</column>
+		</createTable>
+	</changeSet>
+</databaseChangeLog>
