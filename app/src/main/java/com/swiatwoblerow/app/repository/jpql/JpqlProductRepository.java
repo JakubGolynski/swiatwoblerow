@@ -7,6 +7,7 @@ import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
 
+import com.swiatwoblerow.app.entity.Product;
 import com.swiatwoblerow.app.service.filter.ProductFilter;
 
 @Repository
@@ -20,6 +21,22 @@ public class JpqlProductRepository {
 	
 	public JpqlProductRepository(EntityManager entityManager) {
 		this.entityManager = entityManager;
+	}
+	
+	public List<Product> getProductEntities(List<Integer> productIds){
+		String selectQuery = "select distinct p from Product p "
+				+ "left join fetch p.conditions "
+				+ "left join fetch p.owner own "
+				+ "left join fetch own.roles "
+				+ "left join fetch own.address adr "
+				+ "left join fetch adr.country "
+				+ "left join fetch p.category "
+				+ "where p.id in (:productIds) "
+				+ "order by p.createdAt";
+		TypedQuery<Product> typedQuery = entityManager.createQuery(selectQuery,Product.class)
+				.setParameter("productIds", productIds);
+//				.setParameter("sortBy", this.productFilter.getSort());
+		return typedQuery.getResultList();
 	}
 	
 	public TypedQuery<Integer> prepareTypedQuery() {
@@ -44,22 +61,23 @@ public class JpqlProductRepository {
 		if(!this.productFilter.getConditions().isEmpty()) {
 			typedQuery.setParameter("conditions", this.productFilter.getConditions());
 		}
-		typedQuery.setParameter("sortBy", this.productFilter.getSort());
+//		typedQuery.setParameter("sortBy", this.productFilter.getSort());
 		
 		typedQuery.setFirstResult(this.productFilter.getPage() * this.productFilter.getSize());
 		typedQuery.setMaxResults(this.productFilter.getSize());
 		
 	}
 
-	public List<Integer> executeTypedQuery() {
+	public List<Integer> getProductIds() {
 		TypedQuery<Integer> typedQuery = this.prepareTypedQuery();
-		
-		List<Integer> productIds = typedQuery.getResultList();
-		return productIds;
+		return typedQuery.getResultList();
 	}
 	
 	public void prepareStringQuery() {
 		this.query = "select p.id from Product p ";
+		if(!this.productFilter.getConditions().isEmpty()) {
+			this.query = this.query + "join p.conditions con ";
+		}
 		appendFiltersToStringQuery();
 		return;
 	}
@@ -72,7 +90,6 @@ public class JpqlProductRepository {
 		this.appendCategoryFilter();
 		this.appendCityFilter();
 		this.appendConditionsFilter();
-		this.appendOrderBy();
 		return;
 	}
 	
@@ -115,13 +132,8 @@ public class JpqlProductRepository {
 	
 	public void appendConditionsFilter() {
 		if(!this.productFilter.getConditions().isEmpty()) {
-			this.query = this.query + "and p.conditions.name in (:conditions) ";
+			this.query = this.query + "and con.name in (:conditions)";
 		}
-		return;
-	}
-	
-	public void appendOrderBy() {
-		this.query = this.query + "order by :sortBy";
 		return;
 	}
 	

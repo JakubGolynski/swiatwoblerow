@@ -117,9 +117,11 @@ public class ProductServiceImpl implements ProductService {
 //				.collect(Collectors.toList());
 		jpqlProductRepository.setProductFilter(productFilter);
 		jpqlProductRepository.prepareStringQuery();
-		return jpqlProductRepository.executeTypedQuery().stream()
-				.map(id -> new ProductDto(id,null,null,null,null,null,null
-						,null,null,null)).collect(Collectors.toList());
+		List<Integer> productIds = jpqlProductRepository.getProductIds();
+		
+		return jpqlProductRepository.getProductEntities(productIds).stream()
+				.map(product -> modelMapper.map(product, ProductDto.class))
+				.collect(Collectors.toList());
 	}
 
 	@Override

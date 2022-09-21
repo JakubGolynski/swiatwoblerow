@@ -49,13 +49,13 @@ public class Customer {
 	@JoinColumn(name="address_id")
 	private Address address;
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable( name="customer_role",
 				joinColumns = @JoinColumn(name="customer_id"),
 				inverseJoinColumns = @JoinColumn(name="role_id"))
 	private Set<Role> roles = new HashSet<>();
 	
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name="customer_category",
 				joinColumns = @JoinColumn(name="customer_id"),
 				inverseJoinColumns = @JoinColumn(name="category_id"))
