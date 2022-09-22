@@ -25,7 +25,6 @@ import com.swiatwoblerow.app.repository.ConditionRepository;
 import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.ProductRepository;
 import com.swiatwoblerow.app.repository.jpql.JpqlProductRepository;
-import com.swiatwoblerow.app.repository.projections.OnlyProductIds;
 import com.swiatwoblerow.app.repository.specification.ProductSpecification;
 import com.swiatwoblerow.app.repository.specification.CustomerSpecification;
 import com.swiatwoblerow.app.service.filter.ProductFilter;
@@ -37,8 +36,6 @@ public class ProductServiceImpl implements ProductService {
 	
 	private ProductRepository productRepository;
 	
-	private JpqlProductRepository jpqlProductRepository;
-	
 	private CustomerRepository customerRepository;
 	
 	private CategoryRepository categoryRepository;
@@ -47,11 +44,10 @@ public class ProductServiceImpl implements ProductService {
 	
 	private ModelMapper modelMapper;
 
-	public ProductServiceImpl(ProductRepository productRepository, JpqlProductRepository jpqlProductRepository,
+	public ProductServiceImpl(ProductRepository productRepository,
 			CustomerRepository customerRepository, CategoryRepository categoryRepository,
 			ConditionRepository conditionRepository, ModelMapper modelMapper) {
 		this.productRepository = productRepository;
-		this.jpqlProductRepository = jpqlProductRepository;
 		this.customerRepository = customerRepository;
 		this.categoryRepository = categoryRepository;
 		this.conditionRepository = conditionRepository;
@@ -94,32 +90,7 @@ public class ProductServiceImpl implements ProductService {
 		Pageable pageable = PageRequest.of(productFilter.getPage(),
 				productFilter.getSize(), Sort.by(productFilter.getSort()));
 		
-		Set<String> conditions = productFilter.getConditions().stream().collect(Collectors.toSet());
-		
-//		Page<OnlyProductIds> ids = productRepository.findAllIds(
-//				ProductSpecification.isNameLike(productFilter.getName())
-//				.and(ProductSpecification.isPriceBetween(productFilter.getPriceFrom(),productFilter.getPriceTo()))
-//				.and(ProductSpecification.isRatingGreaterThan(productFilter.getRatingFrom()))
-//				.and(ProductSpecification.isCategoryEqual(productFilter.getCategory()))
-//				.and(ProductSpecification.isCityEqual(productFilter.getCity()))
-//				.and(ProductSpecification.isConditionMember(conditions))
-//				.and(ProductSpecification.fetchEagerEntites()),pageable);
-		
-//		return productRepository.findAll(
-//				ProductSpecification.isNameLike(productFilter.getName())
-//					.and(ProductSpecification.isPriceBetween(productFilter.getPriceFrom(),productFilter.getPriceTo()))
-//					.and(ProductSpecification.isRatingGreaterThan(productFilter.getRatingFrom()))
-//					.and(ProductSpecification.isCategoryEqual(productFilter.getCategory()))
-//					.and(ProductSpecification.isCityEqual(productFilter.getCity()))
-//					.and(ProductSpecification.isConditionMember(conditions))
-//					.and(ProductSpecification.fetchEagerEntites()),pageable).stream()
-//				.map(product -> modelMapper.map(product, ProductDto.class))
-//				.collect(Collectors.toList());
-		jpqlProductRepository.setProductFilter(productFilter);
-		jpqlProductRepository.prepareStringQuery();
-		List<Integer> productIds = jpqlProductRepository.getProductIds();
-		
-		return jpqlProductRepository.getProductEntities(productIds).stream()
+		return productRepository.findByIdIn(productRepository.getProductIdList(productFilter),pageable).stream()
 				.map(product -> modelMapper.map(product, ProductDto.class))
 				.collect(Collectors.toList());
 	}
