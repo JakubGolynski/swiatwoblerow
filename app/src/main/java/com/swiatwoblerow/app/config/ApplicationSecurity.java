@@ -1,8 +1,6 @@
 package com.swiatwoblerow.app.config;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -26,12 +24,15 @@ import com.swiatwoblerow.app.service.CustomerServiceImpl;
 @EnableWebSecurity(debug = true)
 public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 	
-	@Autowired
-	@Qualifier("customerServiceImpl")
 	private CustomerServiceImpl customerService;
 	
-	@Autowired
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	
+	public ApplicationSecurity(CustomerServiceImpl customerService,
+			JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
+		this.customerService = customerService;
+		this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+	}
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
@@ -48,8 +49,9 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET,"/countries/**").permitAll()
 				.antMatchers(HttpMethod.POST,"/countries").hasAnyRole("ROLE_ADMIN","ROLE_MODERATOR")
 				.antMatchers(HttpMethod.GET,"/categories/**").permitAll()
+				.antMatchers(HttpMethod.GET,"/customers/**").permitAll()
 				.antMatchers(HttpMethod.POST,"/categories").hasAnyRole("ROLE_ADMIN","ROLE_MODERATOR")
-				.antMatchers(HttpMethod.GET,"/customers/**").hasAnyRole("ROLE_ADMIN","ROLE_MODERATOR")
+//				.antMatchers(HttpMethod.GET,"/customers/**").hasAnyRole("ROLE_ADMIN","MODERATOR")
 				.antMatchers(HttpMethod.GET,"/reviews/**").permitAll()
 				.antMatchers(HttpMethod.GET,"/error").permitAll()
 			.anyRequest().authenticated().and()

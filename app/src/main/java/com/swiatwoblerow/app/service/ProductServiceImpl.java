@@ -1,15 +1,12 @@
 package com.swiatwoblerow.app.service;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -24,12 +21,8 @@ import com.swiatwoblerow.app.repository.CategoryRepository;
 import com.swiatwoblerow.app.repository.ConditionRepository;
 import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.ProductRepository;
-import com.swiatwoblerow.app.repository.jpql.JpqlProductRepository;
-import com.swiatwoblerow.app.repository.specification.ProductSpecification;
-import com.swiatwoblerow.app.repository.specification.CustomerSpecification;
 import com.swiatwoblerow.app.service.filter.ProductFilter;
 import com.swiatwoblerow.app.service.interfaces.ProductService;
-import org.springframework.data.domain.Sort;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -87,10 +80,9 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public List<ProductDto> getProducts(ProductFilter productFilter) throws NotFoundExceptionRequest{
 		
-		Pageable pageable = PageRequest.of(productFilter.getPage(),
-				productFilter.getSize(), Sort.by(productFilter.getSort()));
+		Sort sortBy = Sort.by(Sort.Direction.ASC, productFilter.getSort());
 		
-		return productRepository.findByIdIn(productRepository.getProductIdList(productFilter),pageable).stream()
+		return productRepository.findByIdIn(productRepository.getProductIdList(productFilter),sortBy).stream()
 				.map(product -> modelMapper.map(product, ProductDto.class))
 				.collect(Collectors.toList());
 	}

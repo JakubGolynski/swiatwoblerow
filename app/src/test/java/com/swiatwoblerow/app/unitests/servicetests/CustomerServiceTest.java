@@ -20,8 +20,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,13 +41,12 @@ import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.RoleRepository;
 import com.swiatwoblerow.app.service.CustomerPrincipal;
 import com.swiatwoblerow.app.service.CustomerServiceImpl;
+import com.swiatwoblerow.app.service.filter.CustomerFilter;
+import com.swiatwoblerow.app.service.interfaces.CustomerService;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomerServiceTest {
-	
-	@Mock
-	private AuthenticationManager authenticationManager;
-	
+
 	@Mock
 	private CustomerRepository customerRepository;
 	
@@ -60,17 +59,14 @@ public class CustomerServiceTest {
 	@Mock
 	private RoleRepository roleRepository;
 	
-	@Mock
-	private JwtUtils jwtUtils;
-	
 	private ModelMapper modelMapper = new ModelMapper();
 	
-	private CustomerServiceImpl customerService;
+	private CustomerService customerService;
 	
 	@BeforeEach
 	void setUp() {
-		customerService = new CustomerServiceImpl(authenticationManager,customerRepository,
-				addressRepository, countryRepository, roleRepository, jwtUtils, modelMapper);
+		customerService = new CustomerServiceImpl(customerRepository,
+				addressRepository, countryRepository, roleRepository, modelMapper);
 	}
 	
 	@Test
@@ -168,13 +164,24 @@ public class CustomerServiceTest {
 		customers.add(customer1);
 		customers.add(customer2);
 		
-		when(customerRepository.findAll()).thenReturn(customers);
+		List<Integer> customersIds = new ArrayList<>();
+		customersIds.add(customer1.getId());
+		customersIds.add(customer2.getId());
+		
+		CustomerFilter customerFilter = new CustomerFilter();
+		
+		
+		Sort sortBy = Sort.by(customerFilter.getSort());
+		
+		when(customerRepository.getCustomerIdList(customerFilter)).thenReturn(customersIds);
+		when(customerRepository.findByIdIn(customersIds,sortBy)).thenReturn(customers);
+		
 
 		List<CustomerDto> returnCustomers = customers.stream().map(
 				customer -> modelMapper.map(customer, CustomerDto.class))
 				.collect(Collectors.toList());
 		
-		assertThat(returnCustomers).isEqualTo(customerService.getCustomers());
+		assertThat(returnCustomers).isEqualTo(customerService.getCustomers(customerFilter));
 		assertThat(returnCustomers).isNotEmpty();
 		assertThat(returnCustomers).isNotNull();
 	}

@@ -11,6 +11,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+
 import com.swiatwoblerow.app.entity.Product;
 import com.swiatwoblerow.app.service.filter.ProductFilter;
 
@@ -63,9 +64,8 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
 			finalPredicate = builder.and(finalPredicate,isCityEqual);
 		}
 		
-		Set<String> conditions = productFilter.getConditions().stream().collect(Collectors.toSet());
-		
 		if(!productFilter.getConditions().isEmpty()) {
+			Set<String> conditions = productFilter.getConditions().stream().collect(Collectors.toSet());
 			Predicate isConditionMember = root.join("conditions").get("name").in(conditions);
 			finalPredicate = builder.and(finalPredicate,isConditionMember);
 		}

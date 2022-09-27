@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,12 +34,11 @@ import com.swiatwoblerow.app.repository.AddressRepository;
 import com.swiatwoblerow.app.repository.CountryRepository;
 import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.RoleRepository;
+import com.swiatwoblerow.app.service.filter.CustomerFilter;
 import com.swiatwoblerow.app.service.interfaces.CustomerService;
 
-@Service("customerServiceImpl")
+@Service
 public class CustomerServiceImpl implements CustomerService, UserDetailsService {
-	
-	private AuthenticationManager authenticationManager;
 	
 	private CustomerRepository customerRepository;
 	
@@ -48,19 +48,15 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 	
 	private RoleRepository roleRepository;
 	
-	private JwtUtils jwtUtils;
-	
 	private ModelMapper modelMapper;
 
-	public CustomerServiceImpl(AuthenticationManager authenticationManager, CustomerRepository customerRepository,
-			AddressRepository addressRepository, CountryRepository countryRepository, RoleRepository roleRepository,
-			JwtUtils jwtUtils, ModelMapper modelMapper) {
-		this.authenticationManager = authenticationManager;
+	public CustomerServiceImpl(CustomerRepository customerRepository,AddressRepository addressRepository,
+			CountryRepository countryRepository, RoleRepository roleRepository,
+			ModelMapper modelMapper) {
 		this.customerRepository = customerRepository;
 		this.addressRepository = addressRepository;
 		this.countryRepository = countryRepository;
 		this.roleRepository = roleRepository;
-		this.jwtUtils = jwtUtils;
 		this.modelMapper = modelMapper;
 	}
 
@@ -80,25 +76,14 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 				customer.getPassword(),authorities);
 	}
 	
-	@Override
-	public CustomerDto login(CustomerDto customerDto) throws BadCredentialsException,UsernameNotFoundException{
-		UsernamePasswordAuthenticationToken tokenAuthetication = 
-				new UsernamePasswordAuthenticationToken(customerDto.getUsername(),customerDto.getPassword());
-		Authentication authetication = authenticationManager.authenticate(tokenAuthetication);
-		SecurityContextHolder.getContext().setAuthentication(authetication);
-		
-		CustomerPrincipal customerPrincipal = (CustomerPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Customer customer = customerRepository.findByUsername(customerPrincipal.getUsername()).orElseThrow(
-				() -> new UsernameNotFoundException("User not found with username "+ customerPrincipal.getUsername()));
-		CustomerDto returnCustomerDto = modelMapper.map(customer, CustomerDto.class);
-		returnCustomerDto.setJwtToken(jwtUtils.generateJwtToken(customerPrincipal.getUsername()));
-		return returnCustomerDto;
-	}
-	
 	@Override 
-	public List<CustomerDto> getCustomers(){
+	public List<CustomerDto> getCustomers(CustomerFilter customerFilter){
 		
-		return customerRepository.findAll().stream().map(
+		Sort sortBy = Sort.by(Sort.Direction.ASC,customerFilter.getSort());
+		
+		return customerRepository.findByIdIn(
+				customerRepository.getCustomerIdList(customerFilter),sortBy)
+				.stream().map(
 				customer -> modelMapper.map(customer, CustomerDto.class))
 				.collect(Collectors.toList());
 	}

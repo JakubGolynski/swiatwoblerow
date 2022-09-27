@@ -24,7 +24,7 @@ public class ProductFilter {
 
 	private Integer page = 0;
 	
-	private Integer size = 20;
+	private Integer size = 50;
 	
 	private String sort = "createdAt";
 	
