@@ -9,36 +9,22 @@
 		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"> 
 
-	<changeSet id="7" author="Goly">
-		<insert tableName="customer_role" schemaName="shoproject">
-			<column name="customer_id" value="1"/>
-			<column name="role_id" value="3"/>
-		</insert>
-		<insert tableName="customer_role" schemaName="shoproject">
-			<column name="customer_id" value="2"/>
-			<column name="role_id" value="1"/>
-		</insert>
-		<insert tableName="customer_role" schemaName="shoproject">
-			<column name="customer_id" value="3"/>
-			<column name="role_id" value="2"/>
-		</insert>
-	</changeSet>
 	<changeSet id="8" author="Goly">
-		<insert tableName="category" schemaName="shoproject">
+		<insert tableName="category" >
 			<column name="name" value="cars"/>
 		</insert>
-		<insert tableName="category" schemaName="shoproject">
-			<column name="name" value="electronic devices"/>
+		<insert tableName="category" >
+			<column name="name" value="electronic_devices"/>
 		</insert>
-		<insert tableName="category" schemaName="shoproject">
+		<insert tableName="category" >
 			<column name="name" value="computers"/>
 		</insert>
-		<insert tableName="category" schemaName="shoproject">
+		<insert tableName="category" >
 			<column name="name" value="fashion"/>
 		</insert>
 	</changeSet>
 	<changeSet id="9" author="Goly">
-		<insert tableName="product" schemaName="shoproject">
+		<insert tableName="product" >
 			<column name="name" value="Mercedes-Benz"/>
 			<column name="price" value="999955.99"/>
 			<column name="quantity" value="1"/>
@@ -47,7 +33,7 @@
 			<column name="customer_id" value="2"/>
 			<column name="category_id" value="1"/>
 		</insert>
-		<insert tableName="product" schemaName="shoproject">
+		<insert tableName="product" >
 			<column name="name" value="Audi A3"/>
 			<column name="price" value="12955.99"/>
 			<column name="quantity" value="1"/>
@@ -56,7 +42,7 @@
 			<column name="customer_id" value="2"/>
 			<column name="category_id" value="1"/>
 		</insert>
-		<insert tableName="product" schemaName="shoproject">
+		<insert tableName="product" >
 			<column name="name" value="Opel Astra J"/>
 			<column name="price" value="23955.62"/>
 			<column name="quantity" value="1"/>
@@ -66,7 +52,7 @@
 			<column name="category_id" value="1"/>
 		</insert>
 		
-		<insert tableName="product" schemaName="shoproject">
+		<insert tableName="product" >
 			<column name="name" value="Iphone X"/>
 			<column name="price" value="2955.62"/>
 			<column name="quantity" value="5"/>
@@ -75,7 +61,7 @@
 			<column name="customer_id" value="2"/>
 			<column name="category_id" value="2"/>
 		</insert>
-		<insert tableName="product" schemaName="shoproject">
+		<insert tableName="product" >
 			<column name="name" value="Samsung Galaxy S7"/>
 			<column name="price" value="1232.11"/>
 			<column name="quantity" value="10"/>
@@ -84,7 +70,7 @@
 			<column name="customer_id" value="2"/>
 			<column name="category_id" value="2"/>
 		</insert>
-		<insert tableName="product" schemaName="shoproject">
+		<insert tableName="product" >
 			<column name="name" value="Wireless Gaming Keyboard RGB Steelseries"/>
 			<column name="price" value="325.62"/>
 			<column name="quantity" value="3"/>

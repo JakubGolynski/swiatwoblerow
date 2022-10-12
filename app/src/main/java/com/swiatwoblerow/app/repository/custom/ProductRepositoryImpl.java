@@ -8,10 +8,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-
+import com.swiatwoblerow.app.entity.Address;
+import com.swiatwoblerow.app.entity.Category;
+import com.swiatwoblerow.app.entity.Customer;
 import com.swiatwoblerow.app.entity.Product;
 import com.swiatwoblerow.app.service.filter.ProductFilter;
 
@@ -37,9 +41,13 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
 	}
 	
 	private Predicate createFinalPredicate(CriteriaBuilder builder, Root<Product> root, ProductFilter productFilter) {
-		Predicate isPriceBetween = builder.between(root.<Double>get("price"),
-				productFilter.getPriceFrom(), productFilter.getPriceTo());
-		Predicate finalPredicate = isPriceBetween;
+		Predicate finalPredicate = builder.conjunction();
+		if(productFilter.getPriceFrom()!=0 || productFilter.getPriceTo() != 1000000000) {
+			Predicate isPriceBetween = builder.between(root.<Double>get("price"),
+					productFilter.getPriceFrom(), productFilter.getPriceTo());
+			finalPredicate = builder.and(finalPredicate,isPriceBetween);
+		}
+		
 		if(productFilter.getName()!=null) {
 			Predicate isNameLike = builder.like(builder.upper(root.<String>get("name")),
 		    		"%"+productFilter.getName().toUpperCase()+"%");
@@ -53,13 +61,17 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
 		}
 		
 		if(productFilter.getCategory()!=null) {
-			Predicate isCategoryEqual = builder.equal(root.<String>get("category").get("name"),
+			Join<Product,Category> category = root.join("category",JoinType.INNER);
+			Predicate isCategoryEqual = builder.equal(category.get("name"),
 					productFilter.getCategory());
 			finalPredicate = builder.and(finalPredicate,isCategoryEqual);
 		}
 		
 		if(productFilter.getCity()!=null) {
-			Predicate isCityEqual = builder.equal(root.<String>get("owner").get("address").get("city"),
+			Join<Product,Customer> owner = root.join("owner",JoinType.INNER);
+			Join<Product,Address> address = owner.join("address",JoinType.INNER);
+			
+			Predicate isCityEqual = builder.equal(address.get("city"),
 					productFilter.getCity());
 			finalPredicate = builder.and(finalPredicate,isCityEqual);
 		}

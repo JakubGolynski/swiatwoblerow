@@ -2,7 +2,6 @@ package com.swiatwoblerow.app.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.swiatwoblerow.app.dto.CustomerDto;
 import com.swiatwoblerow.app.exceptions.AlreadyExistsException;
 import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
-import com.swiatwoblerow.app.service.CustomerServiceImpl;
 import com.swiatwoblerow.app.service.filter.CustomerFilter;
 import com.swiatwoblerow.app.service.interfaces.CustomerService;
 

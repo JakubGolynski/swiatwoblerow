@@ -1,5 +1,6 @@
 package com.swiatwoblerow.app.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -7,19 +8,13 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.swiatwoblerow.app.config.jwt.JwtUtils;
 import com.swiatwoblerow.app.dto.AddressDto;
 import com.swiatwoblerow.app.dto.CustomerDto;
 import com.swiatwoblerow.app.dto.RoleDto;
@@ -49,7 +44,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 	private RoleRepository roleRepository;
 	
 	private ModelMapper modelMapper;
-
+	
 	public CustomerServiceImpl(CustomerRepository customerRepository,AddressRepository addressRepository,
 			CountryRepository countryRepository, RoleRepository roleRepository,
 			ModelMapper modelMapper) {
@@ -67,10 +62,11 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 				.orElseThrow(() -> new UsernameNotFoundException("User"+
 				" not found with username: "+ username));
 		
-		List<GrantedAuthority> authorities =
-			customer.getRoles().stream()
-			.map(role -> new SimpleGrantedAuthority(role.getName()))
-			.collect(Collectors.toList());
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		if(customer.getRole()!=null) {
+			Role role = customer.getRole();
+			authorities.add(new SimpleGrantedAuthority(role.getName()));
+		}
 												
 		return new CustomerPrincipal(customer.getUsername(),
 				customer.getPassword(),authorities);
@@ -109,10 +105,9 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 			throw new AlreadyExistsException("Email "+customerDto.getEmail()+" is already in use");
 		}
 		
-		Set<Role> roles = new HashSet<>();
-		Role roleUser = roleRepository.findByName("ROLE_USER").orElseThrow(
+		Role role = roleRepository.findByName("ROLE_USER").orElseThrow(
 				() -> new NotFoundExceptionRequest("ROLE_USER does not exist in database"));
-		roles.add(roleUser);
+		
 		Address address = new Address();
 		
 		address.setCity(customerDto.getAddress().getCity());
@@ -129,7 +124,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 				customerDto.getUsername(),customerDto.getPassword(),
 				customerDto.getFirstName(),customerDto.getLastName(),
 				customerDto.getEmail(),customerDto.getTelephone(),
-				address,roles,managedCategories);
+				address,role,managedCategories);
 		
 		customerRepository.save(customer);
 		CustomerDto returnCustomerDto = new CustomerDto();
@@ -141,9 +136,8 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 		returnCustomerDto.setTelephone(customerDto.getTelephone());
 		AddressDto addressDto = modelMapper.map(address, AddressDto.class);
 		returnCustomerDto.setAddress(addressDto);
-		Set<RoleDto> rolesDto = roles.stream().map(
-				role -> modelMapper.map(role, RoleDto.class)).collect(Collectors.toSet());
-		returnCustomerDto.setRoles(rolesDto);
+		RoleDto roleDto = modelMapper.map(role, RoleDto.class);
+		returnCustomerDto.setRole(roleDto);
 		
 		return returnCustomerDto;
 	}

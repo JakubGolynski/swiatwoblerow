@@ -49,11 +49,9 @@ public class Customer {
 	@JoinColumn(name="address_id")
 	private Address address;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable( name="customer_role",
-				joinColumns = @JoinColumn(name="customer_id"),
-				inverseJoinColumns = @JoinColumn(name="role_id"))
-	private Set<Role> roles = new HashSet<>();
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="role_id")
+	private Role role;
 	
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name="customer_category",
@@ -66,7 +64,7 @@ public class Customer {
 	}
 
 	public Customer(String username, String password, String firstName, String lastName, String email, String telephone,
-			Address address, Set<Role> roles, Set<Category> managedCategories) {
+			Address address, Role role, Set<Category> managedCategories) {
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
@@ -74,7 +72,7 @@ public class Customer {
 		this.email = email;
 		this.telephone = telephone;
 		this.address = address;
-		this.roles = roles;
+		this.role = role;
 		this.managedCategories = managedCategories;
 	}
 

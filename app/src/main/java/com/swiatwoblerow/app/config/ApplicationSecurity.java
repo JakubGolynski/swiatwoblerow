@@ -28,12 +28,13 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 	
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 	
+	
 	public ApplicationSecurity(CustomerServiceImpl customerService,
 			JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
 		this.customerService = customerService;
 		this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
 	}
-	
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
 		auth.authenticationProvider(authenticationProvider());
@@ -47,11 +48,10 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.POST,"/login").permitAll()
 				.antMatchers(HttpMethod.GET,"/products/**").permitAll()
 				.antMatchers(HttpMethod.GET,"/countries/**").permitAll()
-				.antMatchers(HttpMethod.POST,"/countries").hasAnyRole("ROLE_ADMIN","ROLE_MODERATOR")
+				.antMatchers(HttpMethod.POST,"/countries").hasAnyRole("ADMIN","MODERATOR")
 				.antMatchers(HttpMethod.GET,"/categories/**").permitAll()
-				.antMatchers(HttpMethod.GET,"/customers/**").permitAll()
-				.antMatchers(HttpMethod.POST,"/categories").hasAnyRole("ROLE_ADMIN","ROLE_MODERATOR")
-//				.antMatchers(HttpMethod.GET,"/customers/**").hasAnyRole("ROLE_ADMIN","MODERATOR")
+				.antMatchers(HttpMethod.POST,"/categories").hasAnyRole("ADMIN","MODERATOR")
+				.antMatchers(HttpMethod.GET,"/customers/**").hasAnyRole("ADMIN","MODERATOR")
 				.antMatchers(HttpMethod.GET,"/reviews/**").permitAll()
 				.antMatchers(HttpMethod.GET,"/error").permitAll()
 			.anyRequest().authenticated().and()
@@ -61,7 +61,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
 			.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
 			
-		http.addFilterBefore(jwtTokenAuthorizationFilter(),UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(jwtAuthorizationFilter(),UsernamePasswordAuthenticationFilter.class);
 	}
 	
 	@Override
@@ -74,16 +74,16 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                                    "/webjars/**");
     }
 	
+	@Bean
+	public JWTAuthorizationFilter jwtAuthorizationFilter() {
+		return new JWTAuthorizationFilter();
+		}
+	
 	@Override
 	@Bean
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
-	
-	@Bean
-	public JWTAuthorizationFilter jwtTokenAuthorizationFilter() {
-		return new JWTAuthorizationFilter();
-	}
 	
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {

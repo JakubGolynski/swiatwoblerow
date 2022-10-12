@@ -1,7 +1,5 @@
 package com.swiatwoblerow.app.dto;
 
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -33,14 +31,14 @@ public class CustomerDto {
 	
 	private AddressDto address;
 	
-	private Set<RoleDto> roles = new HashSet<>();
+	private RoleDto role;
 
 	public CustomerDto() {
 
 	}
 
 	public CustomerDto(String username, String password, String firstName, String lastName, String email,
-			String telephone, String jwtToken, AddressDto address, Set<RoleDto> roles) {
+			String telephone, String jwtToken, AddressDto address, RoleDto role) {
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
@@ -49,7 +47,7 @@ public class CustomerDto {
 		this.telephone = telephone;
 		this.jwtToken = jwtToken;
 		this.address = address;
-		this.roles = roles;
+		this.role = role;
 	}
 	
 }

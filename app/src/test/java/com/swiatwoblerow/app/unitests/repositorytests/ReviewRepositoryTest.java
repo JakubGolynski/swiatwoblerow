@@ -64,17 +64,15 @@ public class ReviewRepositoryTest {
 		address.setHouseNumber("471A");
 		addressRepository.save(address);
 		
-		Country country = new Country("Poland");
+		Country country = new Country("Poland2");
 		countryRepository.save(country);
 		address.setCountry(country);
 		customer.setAddress(address);
 		
-		Role roleUser = new Role("ROLE_USER");
+		Role roleUser = new Role("ROLE_USER2");
 		roleRepository.save(roleUser);
 		
-		Set<Role> roles = new HashSet<>();
-		roles.add(roleUser);
-		customer.setRoles(roles);
+		customer.setRole(roleUser);
 		customerRepository.save(customer);
 
 		Product product = new Product();
@@ -82,6 +80,8 @@ public class ReviewRepositoryTest {
 		product.setPrice(5.0);
 		product.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		product.setQuantity(2);
+		product.setQuantityReviews(2);
+		product.setQuantityRatings(2);
 		product.setMessage("testProduct123!@#");
 		product.setRating(5.0);
 		product.setOwner(customer);
@@ -117,17 +117,15 @@ public class ReviewRepositoryTest {
 		address.setHouseNumber("471A");
 		addressRepository.save(address);
 		
-		Country country = new Country("Poland");
+		Country country = new Country("Poland2");
 		countryRepository.save(country);
 		address.setCountry(country);
 		customer1.setAddress(address);
 		
-		Role roleUser = new Role("ROLE_USER");
+		Role roleUser = new Role("ROLE_USER2");
 		roleRepository.save(roleUser);
 		
-		Set<Role> roles = new HashSet<>();
-		roles.add(roleUser);
-		customer1.setRoles(roles);
+		customer1.setRole(roleUser);
 		customerRepository.save(customer1);
 
 		Product product = new Product();
@@ -135,6 +133,8 @@ public class ReviewRepositoryTest {
 		product.setPrice(5.0);
 		product.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		product.setQuantity(2);
+		product.setQuantityReviews(2);
+		product.setQuantityRatings(2);
 		product.setMessage("testProduct123!@#");
 		product.setRating(5.0);
 		product.setOwner(customer1);
@@ -148,14 +148,14 @@ public class ReviewRepositoryTest {
 		reviewRepository.save(review1);
 		
 		Customer customer2 = new Customer();
-		customer2.setUsername(customerName);
+		customer2.setUsername(customerName+"2");
 		customer2.setPassword("testłPassword");
 		customer2.setFirstName("testł!@#");
 		customer2.setLastName("testł!@#");
 		customer2.setEmail("testł!@#");
 		customer2.setTelephone("+48512806005");
 		customer2.setAddress(address);
-		customer2.setRoles(roles);
+		customer2.setRole(roleUser);
 		customerRepository.save(customer2);
 		
 		Review review2 = new Review();
@@ -193,17 +193,15 @@ public class ReviewRepositoryTest {
 		address.setHouseNumber("471A");
 		addressRepository.save(address);
 		
-		Country country = new Country("Poland");
+		Country country = new Country("Poland2");
 		countryRepository.save(country);
 		address.setCountry(country);
 		customer1.setAddress(address);
 		
-		Role roleUser = new Role("ROLE_USER");
+		Role roleUser = new Role("ROLE_USER2");
 		roleRepository.save(roleUser);
 		
-		Set<Role> roles = new HashSet<>();
-		roles.add(roleUser);
-		customer1.setRoles(roles);
+		customer1.setRole(roleUser);
 		customerRepository.save(customer1);
 
 		Product product = new Product();
@@ -211,6 +209,8 @@ public class ReviewRepositoryTest {
 		product.setPrice(5.0);
 		product.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		product.setQuantity(2);
+		product.setQuantityReviews(2);
+		product.setQuantityRatings(2);
 		product.setMessage("testProduct123!@#");
 		product.setRating(5.0);
 		product.setOwner(customer1);
@@ -250,17 +250,15 @@ public class ReviewRepositoryTest {
 		address.setHouseNumber("471A");
 		addressRepository.save(address);
 		
-		Country country = new Country("Poland");
+		Country country = new Country("Poland2");
 		countryRepository.save(country);
 		address.setCountry(country);
 		customer1.setAddress(address);
 		
-		Role roleUser = new Role("ROLE_USER");
+		Role roleUser = new Role("ROLE_USER2");
 		roleRepository.save(roleUser);
 		
-		Set<Role> roles = new HashSet<>();
-		roles.add(roleUser);
-		customer1.setRoles(roles);
+		customer1.setRole(roleUser);
 		customerRepository.save(customer1);
 
 		Product product = new Product();
@@ -268,6 +266,8 @@ public class ReviewRepositoryTest {
 		product.setPrice(5.0);
 		product.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		product.setQuantity(2);
+		product.setQuantityReviews(2);
+		product.setQuantityRatings(2);
 		product.setMessage("testProduct123!@#");
 		product.setRating(5.0);
 		product.setOwner(customer1);

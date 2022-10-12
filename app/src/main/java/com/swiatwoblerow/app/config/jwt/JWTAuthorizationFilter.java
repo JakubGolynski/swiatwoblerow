@@ -8,28 +8,24 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.swiatwoblerow.app.service.CustomerServiceImpl;
-
+import com.swiatwoblerow.app.service.interfaces.CustomerService;
 
 public class JWTAuthorizationFilter extends OncePerRequestFilter {
 	
 	@Autowired
 	private JwtUtils jwtUtils;
-	
 	@Autowired
-	@Qualifier("customerServiceImpl")
-	CustomerServiceImpl customerService;
-	
-	
+	private CustomerService customerService;
+
+	public JWTAuthorizationFilter() {
+		
+	}
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -54,7 +50,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
 	private String parseJwt(HttpServletRequest request) {
 		String header = request.getHeader("Authorization");
-		if(StringUtils.hasText(header) && header.startsWith("Bearer ")) {
+		if(header.startsWith("Bearer ")) {
 			return header.substring(7,header.length());
 		}
 		return null;

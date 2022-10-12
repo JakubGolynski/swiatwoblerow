@@ -10,7 +10,7 @@
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"> 
 
 	<changeSet id="10" author="Goly">
-		<update tableName="address" schemaName="shoproject">
+		<update tableName="address">
       		<column name="city" value="Cracow"/>
       		<where>address_id=2</where>
       	</update>

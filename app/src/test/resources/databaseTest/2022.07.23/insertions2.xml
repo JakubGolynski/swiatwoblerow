@@ -9,26 +9,12 @@
 		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"> 
 
-	<changeSet id="7" author="Goly">
-		<insert tableName="customer_role" >
-			<column name="customer_id" value="1"/>
-			<column name="role_id" value="3"/>
-		</insert>
-		<insert tableName="customer_role" >
-			<column name="customer_id" value="2"/>
-			<column name="role_id" value="1"/>
-		</insert>
-		<insert tableName="customer_role" >
-			<column name="customer_id" value="3"/>
-			<column name="role_id" value="2"/>
-		</insert>
-	</changeSet>
 	<changeSet id="8" author="Goly">
 		<insert tableName="category" >
 			<column name="name" value="cars"/>
 		</insert>
 		<insert tableName="category" >
-			<column name="name" value="electronic devices"/>
+			<column name="name" value="electronic_devices"/>
 		</insert>
 		<insert tableName="category" >
 			<column name="name" value="computers"/>

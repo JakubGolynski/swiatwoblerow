@@ -10,48 +10,48 @@
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"> 
 
 	<changeSet id="4" author="Goly">
-		<insert tableName="role" schemaName="shoproject">
+		<insert tableName="role" >
 			<column name="name" value="ROLE_USER"/>
 		</insert>
-		<insert tableName="role" schemaName="shoproject">
+		<insert tableName="role" >
 			<column name="name" value="ROLE_MODERATOR"/>
 		</insert>
-		<insert tableName="role" schemaName="shoproject">
+		<insert tableName="role" >
 			<column name="name" value="ROLE_ADMIN"/>
 		</insert>
-		<insert tableName="condition" schemaName="shoproject">
+		<insert tableName="condition" >
 			<column name="name" value="NEW"/>
 		</insert>
-		<insert tableName="condition" schemaName="shoproject">
+		<insert tableName="condition" >
 			<column name="name" value="DAMAGED"/>
 		</insert>
-		<insert tableName="condition" schemaName="shoproject">
+		<insert tableName="condition" >
 			<column name="name" value="USED"/>
 		</insert>
-		<insert tableName="country" schemaName="shoproject">
+		<insert tableName="country" >
 			<column name="name" value="Poland"/>
 		</insert>
-		<insert tableName="country" schemaName="shoproject">
+		<insert tableName="country" >
 			<column name="name" value="Germany"/>
 		</insert>
-		<insert tableName="country" schemaName="shoproject">
+		<insert tableName="country" >
 			<column name="name" value="Spain"/>
 		</insert>
-		<insert tableName="country" schemaName="shoproject">
+		<insert tableName="country" >
 			<column name="name" value="Russia"/>
 		</insert>
-		<insert tableName="country" schemaName="shoproject">
+		<insert tableName="country" >
 			<column name="name" value="USA"/>
 		</insert>
 	</changeSet>
 	<changeSet id="5" author="Goly">
-		<insert tableName="address" schemaName="shoproject">
+		<insert tableName="address" >
 			<column name="city" value="Warsaw"/>
 			<column name="street" value="Aleje Jerozolimskie"/>
 			<column name="house_number" value="45"/>
 			<column name="country_id" value="1"/>
 		</insert>
-		<insert tableName="address" schemaName="shoproject">
+		<insert tableName="address" >
 			<column name="city" value="Warsaw"/>
 			<column name="street" value="Emilii Plater"/>
 			<column name="house_number" value="105A"/>
@@ -59,7 +59,7 @@
 		</insert>
 	</changeSet>
 	<changeSet id="6" author="Goly">
-		<insert tableName="customer" schemaName="shoproject">
+		<insert tableName="customer" >
 			<column name="username" value="goly"/>
 			<column name="password" value="$2a$12$pTUMC0sOtm3pU3a8bezWIOmEXQgGUAxAb8zpoIYcZ5pAyiMBG/H7e"/>
 			<column name="first_name" value="Jakub"/>
@@ -67,8 +67,9 @@
 			<column name="email" value="email1@gmail.com"/>
 			<column name="telephone" value="515-152-123"/>
 			<column name="address_id" value="1"/>
+			<column name="role_id" value="3"/>
 		</insert>
-		<insert tableName="customer" schemaName="shoproject">
+		<insert tableName="customer" >
 			<column name="username" value="user"/>
 			<column name="password" value="$2a$12$ySjONcOABYwPQ.suw3y3H.QEbwpKBncv9VxlnD22IzFvx/oVAXtDW"/>
 			<column name="first_name" value="Piotr"/>
@@ -76,8 +77,9 @@
 			<column name="email" value="email2@gmail.com"/>
 			<column name="telephone" value="665-152-123"/>
 			<column name="address_id" value="1"/>
+			<column name="role_id" value="1"/>
 		</insert>
-		<insert tableName="customer" schemaName="shoproject">
+		<insert tableName="customer" >
 			<column name="username" value="moderator"/>
 			<column name="password" value="$2a$12$ntpsCb9ZhXGo6EzqWs/Vmuh0GdlJyQJArAMAWIC58jRXoIoyKv.2O"/>
 			<column name="first_name" value="Andrzej"/>
@@ -85,6 +87,7 @@
 			<column name="email" value="email3@gmail.com"/>
 			<column name="telephone" value="625-112-122"/>
 			<column name="address_id" value="2"/>
+			<column name="role_id" value="2"/>
 		</insert>
 	</changeSet>
 </databaseChangeLog>

@@ -67,6 +67,7 @@
 			<column name="email" value="email1@gmail.com"/>
 			<column name="telephone" value="515-152-123"/>
 			<column name="address_id" value="1"/>
+			<column name="role_id" value="3"/>
 		</insert>
 		<insert tableName="customer" >
 			<column name="username" value="user"/>
@@ -76,6 +77,7 @@
 			<column name="email" value="email2@gmail.com"/>
 			<column name="telephone" value="665-152-123"/>
 			<column name="address_id" value="1"/>
+			<column name="role_id" value="1"/>
 		</insert>
 		<insert tableName="customer" >
 			<column name="username" value="moderator"/>
@@ -85,6 +87,7 @@
 			<column name="email" value="email3@gmail.com"/>
 			<column name="telephone" value="625-112-122"/>
 			<column name="address_id" value="2"/>
+			<column name="role_id" value="2"/>
 		</insert>
 	</changeSet>
 </databaseChangeLog>

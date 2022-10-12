@@ -114,9 +114,7 @@ public class ProductServiceTest {
 		customer.setAddress(address);
 		
 		Role roleUser = new Role("ROLE_USER");
-		Set<Role> roles = new HashSet<>();
-		roles.add(roleUser);
-		customer.setRoles(roles);
+		customer.setRole(roleUser);
 		Set<Category> managedCategories = new HashSet<>();
 		customer.setManagedCategories(managedCategories);
 		product.setOwner(customer);
@@ -183,9 +181,7 @@ public class ProductServiceTest {
 		customer.setAddress(address);
 		
 		Role roleUser = new Role("ROLE_USER");
-		Set<Role> roles = new HashSet<>();
-		roles.add(roleUser);
-		customer.setRoles(roles);
+		customer.setRole(roleUser);
 		Set<Category> managedCategories = new HashSet<>();
 		customer.setManagedCategories(managedCategories);
 		product.setOwner(customer);

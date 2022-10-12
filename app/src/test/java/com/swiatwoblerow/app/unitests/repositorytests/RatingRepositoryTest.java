@@ -3,8 +3,6 @@ package com.swiatwoblerow.app.unitests.repositorytests;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,19 +28,14 @@ public class RatingRepositoryTest {
 	
 	@Autowired
 	private RatingRepository ratingRepository;
-	
 	@Autowired
 	private CustomerRepository customerRepository;
-	
 	@Autowired
 	private ProductRepository productRepository;
-	
 	@Autowired
 	private RoleRepository roleRepository;
-	
 	@Autowired
 	private AddressRepository addressRepository;
-	
 	@Autowired
 	private CountryRepository countryRepository;
 	
@@ -64,17 +57,15 @@ public class RatingRepositoryTest {
 		address.setHouseNumber("471A");
 		addressRepository.save(address);
 		
-		Country country = new Country("Poland");
+		Country country = new Country("Poland2");
 		countryRepository.save(country);
 		address.setCountry(country);
 		customer.setAddress(address);
 		
-		Role roleUser = new Role("ROLE_USER");
+		Role roleUser = new Role("ROLE_BAKER");
 		roleRepository.save(roleUser);
 		
-		Set<Role> roles = new HashSet<>();
-		roles.add(roleUser);
-		customer.setRoles(roles);
+		customer.setRole(roleUser);
 		customerRepository.save(customer);
 
 		Product product = new Product();
@@ -82,6 +73,8 @@ public class RatingRepositoryTest {
 		product.setPrice(5.0);
 		product.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		product.setQuantity(2);
+		product.setQuantityReviews(2);
+		product.setQuantityRatings(2);
 		product.setMessage("testProduct123!@#");
 		product.setRating(5.0);
 		product.setOwner(customer);
@@ -117,17 +110,15 @@ public class RatingRepositoryTest {
 		address.setHouseNumber("471A");
 		addressRepository.save(address);
 		
-		Country country = new Country("Poland");
+		Country country = new Country("Poland2");
 		countryRepository.save(country);
 		address.setCountry(country);
 		customer.setAddress(address);
 		
-		Role roleUser = new Role("ROLE_USER");
+		Role roleUser = new Role("ROLE_BAKER");
 		roleRepository.save(roleUser);
 		
-		Set<Role> roles = new HashSet<>();
-		roles.add(roleUser);
-		customer.setRoles(roles);
+		customer.setRole(roleUser);
 		customerRepository.save(customer);
 		
 		Product product = new Product();
@@ -135,6 +126,8 @@ public class RatingRepositoryTest {
 		product.setPrice(5.0);
 		product.setCreatedAt(new Timestamp(System.currentTimeMillis()));
 		product.setQuantity(2);
+		product.setQuantityReviews(2);
+		product.setQuantityRatings(2);
 		product.setMessage("testProduct123!@#");
 		product.setRating(5.0);
 		product.setOwner(customer);

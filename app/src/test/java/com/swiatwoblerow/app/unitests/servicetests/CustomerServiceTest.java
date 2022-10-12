@@ -27,7 +27,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import com.swiatwoblerow.app.config.jwt.JwtUtils;
 import com.swiatwoblerow.app.dto.CustomerDto;
 import com.swiatwoblerow.app.entity.Address;
 import com.swiatwoblerow.app.entity.Category;
@@ -85,22 +84,18 @@ public class CustomerServiceTest {
 		address.setStreet("Piłsudskiego");
 		address.setHouseNumber("471A");
 		
-		Country country = new Country("Poland");
+		Country country = new Country("Poland2");
 		address.setCountry(country);
 		customer.setAddress(address);
 		
-		Role roleUser = new Role("ROLE_USER");
+		Role roleUser = new Role("ROLE_USER2");
 		
-		Set<Role> roles = new HashSet<>();
-		roles.add(roleUser);
 		Set<Category> managedCategories = new HashSet<>();
 		customer.setManagedCategories(managedCategories);
-		customer.setRoles(roles);
+		customer.setRole(roleUser);
 		
-		List<GrantedAuthority> authorities =
-				customer.getRoles().stream()
-				.map(role -> new SimpleGrantedAuthority(role.getName()))
-				.collect(Collectors.toList());
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		authorities.add(new SimpleGrantedAuthority(roleUser.getName()));
 		
 		UserDetails customerPrincipal = new CustomerPrincipal(customer.getUsername(),
 				customer.getPassword(),authorities);
@@ -139,9 +134,7 @@ public class CustomerServiceTest {
 		
 		Role roleUser = new Role("ROLE_USER2");
 		
-		Set<Role> roles = new HashSet<>();
-		roles.add(roleUser);
-		customer1.setRoles(roles);
+		customer1.setRole(roleUser);
 		Set<Category> managedCategories = new HashSet<>();
 		customer1.setManagedCategories(managedCategories);
 		
@@ -155,7 +148,7 @@ public class CustomerServiceTest {
 		customer2.setTelephone("+48512806005");
 		
 		customer2.setAddress(address);
-		customer2.setRoles(roles);
+		customer2.setRole(roleUser);
 		customer2.setManagedCategories(managedCategories);
 		
 		
@@ -209,9 +202,7 @@ public class CustomerServiceTest {
 		customer.setAddress(address);
 		
 		Role roleUser = new Role("ROLE_USER");
-		Set<Role> roles = new HashSet<>();
-		roles.add(roleUser);
-		customer.setRoles(roles);
+		customer.setRole(roleUser);
 		Set<Category> managedCategories = new HashSet<>();
 		customer.setManagedCategories(managedCategories);
 		
@@ -261,9 +252,7 @@ public class CustomerServiceTest {
 		customer.setAddress(address);
 		
 		Role roleUser = new Role("ROLE_USER");
-		Set<Role> roles = new HashSet<>();
-		roles.add(roleUser);
-		customer.setRoles(roles);
+		customer.setRole(roleUser);
 		Set<Category> managedCategories = new HashSet<>();
 		customer.setManagedCategories(managedCategories);
 		

@@ -9,7 +9,7 @@ public class CustomerFilter {
 	
 	private String lastName;
 	
-	private String username = "";
+	private String username;
 	
 	private String city;
 

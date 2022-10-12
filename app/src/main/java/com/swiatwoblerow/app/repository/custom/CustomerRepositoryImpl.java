@@ -6,10 +6,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import com.swiatwoblerow.app.entity.Address;
 import com.swiatwoblerow.app.entity.Customer;
+import com.swiatwoblerow.app.entity.Product;
 import com.swiatwoblerow.app.service.filter.CustomerFilter;
 
 public class CustomerRepositoryImpl implements CustomerRepositoryCustom{
@@ -34,9 +38,12 @@ public class CustomerRepositoryImpl implements CustomerRepositoryCustom{
 	}
 	
 	private Predicate createFinalPredicate(CriteriaBuilder builder, Root<Customer> root, CustomerFilter customerFilter) {
-		Predicate isUsernameLike = builder.like(builder.upper(root.<String>get("username")),
-	    		"%"+customerFilter.getUsername().toUpperCase()+"%");
-		Predicate finalPredicate = isUsernameLike;
+		Predicate finalPredicate = builder.conjunction();
+		if(customerFilter.getUsername()!=null) {
+			Predicate isUsernameLike = builder.like(builder.upper(root.<String>get("username")),
+		    		"%"+customerFilter.getUsername().toUpperCase()+"%");
+			finalPredicate = builder.and(finalPredicate,isUsernameLike);
+		}
 		
 		if(customerFilter.getFirstName() != null) {
 			Predicate isFirstNameLike = builder.like(builder.upper(root.<String>get("firstName")),
@@ -51,7 +58,8 @@ public class CustomerRepositoryImpl implements CustomerRepositoryCustom{
 		}
 
 		if(customerFilter.getCity()!=null) {
-			Predicate isCityEqual = builder.equal(root.<String>get("address").get("city"),
+			Join<Product,Address> address = root.join("address",JoinType.INNER);
+			Predicate isCityEqual = builder.equal(address.get("city"),
 					customerFilter.getCity());
 			finalPredicate = builder.and(finalPredicate,isCityEqual);
 		}

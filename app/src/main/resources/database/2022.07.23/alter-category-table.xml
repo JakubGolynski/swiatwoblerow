@@ -10,7 +10,7 @@
 		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"> 
 
 	<changeSet id="11" author="Goly">
-		<update tableName="category" schemaName="shoproject">
+		<update tableName="category">
       		<column name="name" value="electronic_devices"/>
       		<where>category_id=2</where>
       	</update>

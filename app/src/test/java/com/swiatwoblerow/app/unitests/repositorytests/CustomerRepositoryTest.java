@@ -81,11 +81,9 @@ public class CustomerRepositoryTest {
 		Role roleUser = new Role("ROLE_USER2");
 		roleRepository.save(roleUser);
 		
-		Set<Role> roles = new HashSet<>();
-		roles.add(roleUser);
 		Set<Category> managedCategories = new HashSet<>();
 		customer.setManagedCategories(managedCategories);
-		customer.setRoles(roles);
+		customer.setRole(roleUser);
 		customerRepository.save(customer);
 		
 		customerRepository.save(customer);
@@ -126,11 +124,9 @@ public class CustomerRepositoryTest {
 		Role roleUser = new Role("ROLE_USER2");
 		roleRepository.save(roleUser);
 		
-		Set<Role> roles = new HashSet<>();
-		roles.add(roleUser);
 		Set<Category> managedCategories = new HashSet<>();
 		customer.setManagedCategories(managedCategories);
-		customer.setRoles(roles);
+		customer.setRole(roleUser);
 		customerRepository.save(customer);
 		
 		customerRepository.save(customer);

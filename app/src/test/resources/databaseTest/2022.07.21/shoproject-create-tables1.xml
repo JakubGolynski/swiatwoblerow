@@ -63,6 +63,17 @@
 			</column>
 			
 		</createTable>
+		<createTable tableName="role">
+		
+			<column name="role_id" type="integer" autoIncrement="true"
+				incrementBy="1" startWith="1"> 
+			<constraints primaryKey="true" nullable="false" unique="true"/>
+			</column>
+			<column name="name" type="varchar(30)"> 
+			<constraints nullable="false" unique="true"/>
+			</column>
+			
+		</createTable>
 		<createTable tableName="customer">
 		
 			<column name="customer_id" type="integer" autoIncrement="true"
@@ -90,26 +101,8 @@
 			<column name="address_id" type="integer">
 				<constraints references="address(address_id)" foreignKeyName="customer_address_id_fkey"/>
 			</column>
-			
-		</createTable>
-		<createTable tableName="role">
-		
-			<column name="role_id" type="integer" autoIncrement="true"
-				incrementBy="1" startWith="1"> 
-			<constraints primaryKey="true" nullable="false" unique="true"/>
-			</column>
-			<column name="name" type="varchar(30)"> 
-			<constraints nullable="false" unique="true"/>
-			</column>
-			
-		</createTable>
-		<createTable tableName="customer_role">
-		
-			<column name="customer_id" type="integer">
-				<constraints references="customer(customer_id)" foreignKeyName="customer_role_customer_id_fkey" primaryKey="true"/>
-			</column>
 			<column name="role_id" type="integer">
-				<constraints references="role(role_id)" foreignKeyName="customer_role_role_id_fkey" primaryKey="true"/>
+				<constraints references="role(role_id)" foreignKeyName="customer_role_id_fkey"/>
 			</column>
 			
 		</createTable>

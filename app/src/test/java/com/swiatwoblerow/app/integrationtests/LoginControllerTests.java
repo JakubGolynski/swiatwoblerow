@@ -54,7 +54,7 @@ public class LoginControllerTests {
 		assertThat(returnedCustomerDto.getUsername()).isEqualTo(customerDto.getUsername());
 		assertThat(returnedCustomerDto.getPassword()).isNull();
 		
-		MvcResult mvcResult2 = mvc.perform(MockMvcRequestBuilders.get("/categories")
+		MvcResult mvcResult2 = mvc.perform(MockMvcRequestBuilders.get("/customers")
 				.characterEncoding("utf-8")
 				.header("Authorization", "Bearer "+returnedCustomerDto.getJwtToken())
 				.accept(MediaType.APPLICATION_JSON)
@@ -89,5 +89,28 @@ public class LoginControllerTests {
 		
 		assertThat(exception).isInstanceOf(BadCredentialsExceptionDto.class);
 		assertThat(exception.getStatus()).isEqualTo(HttpStatus.UNAUTHORIZED);
+	}
+	
+	@Test
+	public void shouldGetJwt() throws Exception{
+		CustomerDto customerDto = new CustomerDto();
+		customerDto.setUsername("user");
+		customerDto.setPassword("user");
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.post("/login")
+				.characterEncoding("utf-8")
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON_VALUE)
+				.content(objectMapper.writeValueAsString(customerDto)))
+				.andExpect(status().isOk())
+				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
+				.andReturn();
+		
+		CustomerDto returnedCustomerDto = objectMapper.readValue(
+				mvcResult.getResponse().getContentAsString(), CustomerDto.class);
+		
+		assertThat(returnedCustomerDto.getJwtToken()).isNotNull();
+		assertThat(returnedCustomerDto.getUsername()).isEqualTo(customerDto.getUsername());
+		assertThat(returnedCustomerDto.getPassword()).isNull();
+		
 	}
 }
