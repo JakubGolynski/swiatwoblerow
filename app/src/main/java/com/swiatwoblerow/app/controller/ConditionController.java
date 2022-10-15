@@ -12,35 +12,34 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.swiatwoblerow.app.dto.CountryDto;
+import com.swiatwoblerow.app.dto.ConditionDto;
 import com.swiatwoblerow.app.exceptions.AlreadyExistsException;
 import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
-import com.swiatwoblerow.app.service.interfaces.CountryService;
+import com.swiatwoblerow.app.service.interfaces.ConditionService;
 
 @RestController
-@RequestMapping("/countries")
-public class CountryController {
+@RequestMapping("/conditions")
+public class ConditionController {
+	private ConditionService conditionService;
 
-	private CountryService countryService;
-	
-	public CountryController(CountryService countryService) {
-		this.countryService = countryService;
+	public ConditionController(ConditionService conditionService) {
+		this.conditionService = conditionService;
 	}
-
+	
 	@GetMapping
-	public List<CountryDto> getCountries(){
-		return countryService.getCountries();
+	public List<ConditionDto> getConditions(){
+		return conditionService.getConditions();
 	}
-	
+
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public CountryDto addCountry(@RequestBody CountryDto countryDto) throws AlreadyExistsException {
-		return countryService.addCountry(countryDto.getName());
+	public ConditionDto addCondition(@RequestBody ConditionDto conditionDto) throws AlreadyExistsException {
+		return conditionService.addCondition(conditionDto.getName());
 	}
 	
-	@DeleteMapping("/{countryId}")
+	@DeleteMapping("/{conditionId}")
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void deleteCountry(@PathVariable int countryId) throws NotFoundExceptionRequest{
-		countryService.deleteCountry(countryId);
+	public void deleteCondition(@PathVariable int conditionId) throws NotFoundExceptionRequest{
+		conditionService.deleteCondition(conditionId);
 	}
 }

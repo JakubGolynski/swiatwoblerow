@@ -36,13 +36,9 @@ import com.swiatwoblerow.app.service.interfaces.CustomerService;
 public class CustomerServiceImpl implements CustomerService, UserDetailsService {
 	
 	private CustomerRepository customerRepository;
-	
 	private AddressRepository addressRepository;
-	
 	private CountryRepository countryRepository;
-	
 	private RoleRepository roleRepository;
-	
 	private ModelMapper modelMapper;
 	
 	public CustomerServiceImpl(CustomerRepository customerRepository,AddressRepository addressRepository,
@@ -94,8 +90,10 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 	}
 
 	@Override
-	public CustomerDto addCustomer(CustomerDto customerDto) throws NotFoundExceptionRequest, AlreadyExistsException{
-		Customer customerWithGivenUsername = customerRepository.findByUsername(customerDto.getUsername()).orElse(null);
+	public CustomerDto addCustomer(CustomerDto customerDto) 
+			throws NotFoundExceptionRequest, AlreadyExistsException{
+		Customer customerWithGivenUsername = customerRepository
+				.findByUsername(customerDto.getUsername()).orElse(null);
 		if(customerWithGivenUsername != null) {
 			throw new AlreadyExistsException("Username "+customerDto.getUsername()+" is already in use");
 		}

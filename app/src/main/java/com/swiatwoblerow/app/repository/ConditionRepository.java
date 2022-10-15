@@ -10,4 +10,5 @@ import com.swiatwoblerow.app.entity.Condition;
 @Repository
 public interface ConditionRepository extends JpaRepository<Condition, Integer> {
 	Set<Condition> findByNameIn(Set<String> conditionNames);
+	boolean existsByName(String name);
 }

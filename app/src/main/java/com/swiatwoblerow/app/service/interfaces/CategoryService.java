@@ -8,7 +8,8 @@ import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
 
 public interface CategoryService {
 	public List<CategoryDto> getCategories();
-	public CategoryDto addCategory(String category) throws AlreadyExistsException;
+	public CategoryDto addCategory(String categoryName) throws AlreadyExistsException;
 	public CategoryDto getCategory(String name) throws NotFoundExceptionRequest;
 	public CategoryDto getCategory(Integer id) throws NotFoundExceptionRequest;
+	public void deleteCategory(int categoryId) throws NotFoundExceptionRequest;
 }

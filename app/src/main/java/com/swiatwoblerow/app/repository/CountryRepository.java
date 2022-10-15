@@ -10,4 +10,5 @@ import com.swiatwoblerow.app.entity.Country;
 @Repository
 public interface CountryRepository extends JpaRepository<Country, Integer> {
 	Optional<Country> findByName(String name);
+	boolean existsByName(String name);
 }

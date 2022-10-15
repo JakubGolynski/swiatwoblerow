@@ -14,7 +14,6 @@ import com.swiatwoblerow.app.service.interfaces.AddressService;
 public class AddressServiceImpl implements AddressService {
 	
 	private CountryRepository countryRepository;
-	
 	private AddressRepository addressRepository;
 	
 	public AddressServiceImpl(CountryRepository countryRepository, AddressRepository addressRepository) {
@@ -34,6 +33,16 @@ public class AddressServiceImpl implements AddressService {
 		address.setCountry(country);
 		addressRepository.save(address);
 		return addressDto;
+	}
+
+	@Override
+	public void deleteAddress(int addressId) throws NotFoundExceptionRequest{
+		boolean isFound = addressRepository.existsById(addressId);
+		if(isFound == false) {
+			throw new NotFoundExceptionRequest("Address with id "+
+					addressId+" does not exist");
+		}
+		addressRepository.deleteById(addressId);
 	}
 	
 }

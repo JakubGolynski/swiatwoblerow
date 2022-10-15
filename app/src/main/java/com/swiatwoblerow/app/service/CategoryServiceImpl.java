@@ -26,17 +26,6 @@ public class CategoryServiceImpl implements CategoryService {
 	}
 
 	@Override
-	public CategoryDto addCategory(String category) throws AlreadyExistsException{
-		Category checkIfCategoryAlreadyExist = categoryRepository.findByName(category).orElse(null);
-		if(checkIfCategoryAlreadyExist != null) {
-			throw new AlreadyExistsException("category with name "+category+" already exists in database");
-		}
-		Category newCategory = new Category(category);
-		categoryRepository.save(newCategory);
-		return modelMapper.map(newCategory, CategoryDto.class);
-	}
-	
-	@Override
 	public CategoryDto getCategory(Integer id) throws NotFoundExceptionRequest {
 		Category category = categoryRepository.findById(id).orElseThrow(
 				() -> new NotFoundExceptionRequest("Category with id "+
@@ -57,6 +46,28 @@ public class CategoryServiceImpl implements CategoryService {
 		return categoryRepository.findAll().stream()
 			.map(category -> modelMapper.map(category, CategoryDto.class))
 			.collect(Collectors.toList());
+	}
+	
+	@Override
+	public CategoryDto addCategory(String categoryName) throws AlreadyExistsException{
+		boolean isFound = categoryRepository.existsByName(categoryName);
+		if(isFound == true) {
+			throw new AlreadyExistsException("category with name "+
+					categoryName+" already exists in database");
+		}
+		Category category = new Category(categoryName);
+		categoryRepository.save(category);
+		return modelMapper.map(category, CategoryDto.class);
+	}
+
+	@Override
+	public void deleteCategory(int categoryId) throws NotFoundExceptionRequest {
+		boolean isFound =  categoryRepository.existsById(categoryId);
+		if(isFound == false) {
+			throw new NotFoundExceptionRequest("Country with id "+
+					categoryId+" does not exist");
+		}
+		categoryRepository.deleteById(categoryId);
 	}
 
 }

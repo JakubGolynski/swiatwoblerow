@@ -9,6 +9,6 @@ import com.swiatwoblerow.app.entity.Category;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
-	
 	Optional<Category> findByName(String name); 
+	boolean existsByName(String name);
 }

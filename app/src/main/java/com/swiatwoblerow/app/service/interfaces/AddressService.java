@@ -5,4 +5,5 @@ import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
 
 public interface AddressService {
 	public AddressDto addAddress(AddressDto addressDto) throws NotFoundExceptionRequest;
+	public void deleteAddress(int addressId) throws NotFoundExceptionRequest;
 }
