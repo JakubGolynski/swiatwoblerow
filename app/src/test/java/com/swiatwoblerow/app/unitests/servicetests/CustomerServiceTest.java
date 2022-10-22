@@ -10,8 +10,7 @@ import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
-
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -42,30 +41,29 @@ import com.swiatwoblerow.app.service.CustomerPrincipal;
 import com.swiatwoblerow.app.service.CustomerServiceImpl;
 import com.swiatwoblerow.app.service.filter.CustomerFilter;
 import com.swiatwoblerow.app.service.interfaces.CustomerService;
+import com.swiatwoblerow.app.validators.interfaces.Validator;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomerServiceTest {
 
 	@Mock
 	private CustomerRepository customerRepository;
-	
 	@Mock
 	private AddressRepository addressRepository;
-	
 	@Mock
 	private CountryRepository countryRepository;
-	
 	@Mock
 	private RoleRepository roleRepository;
-	
+	@Mock
+	private Validator customerValidator;
 	private ModelMapper modelMapper = new ModelMapper();
-	
 	private CustomerService customerService;
 	
 	@BeforeEach
 	void setUp() {
 		customerService = new CustomerServiceImpl(customerRepository,
-				addressRepository, countryRepository, roleRepository, modelMapper);
+				addressRepository, countryRepository, roleRepository,
+				customerValidator, modelMapper);
 	}
 	
 	@Test
@@ -151,7 +149,6 @@ public class CustomerServiceTest {
 		customer2.setRole(roleUser);
 		customer2.setManagedCategories(managedCategories);
 		
-		
 		List<Customer> customers = new ArrayList<>();
 		
 		customers.add(customer1);
@@ -163,12 +160,10 @@ public class CustomerServiceTest {
 		
 		CustomerFilter customerFilter = new CustomerFilter();
 		
-		
 		Sort sortBy = Sort.by(customerFilter.getSort());
 		
 		when(customerRepository.getCustomerIdList(customerFilter)).thenReturn(customersIds);
 		when(customerRepository.findByIdIn(customersIds,sortBy)).thenReturn(customers);
-		
 
 		List<CustomerDto> returnCustomers = customers.stream().map(
 				customer -> modelMapper.map(customer, CustomerDto.class))
@@ -271,14 +266,15 @@ public class CustomerServiceTest {
 	}
 	
 	@Test
-	public void addCustomerFailUsernameAlreadyInUse() {
+	public void addCustomerFailUsernameAlreadyInUse() throws Exception{
 		Customer customer = new Customer();
 		String customerName = "test!@#łUsername";
 		customer.setUsername(customerName);
 
 		CustomerDto customerDto = modelMapper.map(customer, CustomerDto.class);
 		
-		when(customerRepository.findByUsername(customerName)).thenReturn(Optional.of(customer));
+		doThrow(new AlreadyExistsException("Username "+customerDto.getUsername()+" is already in use"))
+		.when(customerValidator).validateCustomer(customerDto);
 		
 		AlreadyExistsException exception = assertThrows(AlreadyExistsException.class,
 				() -> {
@@ -290,7 +286,7 @@ public class CustomerServiceTest {
 	}
 	
 	@Test
-	public void addCustomerFailEmailAlreadyInUse() {
+	public void addCustomerFailEmailAlreadyInUse() throws Exception{
 		Customer customer = new Customer();
 		String customerName = "test!@#łUsername";
 		String customerEmail = "test!@#EMail";
@@ -299,7 +295,8 @@ public class CustomerServiceTest {
 
 		CustomerDto customerDto = modelMapper.map(customer, CustomerDto.class);
 		
-		when(customerRepository.findByEmail(customerEmail)).thenReturn(Optional.of(customer));
+		doThrow(new AlreadyExistsException("Email "+customerDto.getEmail()+" is already in use"))
+			.when(customerValidator).validateCustomer(customerDto);
 		
 		AlreadyExistsException exception = assertThrows(AlreadyExistsException.class,
 				() -> {

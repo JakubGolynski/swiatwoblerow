@@ -15,9 +15,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.swiatwoblerow.app.dto.AddressDto;
 import com.swiatwoblerow.app.dto.CustomerDto;
-import com.swiatwoblerow.app.dto.RoleDto;
 import com.swiatwoblerow.app.entity.Address;
 import com.swiatwoblerow.app.entity.Category;
 import com.swiatwoblerow.app.entity.Country;
@@ -31,6 +29,7 @@ import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.RoleRepository;
 import com.swiatwoblerow.app.service.filter.CustomerFilter;
 import com.swiatwoblerow.app.service.interfaces.CustomerService;
+import com.swiatwoblerow.app.validators.interfaces.Validator;
 
 @Service
 public class CustomerServiceImpl implements CustomerService, UserDetailsService {
@@ -39,15 +38,17 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 	private AddressRepository addressRepository;
 	private CountryRepository countryRepository;
 	private RoleRepository roleRepository;
+	private Validator customerValidator;
 	private ModelMapper modelMapper;
 	
-	public CustomerServiceImpl(CustomerRepository customerRepository,AddressRepository addressRepository,
-			CountryRepository countryRepository, RoleRepository roleRepository,
+	public CustomerServiceImpl(CustomerRepository customerRepository, AddressRepository addressRepository,
+			CountryRepository countryRepository, RoleRepository roleRepository, Validator customerValidator,
 			ModelMapper modelMapper) {
 		this.customerRepository = customerRepository;
 		this.addressRepository = addressRepository;
 		this.countryRepository = countryRepository;
 		this.roleRepository = roleRepository;
+		this.customerValidator = customerValidator;
 		this.modelMapper = modelMapper;
 	}
 
@@ -92,29 +93,16 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 	@Override
 	public CustomerDto addCustomer(CustomerDto customerDto) 
 			throws NotFoundExceptionRequest, AlreadyExistsException{
-		Customer customerWithGivenUsername = customerRepository
-				.findByUsername(customerDto.getUsername()).orElse(null);
-		if(customerWithGivenUsername != null) {
-			throw new AlreadyExistsException("Username "+customerDto.getUsername()+" is already in use");
-		}
-		
-		Customer customerWithGivenEmail = customerRepository.findByEmail(customerDto.getEmail()).orElse(null);
-		if(customerWithGivenEmail != null) {
-			throw new AlreadyExistsException("Email "+customerDto.getEmail()+" is already in use");
-		}
+		customerValidator.validateCustomer(customerDto);
 		
 		Role role = roleRepository.findByName("ROLE_USER").orElseThrow(
 				() -> new NotFoundExceptionRequest("ROLE_USER does not exist in database"));
 		
-		Address address = new Address();
+		Address address = modelMapper.map(customerDto.getAddress(), Address.class);
 		
-		address.setCity(customerDto.getAddress().getCity());
-		address.setStreet(customerDto.getAddress().getStreet());
-		address.setHouseNumber(customerDto.getAddress().getHouseNumber());
 		Country country = countryRepository.findByName(customerDto.getAddress().getCountry().getName())
 				.orElseThrow(() -> new NotFoundExceptionRequest("Country "+
 						"with name "+customerDto.getAddress().getCountry().getName() +" does not exist"));
-		
 		address.setCountry(country);
 		addressRepository.save(address);
 		Set<Category> managedCategories = new HashSet<>();
@@ -125,18 +113,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 				address,role,managedCategories);
 		
 		customerRepository.save(customer);
-		CustomerDto returnCustomerDto = new CustomerDto();
-		
-		returnCustomerDto.setUsername(customerDto.getUsername());
-		returnCustomerDto.setFirstName(customerDto.getFirstName());
-		returnCustomerDto.setLastName(customerDto.getLastName());
-		returnCustomerDto.setEmail(customerDto.getEmail());
-		returnCustomerDto.setTelephone(customerDto.getTelephone());
-		AddressDto addressDto = modelMapper.map(address, AddressDto.class);
-		returnCustomerDto.setAddress(addressDto);
-		RoleDto roleDto = modelMapper.map(role, RoleDto.class);
-		returnCustomerDto.setRole(roleDto);
-		
+		CustomerDto returnCustomerDto = modelMapper.map(customer, CustomerDto.class);	
 		return returnCustomerDto;
 	}
 	

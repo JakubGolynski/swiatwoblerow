@@ -15,6 +15,8 @@ import com.swiatwoblerow.app.repository.custom.CustomerRepositoryCustom;
 public interface CustomerRepository extends JpaRepository<Customer, Integer>, CustomerRepositoryCustom {
 	Optional<Customer> findByUsername(String username);
 	Optional<Customer> findByEmail(String email);
+	boolean existsByUsername(String username);
+	boolean existsByEmail(String email);
 	
 	@EntityGraph(attributePaths = {"address.country"})
 	List<Customer> findByIdIn(List<Integer> customerIdList, Sort sortBy);
