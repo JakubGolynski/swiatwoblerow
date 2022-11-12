@@ -16,17 +16,17 @@ import org.springframework.http.HttpStatus;
 import com.swiatwoblerow.app.dto.CustomerDto;
 import com.swiatwoblerow.app.exceptions.AlreadyExistsException;
 import com.swiatwoblerow.app.repository.CustomerRepository;
-import com.swiatwoblerow.app.validators.CustomerValidator;
+import com.swiatwoblerow.app.validators.CustomerValidatorImpl;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomerValidatorTest {
 	@Mock
 	private CustomerRepository customerRepository;
-	private CustomerValidator customerValidator;
+	private CustomerValidatorImpl customerValidator;
 	
 	@BeforeEach
 	void setUp() {
-		customerValidator = new CustomerValidator(customerRepository);
+		customerValidator = new CustomerValidatorImpl(customerRepository);
 	}
 	
 	@Test
@@ -40,7 +40,7 @@ public class CustomerValidatorTest {
 		customerDto.setEmail(customerEmail);
 		customerDto.setTelephone("+48512806005");
 		
-		assertDoesNotThrow(() -> customerValidator.validateCustomer(customerDto));
+		assertDoesNotThrow(() -> customerValidator.validate(customerDto));
 	}
 	
 	@Test
@@ -58,7 +58,7 @@ public class CustomerValidatorTest {
 		
 		AlreadyExistsException exception = assertThrows(AlreadyExistsException.class,
 				() -> {
-					customerValidator.validateCustomer(customerDto);
+					customerValidator.validate(customerDto);
 				});
 		assertThat(exception.getMessage()).isEqualTo("Username "+
 				customerUsername+" is already in use");
@@ -80,7 +80,7 @@ public class CustomerValidatorTest {
 		
 		AlreadyExistsException exception = assertThrows(AlreadyExistsException.class,
 				() -> {
-					customerValidator.validateCustomer(customerDto);
+					customerValidator.validate(customerDto);
 				});
 		assertThat(exception.getMessage()).isEqualTo("Email "+
 				customerEmail+" is already in use");

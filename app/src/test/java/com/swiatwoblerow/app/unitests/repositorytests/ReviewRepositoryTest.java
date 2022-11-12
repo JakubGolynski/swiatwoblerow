@@ -94,9 +94,9 @@ public class ReviewRepositoryTest {
 		review.setMessage("test!@#123");
 		reviewRepository.save(review);
 		
-		Review reviewFromDatabase = reviewRepository.findByOwnerAndProduct(customer,product).orElse(null);
+		boolean reviewExists = reviewRepository.existsByOwnerAndProduct(customer,product);
 		
-		assertThat(reviewFromDatabase).isEqualTo(review);
+		assertThat(reviewExists).isEqualTo(true);
 	}
 	
 	@Test
@@ -225,11 +225,10 @@ public class ReviewRepositoryTest {
 		review.setQuantityThumbsUp(review.getQuantityThumbsUp()+1);
 		reviewRepository.save(review);
 		
-		int expectedNumberOfCustomerLikes = 1;
-		
-		int numberOfCustomerLikes= reviewRepository.countByIdAndCustomersWhoLikedReviewIn(review.getId(), review.getCustomersWhoLikedReview());
+		boolean customerAlreadyLikedReview = 
+				reviewRepository.existsByIdAndCustomersWhoLikedReviewIn(review.getId(), review.getCustomersWhoLikedReview());
 
-		assertThat(expectedNumberOfCustomerLikes).isEqualTo(numberOfCustomerLikes);
+		assertThat(customerAlreadyLikedReview).isEqualTo(true);
 	}
 	
 	@Test
@@ -282,10 +281,10 @@ public class ReviewRepositoryTest {
 		review.setQuantityThumbsDown(review.getQuantityThumbsDown()+1);
 		reviewRepository.save(review);
 		
-		int expectedNumberOfCustomerDislikes = 1;
 		
-		int numberOfCustomerDislikes= reviewRepository.countByIdAndCustomersWhoDislikedReviewIn(review.getId(), review.getCustomersWhoDislikedReview());
+		boolean customerAlreadyDislikedReview = 
+				reviewRepository.existsByIdAndCustomersWhoDislikedReviewIn(review.getId(), review.getCustomersWhoDislikedReview());
 
-		assertThat(expectedNumberOfCustomerDislikes).isEqualTo(numberOfCustomerDislikes);
+		assertThat(customerAlreadyDislikedReview).isEqualTo(true);
 	}
 }

@@ -57,9 +57,7 @@ public class ProductServiceTest {
 
 	@Mock
 	private ConditionRepository conditionRepository;
-	
 	private ModelMapper modelMapper = new ModelMapper();
-	
 	private ProductService productService;
 	
 	@BeforeEach

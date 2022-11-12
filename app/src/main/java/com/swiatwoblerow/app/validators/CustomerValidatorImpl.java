@@ -5,19 +5,19 @@ import org.springframework.stereotype.Component;
 import com.swiatwoblerow.app.dto.CustomerDto;
 import com.swiatwoblerow.app.exceptions.AlreadyExistsException;
 import com.swiatwoblerow.app.repository.CustomerRepository;
-import com.swiatwoblerow.app.validators.interfaces.Validator;
+import com.swiatwoblerow.app.validators.interfaces.CustomerValidator;
 
 @Component
-public class CustomerValidator implements Validator{
+public class CustomerValidatorImpl implements CustomerValidator{
 	
 	private CustomerRepository customerRepository;
 
-	public CustomerValidator(CustomerRepository customerRepository) {
+	public CustomerValidatorImpl(CustomerRepository customerRepository) {
 		this.customerRepository = customerRepository;
 	}
 	
 	@Override
-	public void validateCustomer(CustomerDto customerDto) throws AlreadyExistsException{
+	public void validate(CustomerDto customerDto) throws AlreadyExistsException{
 		validateUsername(customerDto.getUsername());
 		validateEmail(customerDto.getEmail());
 	}

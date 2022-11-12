@@ -29,7 +29,7 @@ import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.RoleRepository;
 import com.swiatwoblerow.app.service.filter.CustomerFilter;
 import com.swiatwoblerow.app.service.interfaces.CustomerService;
-import com.swiatwoblerow.app.validators.interfaces.Validator;
+import com.swiatwoblerow.app.validators.interfaces.CustomerValidator;
 
 @Service
 public class CustomerServiceImpl implements CustomerService, UserDetailsService {
@@ -38,11 +38,11 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 	private AddressRepository addressRepository;
 	private CountryRepository countryRepository;
 	private RoleRepository roleRepository;
-	private Validator customerValidator;
+	private CustomerValidator customerValidator;
 	private ModelMapper modelMapper;
 	
 	public CustomerServiceImpl(CustomerRepository customerRepository, AddressRepository addressRepository,
-			CountryRepository countryRepository, RoleRepository roleRepository, Validator customerValidator,
+			CountryRepository countryRepository, RoleRepository roleRepository, CustomerValidator customerValidator,
 			ModelMapper modelMapper) {
 		this.customerRepository = customerRepository;
 		this.addressRepository = addressRepository;
@@ -93,7 +93,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 	@Override
 	public CustomerDto addCustomer(CustomerDto customerDto) 
 			throws NotFoundExceptionRequest, AlreadyExistsException{
-		customerValidator.validateCustomer(customerDto);
+		customerValidator.validate(customerDto);
 		
 		Role role = roleRepository.findByName("ROLE_USER").orElseThrow(
 				() -> new NotFoundExceptionRequest("ROLE_USER does not exist in database"));

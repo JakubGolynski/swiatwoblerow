@@ -41,7 +41,7 @@ import com.swiatwoblerow.app.service.CustomerPrincipal;
 import com.swiatwoblerow.app.service.CustomerServiceImpl;
 import com.swiatwoblerow.app.service.filter.CustomerFilter;
 import com.swiatwoblerow.app.service.interfaces.CustomerService;
-import com.swiatwoblerow.app.validators.interfaces.Validator;
+import com.swiatwoblerow.app.validators.interfaces.CustomerValidator;
 
 @ExtendWith(MockitoExtension.class)
 public class CustomerServiceTest {
@@ -55,7 +55,7 @@ public class CustomerServiceTest {
 	@Mock
 	private RoleRepository roleRepository;
 	@Mock
-	private Validator customerValidator;
+	private CustomerValidator customerValidator;
 	private ModelMapper modelMapper = new ModelMapper();
 	private CustomerService customerService;
 	
@@ -274,7 +274,7 @@ public class CustomerServiceTest {
 		CustomerDto customerDto = modelMapper.map(customer, CustomerDto.class);
 		
 		doThrow(new AlreadyExistsException("Username "+customerDto.getUsername()+" is already in use"))
-		.when(customerValidator).validateCustomer(customerDto);
+		.when(customerValidator).validate(customerDto);
 		
 		AlreadyExistsException exception = assertThrows(AlreadyExistsException.class,
 				() -> {
@@ -296,7 +296,7 @@ public class CustomerServiceTest {
 		CustomerDto customerDto = modelMapper.map(customer, CustomerDto.class);
 		
 		doThrow(new AlreadyExistsException("Email "+customerDto.getEmail()+" is already in use"))
-			.when(customerValidator).validateCustomer(customerDto);
+			.when(customerValidator).validate(customerDto);
 		
 		AlreadyExistsException exception = assertThrows(AlreadyExistsException.class,
 				() -> {
