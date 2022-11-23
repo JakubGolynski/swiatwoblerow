@@ -18,6 +18,7 @@ import com.swiatwoblerow.app.dto.ThumbDto;
 import com.swiatwoblerow.app.exceptions.CustomerIsNotOwnerException;
 import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
 import com.swiatwoblerow.app.exceptions.TooManyInsertException;
+import com.swiatwoblerow.app.service.filter.ReviewFilter;
 import com.swiatwoblerow.app.service.interfaces.ReviewService;
 
 @RestController
@@ -31,8 +32,8 @@ public class ReviewController {
 	}
 	
 	@GetMapping("/products/{id}/reviews")
-	public List<ReviewDto> getReviews(@PathVariable int id) throws NotFoundExceptionRequest{
-		return reviewService.getReviews(id);
+	public List<ReviewDto> getReviews(@PathVariable int id, @RequestBody ReviewFilter reviewFilter) throws NotFoundExceptionRequest{
+		return reviewService.getReviews(id,reviewFilter);
 	}
 	
 	@PostMapping("/products/{id}/reviews")

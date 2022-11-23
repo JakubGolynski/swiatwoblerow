@@ -22,6 +22,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -43,6 +45,7 @@ import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.ProductRepository;
 import com.swiatwoblerow.app.repository.ReviewRepository;
 import com.swiatwoblerow.app.service.ReviewServiceImpl;
+import com.swiatwoblerow.app.service.filter.ReviewFilter;
 import com.swiatwoblerow.app.service.interfaces.ReviewService;
 
 @ExtendWith(MockitoExtension.class)
@@ -58,6 +61,7 @@ public class ReviewServiceTest {
 	private ReviewService reviewService;
 	private Product product;
 	private Customer customer;
+	private ReviewFilter reviewFilter;
 	
 	@BeforeEach
 	void setUp(){
@@ -108,6 +112,8 @@ public class ReviewServiceTest {
 		product.setOwner(customer);
 		product.setQuantityReviews(0);
 		product.setQuantityRatings(0);
+		
+		reviewFilter = new ReviewFilter(0,5);
 	}
 	
 	@Test
@@ -130,12 +136,14 @@ public class ReviewServiceTest {
 		List<Review> listOfReviews = new ArrayList<>();
 		listOfReviews.add(review);
 		
+		Pageable pageable = PageRequest.of(0, 5);
+		
 		when(productRepository.findById(id)).thenReturn(Optional.of(product));
-		when(reviewRepository.findAllByProduct(product)).thenReturn(listOfReviews);
+		when(reviewRepository.findAllByProduct(product,pageable)).thenReturn(listOfReviews);
 		List<ReviewDto> listOfReviewDtos = listOfReviews.stream()
 				.map(currentReview -> modelMapper.map(currentReview, ReviewDto.class))
 				.collect(Collectors.toList());
-		assertThat(reviewService.getReviews(id)).isEqualTo(listOfReviewDtos);
+		assertThat(reviewService.getReviews(id,reviewFilter)).isEqualTo(listOfReviewDtos);
 		
 	}
 	
@@ -144,7 +152,7 @@ public class ReviewServiceTest {
 		Integer id = 11111123;
 		NotFoundExceptionRequest exception = assertThrows(NotFoundExceptionRequest.class,
 				() -> {
-					reviewService.getReviews(id);
+					reviewService.getReviews(id,reviewFilter);
 				});
 		assertThat(exception.getMessage()).isEqualTo(
 				"Product with id "+id+" not found");
@@ -456,18 +464,106 @@ public class ReviewServiceTest {
 	}
 	
 	@Test
-	public void deleteThumbUpSuccess() {
+	public void deleteThumbUpSuccess() throws Exception{
+		Integer reviewId = 1;
 		
+		Set<Customer> customersLikedReview = new HashSet<>();
+		customersLikedReview.add(customer);
+		
+		Review review = new Review();
+		review.setId(reviewId);
+		review.setMessage("test123!@#");
+		review.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		review.setQuantityThumbsDown(0);
+		review.setQuantityThumbsUp(1);
+		review.setCustomersWhoLikedReview(customersLikedReview);
+		review.setOwner(customer);
+		review.setProduct(product);
+
+		when(customerRepository.findByUsername(customer.getUsername())).thenReturn(Optional.of(customer));
+		when(reviewRepository.findById(reviewId)).thenReturn(Optional.of(review));
+		when(reviewRepository
+				.existsByIdAndCustomersWhoLikedReviewIn(reviewId, customersLikedReview))
+			.thenReturn(true);
+		
+		Authentication authentication = Mockito.mock(Authentication.class);
+		when(authentication.getName()).thenReturn(customer.getUsername());
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+		SecurityContextHolder.setContext(securityContext);
+		
+		int quantityThumbsUp = review.getQuantityThumbsUp();
+		int quantityThumbsDown = review.getQuantityThumbsDown();
+		
+		reviewService.deleteThumbUp(reviewId);
+		
+		assertThat(review.getQuantityThumbsUp()).isEqualTo(quantityThumbsUp-1);
+		assertThat(review.getQuantityThumbsDown()).isEqualTo(quantityThumbsDown);
+		assertThat(review.getCustomersWhoLikedReview()).isEmpty();
+		assertThat(review.getCustomersWhoDislikedReview()).isEmpty();
 	}
 	
 	@Test
 	public void deleteThumbUpFailBadReviewId() {
+		Integer reviewId = 1;
+
+		when(customerRepository.findByUsername(customer.getUsername())).thenReturn(Optional.of(customer));
 		
+		Authentication authentication = Mockito.mock(Authentication.class);
+		when(authentication.getName()).thenReturn(customer.getUsername());
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+		SecurityContextHolder.setContext(securityContext);
+		
+		NotFoundExceptionRequest exception = assertThrows(NotFoundExceptionRequest.class,
+				() -> {
+					reviewService.deleteThumbUp(reviewId);
+				});
+		assertThat(exception.getMessage()).isEqualTo(
+				"Review with id "+reviewId+" not found");
+		assertThat(exception.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 	
 	@Test
-	public void deleteThumbUpFailInThisReviewUserDoesNotOwnAnyThumbUp() {
+	public void deleteThumbUpFailInThisReviewUserDoesNotOwnThumbUp() {
+		Integer reviewId = 1;
 		
+		Set<Customer> customersLikedReview = new HashSet<>();
+		customersLikedReview.add(customer);
+		
+		Review review = new Review();
+		review.setId(reviewId);
+		review.setMessage("test123!@#");
+		review.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		review.setQuantityThumbsDown(0);
+		review.setQuantityThumbsUp(1);
+		review.setCustomersWhoLikedReview(customersLikedReview);
+		review.setOwner(customer);
+		review.setProduct(product);
+
+		when(customerRepository.findByUsername(customer.getUsername())).thenReturn(Optional.of(customer));
+		when(reviewRepository.findById(reviewId)).thenReturn(Optional.of(review));
+		
+		Authentication authentication = Mockito.mock(Authentication.class);
+		when(authentication.getName()).thenReturn(customer.getUsername());
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+		SecurityContextHolder.setContext(securityContext);
+		
+		int quantityThumbsUp = review.getQuantityThumbsUp();
+		int quantityThumbsDown = review.getQuantityThumbsDown();
+		
+		CustomerIsNotOwnerException exception = assertThrows(CustomerIsNotOwnerException.class,
+				() -> {
+					reviewService.deleteThumbUp(reviewId);
+				});
+		assertThat(exception.getMessage()).isEqualTo("Customer does not own thumb up "
+						+ "in review with reviewId: "+ reviewId);
+		
+		assertThat(exception.getStatus()).isEqualTo(HttpStatus.CONFLICT);
+		assertThat(review.getQuantityThumbsUp()).isEqualTo(quantityThumbsUp);
+		assertThat(review.getQuantityThumbsDown()).isEqualTo(quantityThumbsDown);
+		assertThat(review.getCustomersWhoLikedReview()).isNotEmpty();
 	}
 	
 	@Test
@@ -607,18 +703,106 @@ public class ReviewServiceTest {
 	}
 	
 	@Test
-	public void deleteThumbDownSuccess() {
+	public void deleteThumbDownSuccess() throws Exception{
+		Integer reviewId = 1;
 		
+		Set<Customer> customersDislikedReview = new HashSet<>();
+		customersDislikedReview.add(customer);
+		
+		Review review = new Review();
+		review.setId(reviewId);
+		review.setMessage("test123!@#");
+		review.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		review.setQuantityThumbsDown(1);
+		review.setQuantityThumbsUp(0);
+		review.setCustomersWhoDislikedReview(customersDislikedReview);
+		review.setOwner(customer);
+		review.setProduct(product);
+
+		when(customerRepository.findByUsername(customer.getUsername())).thenReturn(Optional.of(customer));
+		when(reviewRepository.findById(reviewId)).thenReturn(Optional.of(review));
+		when(reviewRepository
+				.existsByIdAndCustomersWhoDislikedReviewIn(reviewId, customersDislikedReview))
+			.thenReturn(true);
+		
+		Authentication authentication = Mockito.mock(Authentication.class);
+		when(authentication.getName()).thenReturn(customer.getUsername());
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+		SecurityContextHolder.setContext(securityContext);
+		
+		int quantityThumbsUp = review.getQuantityThumbsUp();
+		int quantityThumbsDown = review.getQuantityThumbsDown();
+		
+		reviewService.deleteThumbDown(reviewId);
+		
+		assertThat(review.getQuantityThumbsUp()).isEqualTo(quantityThumbsUp);
+		assertThat(review.getQuantityThumbsDown()).isEqualTo(quantityThumbsDown-1);
+		assertThat(review.getCustomersWhoLikedReview()).isEmpty();
+		assertThat(review.getCustomersWhoDislikedReview()).isEmpty();
 	}
 	
 	@Test
 	public void deleteThumbDownFailBadReviewId() {
+		Integer reviewId = 1;
+
+		when(customerRepository.findByUsername(customer.getUsername())).thenReturn(Optional.of(customer));
 		
+		Authentication authentication = Mockito.mock(Authentication.class);
+		when(authentication.getName()).thenReturn(customer.getUsername());
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+		SecurityContextHolder.setContext(securityContext);
+		
+		NotFoundExceptionRequest exception = assertThrows(NotFoundExceptionRequest.class,
+				() -> {
+					reviewService.deleteThumbDown(reviewId);
+				});
+		assertThat(exception.getMessage()).isEqualTo(
+				"Review with id "+reviewId+" not found");
+		assertThat(exception.getStatus()).isEqualTo(HttpStatus.NOT_FOUND);
 	}
 	
 	@Test
 	public void deleteThumbDownFailInThisReviewUserDoesNotOwnAnyThumbDown() {
+		Integer reviewId = 1;
 		
+		Set<Customer> customersDislikedReview = new HashSet<>();
+		customersDislikedReview.add(customer);
+		
+		Review review = new Review();
+		review.setId(reviewId);
+		review.setMessage("test123!@#");
+		review.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+		review.setQuantityThumbsDown(1);
+		review.setQuantityThumbsUp(0);
+		review.setCustomersWhoDislikedReview(customersDislikedReview);
+		review.setOwner(customer);
+		review.setProduct(product);
+
+		when(customerRepository.findByUsername(customer.getUsername())).thenReturn(Optional.of(customer));
+		when(reviewRepository.findById(reviewId)).thenReturn(Optional.of(review));
+		
+		Authentication authentication = Mockito.mock(Authentication.class);
+		when(authentication.getName()).thenReturn(customer.getUsername());
+		SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+		Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+		SecurityContextHolder.setContext(securityContext);
+		
+		int quantityThumbsUp = review.getQuantityThumbsUp();
+		int quantityThumbsDown = review.getQuantityThumbsDown();
+		
+		CustomerIsNotOwnerException exception = assertThrows(CustomerIsNotOwnerException.class,
+				() -> {
+					reviewService.deleteThumbDown(reviewId);
+				});
+		assertThat(exception.getMessage()).isEqualTo("Customer does not own thumb down "
+						+ "in review with reviewId: "+ reviewId);
+		
+		assertThat(exception.getStatus()).isEqualTo(HttpStatus.CONFLICT);
+		assertThat(review.getQuantityThumbsUp()).isEqualTo(quantityThumbsUp);
+		assertThat(review.getQuantityThumbsDown()).isEqualTo(quantityThumbsDown);
+		assertThat(review.getCustomersWhoDislikedReview()).isNotEmpty();
 	}
 	
 	@Test

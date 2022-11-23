@@ -4,13 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import com.swiatwoblerow.app.entity.Address;
 import com.swiatwoblerow.app.entity.Country;
@@ -169,8 +169,9 @@ public class ReviewRepositoryTest {
 		List<Review> expectedReviews = new ArrayList<>();
 		expectedReviews.add(review1);
 		expectedReviews.add(review2);
+		Pageable pageable = PageRequest.of(0, 5);
 		
-		List<Review> reviewsFromDatabase = reviewRepository.findAllByProduct(product);
+		List<Review> reviewsFromDatabase = reviewRepository.findAllByProduct(product,pageable);
 		
 		assertThat(reviewsFromDatabase).isEqualTo(expectedReviews);
 	}

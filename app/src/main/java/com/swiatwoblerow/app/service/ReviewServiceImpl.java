@@ -7,6 +7,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -22,6 +24,7 @@ import com.swiatwoblerow.app.exceptions.TooManyInsertException;
 import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.ProductRepository;
 import com.swiatwoblerow.app.repository.ReviewRepository;
+import com.swiatwoblerow.app.service.filter.ReviewFilter;
 import com.swiatwoblerow.app.service.interfaces.ReviewService;
 
 @Service
@@ -41,11 +44,13 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public List<ReviewDto> getReviews(Integer productId) throws NotFoundExceptionRequest{
+	public List<ReviewDto> getReviews(Integer productId, ReviewFilter reviewFilter) throws NotFoundExceptionRequest{
+		Pageable pageable = PageRequest.of(reviewFilter.getPage(),reviewFilter.getSize());
+		
 		Product product = productRepository.findById(productId)
 				.orElseThrow(() -> new NotFoundExceptionRequest("Product with id "+
 						productId+" not found"));
-		return reviewRepository.findAllByProduct(product).stream()
+		return reviewRepository.findAllByProduct(product,pageable).stream()
 				.map(review -> modelMapper.map(review, ReviewDto.class))
 				.collect(Collectors.toList());
 	}
@@ -128,11 +133,15 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public void deleteThumbUp(Integer reviewId) throws UsernameNotFoundException,NotFoundExceptionRequest, NullPointerException,CustomerIsNotOwnerException{
-		CustomerPrincipal customerPrincipal = (CustomerPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Customer customer = customerRepository.findByUsername(customerPrincipal.getUsername()).orElseThrow(
-				() -> new UsernameNotFoundException("User not found with username "+ customerPrincipal.getUsername()));
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		Customer customer = customerRepository.findByUsername(username).orElseThrow(
+				() -> new UsernameNotFoundException("User not found with username "+username));
+		Review review = reviewRepository.findById(reviewId).orElseThrow(
+				() -> new NotFoundExceptionRequest("Review with id "+
+						reviewId+" not found"));
 		Set<Customer> customersWhoMaybeLikedReview = new HashSet<>();
 		customersWhoMaybeLikedReview.add(customer);
+		
 		boolean customerOwnsThumbUp = reviewRepository
 				.existsByIdAndCustomersWhoLikedReviewIn(reviewId, customersWhoMaybeLikedReview);
 		
@@ -140,10 +149,6 @@ public class ReviewServiceImpl implements ReviewService {
 			throw new CustomerIsNotOwnerException("Customer does not own thumb up "
 					+ "in review with reviewId: "+ reviewId);
 		}
-		
-		Review review = reviewRepository.findById(reviewId).orElseThrow(
-				() -> new NotFoundExceptionRequest("Review with id "+
-						reviewId+" not found"));
 		
 		int quantityThumbsUp = review.getQuantityThumbsUp();
 		review.getCustomersWhoLikedReview().remove(customer);
@@ -185,22 +190,22 @@ public class ReviewServiceImpl implements ReviewService {
 
 	@Override
 	public void deleteThumbDown(Integer reviewId) throws UsernameNotFoundException,NotFoundExceptionRequest,NullPointerException,CustomerIsNotOwnerException {
-		CustomerPrincipal customerPrincipal = (CustomerPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Customer customer = customerRepository.findByUsername(customerPrincipal.getUsername()).orElseThrow(
-				() -> new UsernameNotFoundException("User not found with username "+ customerPrincipal.getUsername()));
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		Customer customer = customerRepository.findByUsername(username).orElseThrow(
+				() -> new UsernameNotFoundException("User not found with username "+username));
+		Review review = reviewRepository.findById(reviewId).orElseThrow(
+				() -> new NotFoundExceptionRequest("Review with id "+
+						reviewId+" not found"));
 		Set<Customer> customersWhoMaybeDislikedReview = new HashSet<>();
 		customersWhoMaybeDislikedReview.add(customer);
 		
 		boolean customerOwnsThumbDown = reviewRepository
-				.existsByIdAndCustomersWhoLikedReviewIn(reviewId, customersWhoMaybeDislikedReview);
+				.existsByIdAndCustomersWhoDislikedReviewIn(reviewId, customersWhoMaybeDislikedReview);
 		
 		if(customerOwnsThumbDown == false) {
 			throw new CustomerIsNotOwnerException("Customer does not own thumb down "
 					+ "in review with reviewId: "+ reviewId);
 		}
-		Review review = reviewRepository.findById(reviewId).orElseThrow(
-				() -> new NotFoundExceptionRequest("Review with id "+
-						reviewId+" not found"));
 		
 		int quantityThumbsDown = review.getQuantityThumbsDown();
 		review.getCustomersWhoDislikedReview().remove(customer);
@@ -214,6 +219,8 @@ public class ReviewServiceImpl implements ReviewService {
 		Review review = reviewRepository.findById(reviewId).orElseThrow(
 				() -> new NotFoundExceptionRequest("Review with id "+
 						reviewId+" not found"));
+//		Pageable pageable = new Pageable();
+		
 		ThumbDto thumbDto = new ThumbDto(
 				review.getCustomersWhoLikedReview().stream().map(
 						customer -> customer.getUsername()).collect(Collectors.toSet()),
