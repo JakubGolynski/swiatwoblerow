@@ -7,8 +7,12 @@ public class ReviewFilter {
 	
 	private Integer page = 0;
 	
-	private Integer size = 5;
+	private Integer size = 10;
 
+	public ReviewFilter() {
+		
+	}
+	
 	public ReviewFilter(Integer page, Integer size) {
 		this.page = page;
 		this.size = size;

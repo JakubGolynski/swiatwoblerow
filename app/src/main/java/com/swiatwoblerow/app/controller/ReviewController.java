@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.swiatwoblerow.app.dto.ReviewDto;
-import com.swiatwoblerow.app.dto.ThumbDto;
 import com.swiatwoblerow.app.exceptions.CustomerIsNotOwnerException;
 import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
 import com.swiatwoblerow.app.exceptions.TooManyInsertException;
@@ -32,7 +31,7 @@ public class ReviewController {
 	}
 	
 	@GetMapping("/products/{id}/reviews")
-	public List<ReviewDto> getReviews(@PathVariable int id, @RequestBody ReviewFilter reviewFilter) throws NotFoundExceptionRequest{
+	public List<ReviewDto> getReviews(@PathVariable int id, ReviewFilter reviewFilter) throws NotFoundExceptionRequest{
 		return reviewService.getReviews(id,reviewFilter);
 	}
 	
@@ -70,10 +69,5 @@ public class ReviewController {
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void deleteThumbDown(@PathVariable int reviewId) throws NotFoundExceptionRequest,CustomerIsNotOwnerException{
 		reviewService.deleteThumbDown(reviewId);
-	}
-	
-	@GetMapping("/products/{productId}/reviews/{reviewId}/thumbs")
-	public ThumbDto getThumbs(@PathVariable int reviewId) throws NotFoundExceptionRequest{
-		return reviewService.getReviewThumbs(reviewId);
 	}
 }

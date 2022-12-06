@@ -14,7 +14,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.swiatwoblerow.app.dto.ReviewDto;
-import com.swiatwoblerow.app.dto.ThumbDto;
 import com.swiatwoblerow.app.entity.Customer;
 import com.swiatwoblerow.app.entity.Product;
 import com.swiatwoblerow.app.entity.Review;
@@ -76,7 +75,12 @@ public class ReviewServiceImpl implements ReviewService {
 		review.setQuantityThumbsDown(0);
 		review.setOwner(customer);
 		review.setProduct(product);
+		review.setReviewOwner(username);
 		reviewRepository.save(review);
+		
+		product.getReviews().add(review);
+		product.setQuantityReviews(product.getQuantityReviews()+1);
+		productRepository.save(product);
 		
 		ReviewDto returnReviewDto = modelMapper.map(review, ReviewDto.class);
 		return returnReviewDto;
@@ -212,21 +216,6 @@ public class ReviewServiceImpl implements ReviewService {
 		review.setQuantityThumbsDown(quantityThumbsDown-1);
 		reviewRepository.save(review);
 		return;
-	}
-
-	@Override
-	public ThumbDto getReviewThumbs(Integer reviewId) throws NotFoundExceptionRequest{
-		Review review = reviewRepository.findById(reviewId).orElseThrow(
-				() -> new NotFoundExceptionRequest("Review with id "+
-						reviewId+" not found"));
-//		Pageable pageable = new Pageable();
-		
-		ThumbDto thumbDto = new ThumbDto(
-				review.getCustomersWhoLikedReview().stream().map(
-						customer -> customer.getUsername()).collect(Collectors.toSet()),
-				review.getCustomersWhoDislikedReview().stream().map(
-						customer -> customer.getUsername()).collect(Collectors.toSet()));
-		return thumbDto;
 	}
 
 }

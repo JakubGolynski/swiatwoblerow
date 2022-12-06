@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>	
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"> 
+
+
+	<changeSet id="23" author="Goly">
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Bardzo polecam1"/>
+			<column name="quantity_thumbs_up" value="0"/> 
+			<column name="quantity_thumbs_down" value="0"/> 
+			<column name="customer_id" value="2"/>
+			<column name="product_id" type="1"/>
+		</insert>
+	</changeSet>
+</databaseChangeLog>

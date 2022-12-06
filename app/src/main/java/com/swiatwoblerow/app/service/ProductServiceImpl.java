@@ -1,6 +1,7 @@
 package com.swiatwoblerow.app.service;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -11,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.swiatwoblerow.app.dto.CategoryDto;
 import com.swiatwoblerow.app.dto.ProductDto;
 import com.swiatwoblerow.app.entity.Category;
 import com.swiatwoblerow.app.entity.Condition;
@@ -83,7 +85,10 @@ public class ProductServiceImpl implements ProductService {
 		Sort sortBy = Sort.by(Sort.Direction.ASC, productFilter.getSort());
 		
 		return productRepository.findByIdIn(productRepository.getProductIdList(productFilter),sortBy).stream()
-				.map(product -> modelMapper.map(product, ProductDto.class))
+				.map(product -> new ProductDto(
+						product.getId(), product.getName(), product.getPrice(), product.getCreatedAt(), product.getQuantity(),
+						null, product.getRating(), product.getQuantityRatings(), product.getQuantityReviews(),
+						null, new CategoryDto(product.getCategory().getId(), product.getCategory().getName()), new HashSet<>()))
 				.collect(Collectors.toList());
 	}
 

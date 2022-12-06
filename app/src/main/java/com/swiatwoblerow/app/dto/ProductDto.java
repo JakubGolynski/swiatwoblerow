@@ -38,7 +38,7 @@ public class ProductDto {
 	}
 
 	public ProductDto(Integer id, String name, Double price, Timestamp createdAt, Integer quantity, String message,
-			Double rating, CustomerDto owner, CategoryDto category,
+			Double rating, Integer quantityRatings, Integer quantityReviews, CustomerDto owner, CategoryDto category,
 			Set<ConditionDto> conditions) {
 		this.id = id;
 		this.name = name;
@@ -47,6 +47,8 @@ public class ProductDto {
 		this.quantity = quantity;
 		this.message = message;
 		this.rating = rating;
+		this.quantityRatings = quantityRatings;
+		this.quantityReviews = quantityReviews;
 		this.owner = owner;
 		this.category = category;
 		this.conditions = conditions;

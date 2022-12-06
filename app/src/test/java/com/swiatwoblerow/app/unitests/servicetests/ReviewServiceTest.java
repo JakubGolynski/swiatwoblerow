@@ -180,7 +180,7 @@ public class ReviewServiceTest {
 		ReviewDto reviewDto = modelMapper.map(review, ReviewDto.class);
 		ReviewDto returnedReviewDto = reviewService.addReview(id, reviewDto);
 
-		reviewDto.setOwnerUsername(customer.getUsername());
+		reviewDto.setReviewOwner(customer.getUsername());
 		
 		
 		assertThat(new Date(reviewDto.getCreatedAt().getTime()))

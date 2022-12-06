@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.swiatwoblerow.app.dto.ReviewDto;
-import com.swiatwoblerow.app.dto.ThumbDto;
 import com.swiatwoblerow.app.exceptions.CustomerIsNotOwnerException;
 import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
 import com.swiatwoblerow.app.exceptions.TooManyInsertException;
@@ -19,5 +18,4 @@ public interface ReviewService {
 	public void deleteThumbUp(Integer reviewId) throws UsernameNotFoundException,NotFoundExceptionRequest, NullPointerException,CustomerIsNotOwnerException;
 	public void addThumbDown(Integer reviewId) throws UsernameNotFoundException,NotFoundExceptionRequest,TooManyInsertException;
 	public void deleteThumbDown(Integer reviewId) throws UsernameNotFoundException,NotFoundExceptionRequest, NullPointerException,CustomerIsNotOwnerException;
-	public ThumbDto getReviewThumbs(Integer reviewId) throws NotFoundExceptionRequest;
 }

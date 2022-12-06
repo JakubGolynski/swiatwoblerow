@@ -52,7 +52,7 @@ public class Product {
 	@Column(name="rating")
 	private Double rating;
 	
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.LAZY)
 	@JoinTable(name="product_condition",
 				joinColumns = @JoinColumn(name="product_id"),
 				inverseJoinColumns = @JoinColumn(name="condition_id"))
@@ -62,7 +62,7 @@ public class Product {
 	@JoinColumn(name="category_id")
 	private Category category;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="customer_id")
 	private Customer owner;
 	

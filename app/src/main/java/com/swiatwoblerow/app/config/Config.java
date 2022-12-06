@@ -20,17 +20,20 @@ public class Config {
 	@Bean
 	public ModelMapper modelMapper() {
 		ModelMapper modelMapper = new ModelMapper();
+		
 		modelMapper.typeMap(Customer.class, CustomerDto.class)
 			.addMappings(mapper -> mapper.skip(CustomerDto::setPassword))
 			.addMappings(mapper -> mapper.skip(CustomerDto::setJwtToken))
 			.addMappings(mapper -> mapper.skip(CustomerDto::setRole));
+		
 		modelMapper.typeMap(Rating.class, RatingDto.class)
 			.<String>addMapping(src -> src.getOwner().getUsername(),
 					(dest,value) -> dest.setOwnerUsername(value));
 		
-		modelMapper.typeMap(Review.class, ReviewDto.class)
-		.<String>addMapping(src -> src.getOwner().getUsername(),
-				(dest,value) -> dest.setOwnerUsername(value));	
+//		modelMapper.typeMap(Review.class, ReviewDto.class)
+//		.<String>addMapping(src -> src.getOwner().getUsername(),
+//				(dest,value) -> dest.setReviewOwner(value));	
+		
 	    return modelMapper;
 	}
 }

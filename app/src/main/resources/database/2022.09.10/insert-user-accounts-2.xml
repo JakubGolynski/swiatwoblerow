@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>	
+<databaseChangeLog
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+		http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+		http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd"> 
+
+
+	<changeSet id="22" author="Goly">
+		<insert tableName="customer" >
+			<column name="username" value="user3"/>
+			<column name="password" value="$2a$12$NAu1voccGt8iQSrlENXS0OCnEU.fxyEUyGIuKs/q49xRZa0DaSQb6"/>
+			<column name="first_name" value="User3"/>
+			<column name="last_name" value="Userowicz3"/>
+			<column name="email" value="emailuser3@gmail.com"/>
+			<column name="telephone" value="515-152-103"/>
+			<column name="address_id" value="3"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user4"/>
+			<column name="password" value="$2a$12$LlUuQcYLOl370dZcUBkixO/ItnsM2/512Lur/PW1A5RCauKgHAK3a"/>
+			<column name="first_name" value="User4"/>
+			<column name="last_name" value="Userowicz4"/>
+			<column name="email" value="emailuser4@gmail.com"/>
+			<column name="telephone" value="515-152-104"/>
+			<column name="address_id" value="4"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user5"/>
+			<column name="password" value="$2a$12$lnyFK1.a5XgXioVe2QpGn./BNj/wQP456AoA3qz6tKZyL6a3tDyoe"/>
+			<column name="first_name" value="User5"/>
+			<column name="last_name" value="Userowicz5"/>
+			<column name="email" value="emailuser5@gmail.com"/>
+			<column name="telephone" value="515-152-105"/>
+			<column name="address_id" value="5"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user6"/>
+			<column name="password" value="$2a$12$/VaPn/P/yyvjXMMUzQPGX.JPVzW35393kUD8lTFy8htbqcI9qoFLu"/>
+			<column name="first_name" value="User6"/>
+			<column name="last_name" value="Userowicz6"/>
+			<column name="email" value="emailuser6@gmail.com"/>
+			<column name="telephone" value="515-152-106"/>
+			<column name="address_id" value="6"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user7"/>
+			<column name="password" value="$2a$12$UhM7qp1t0CBh7COMleukNOXBcbADyoX95XGI6cUKWQQYd4J16hTeG"/>
+			<column name="first_name" value="User7"/>
+			<column name="last_name" value="Userowicz7"/>
+			<column name="email" value="emailuser7@gmail.com"/>
+			<column name="telephone" value="515-152-107"/>
+			<column name="address_id" value="7"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user8"/>
+			<column name="password" value="$2a$12$lpExvbrH5cnPuFCV1HWgVuwJDwDSCyQAmUHRH/Un3CC8WKiatwaOC"/>
+			<column name="first_name" value="User8"/>
+			<column name="last_name" value="Userowicz8"/>
+			<column name="email" value="emailuser8@gmail.com"/>
+			<column name="telephone" value="515-152-108"/>
+			<column name="address_id" value="8"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user9"/>
+			<column name="password" value="$2a$12$pNhsu8DmIy4c2bXZou641.QgF935fKtJMG3q51ncFC4AIX6GhVcXS"/>
+			<column name="first_name" value="User9"/>
+			<column name="last_name" value="Userowicz9"/>
+			<column name="email" value="emailuser9@gmail.com"/>
+			<column name="telephone" value="515-152-109"/>
+			<column name="address_id" value="9"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user10"/>
+			<column name="password" value="$2a$12$2K/GDSFqfpeTwh1MOD.5E.PvRJk05Y07YyeVMU8kKbzgfWBcNMtF."/>
+			<column name="first_name" value="User10"/>
+			<column name="last_name" value="Userowicz10"/>
+			<column name="email" value="emailuser10@gmail.com"/>
+			<column name="telephone" value="515-152-110"/>
+			<column name="address_id" value="10"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user11"/>
+			<column name="password" value="$2a$12$iG6hc0Ps3LdSFuZTd8mOh.duC2gTbigQeDLCxNEpUMXGTGbko.HUW"/>
+			<column name="first_name" value="User11"/>
+			<column name="last_name" value="Userowicz11"/>
+			<column name="email" value="emailuser11@gmail.com"/>
+			<column name="telephone" value="515-152-111"/>
+			<column name="address_id" value="11"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user12"/>
+			<column name="password" value="$2a$12$sD3EnJd0PsjbId3p26jNcuM1UM3Aec24/aia6y.G2IHNfnIQGWcNq"/>
+			<column name="first_name" value="User12"/>
+			<column name="last_name" value="Userowicz12"/>
+			<column name="email" value="emailuser12@gmail.com"/>
+			<column name="telephone" value="515-152-112"/>
+			<column name="address_id" value="12"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user13"/>
+			<column name="password" value="$2a$12$wxQZUi8hbTZMnqL.Dw2S5OJytoE58ces5tx5ffR5KI/wULpAzdWHm"/>
+			<column name="first_name" value="User13"/>
+			<column name="last_name" value="Userowicz13"/>
+			<column name="email" value="emailuser13@gmail.com"/>
+			<column name="telephone" value="515-152-113"/>
+			<column name="address_id" value="13"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user14"/>
+			<column name="password" value="$2a$12$JqLJbYH4OIMrqcAwNKay1OtpTQrfcK3p8JRw63pDCpOwfaQfZltZi"/>
+			<column name="first_name" value="User14"/>
+			<column name="last_name" value="Userowicz14"/>
+			<column name="email" value="emailuser14@gmail.com"/>
+			<column name="telephone" value="515-152-114"/>
+			<column name="address_id" value="14"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user15"/>
+			<column name="password" value="$2a$12$ZGXsVl2dsso3O4iHTyp2deAIB.hiKU1L9eOUD9bd6ZriCIJYxHe0e"/>
+			<column name="first_name" value="User15"/>
+			<column name="last_name" value="Userowicz15"/>
+			<column name="email" value="emailuser15@gmail.com"/>
+			<column name="telephone" value="515-152-115"/>
+			<column name="address_id" value="15"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user16"/>
+			<column name="password" value="$2a$12$TvX7FILa3gAll45V83SjAuhJ5WqrQHfOuxTE6sYoVt8c4sr7ohtVG"/>
+			<column name="first_name" value="User16"/>
+			<column name="last_name" value="Userowicz16"/>
+			<column name="email" value="emailuser16@gmail.com"/>
+			<column name="telephone" value="515-152-116"/>
+			<column name="address_id" value="16"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user17"/>
+			<column name="password" value="$2a$12$9ehBBDysisi1HLgyFlWpue5vwRMI/68NQJiNwjeUL0meBrtmFAYGq"/>
+			<column name="first_name" value="User17"/>
+			<column name="last_name" value="Userowicz17"/>
+			<column name="email" value="emailuser17@gmail.com"/>
+			<column name="telephone" value="515-152-117"/>
+			<column name="address_id" value="17"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user18"/>
+			<column name="password" value="$2a$12$9AO5rqKWPWpRRnlaHyaMS.6rFJU.9uGPHS663OigDy1x88RP0lf9K"/>
+			<column name="first_name" value="User18"/>
+			<column name="last_name" value="Userowicz18"/>
+			<column name="email" value="emailuser18@gmail.com"/>
+			<column name="telephone" value="515-152-118"/>
+			<column name="address_id" value="18"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user19"/>
+			<column name="password" value="$2a$12$fnrbqLkMwJ70aLThZ80JveX25KdwkLCK740aqbL5D09vHvDjzy1Y."/>
+			<column name="first_name" value="User19"/>
+			<column name="last_name" value="Userowicz19"/>
+			<column name="email" value="emailuser19@gmail.com"/>
+			<column name="telephone" value="515-152-119"/>
+			<column name="address_id" value="19"/>
+			<column name="role_id" value="3"/>
+		</insert>
+	</changeSet>
+</databaseChangeLog>

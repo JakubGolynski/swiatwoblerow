@@ -13,6 +13,6 @@ import com.swiatwoblerow.app.repository.custom.ProductRepositoryCustom;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer>, ProductRepositoryCustom{
 	
-	@EntityGraph(attributePaths = { "conditions","category","owner.address.country"})
+	@EntityGraph(attributePaths = {"category"})
 	List<Product> findByIdIn(List<Integer> productIdList, Sort sortBy);
 }
