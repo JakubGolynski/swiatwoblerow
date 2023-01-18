@@ -1,20 +1,17 @@
 package com.swiatwoblerow.app.service.filter;
 
-import lombok.Data;
-
-@Data
-public class ReviewFilter {
+public class RatingFilter {
 	
 	private Integer page = 0;
 	private Integer size = 10;
-
-	public ReviewFilter() {
+	
+	public RatingFilter() {
 		
 	}
-	
-	public ReviewFilter(Integer page, Integer size) {
+
+	public RatingFilter(Integer page, Integer size) {
+		super();
 		this.page = page;
 		this.size = size;
 	}
-	
 }

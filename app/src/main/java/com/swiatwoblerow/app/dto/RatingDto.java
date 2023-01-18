@@ -15,6 +15,10 @@ public class RatingDto {
 	
 	private String ownerUsername;
 
+	public RatingDto() {
+		
+	}
+	
 	public RatingDto(Integer id, Short value, Timestamp createdAt, String ownerUsername) {
 		this.id = id;
 		this.value = value;

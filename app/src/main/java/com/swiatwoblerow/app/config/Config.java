@@ -7,10 +7,8 @@ import org.springframework.context.annotation.Configuration;
 
 import com.swiatwoblerow.app.dto.CustomerDto;
 import com.swiatwoblerow.app.dto.RatingDto;
-import com.swiatwoblerow.app.dto.ReviewDto;
 import com.swiatwoblerow.app.entity.Customer;
 import com.swiatwoblerow.app.entity.Rating;
-import com.swiatwoblerow.app.entity.Review;
 
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
@@ -29,10 +27,6 @@ public class Config {
 		modelMapper.typeMap(Rating.class, RatingDto.class)
 			.<String>addMapping(src -> src.getOwner().getUsername(),
 					(dest,value) -> dest.setOwnerUsername(value));
-		
-//		modelMapper.typeMap(Review.class, ReviewDto.class)
-//		.<String>addMapping(src -> src.getOwner().getUsername(),
-//				(dest,value) -> dest.setReviewOwner(value));	
 		
 	    return modelMapper;
 	}

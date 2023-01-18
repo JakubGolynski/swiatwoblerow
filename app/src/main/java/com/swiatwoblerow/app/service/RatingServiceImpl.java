@@ -25,11 +25,8 @@ import com.swiatwoblerow.app.service.interfaces.RatingService;
 public class RatingServiceImpl implements RatingService{
 	
 	private ProductRepository productRepository;
-	
 	private RatingRepository ratingRepository;
-	
 	private CustomerRepository customerRepository;
-
 	private ModelMapper modelMapper;
 
 	public RatingServiceImpl(ProductRepository productRepository, RatingRepository ratingRepository,
@@ -38,6 +35,15 @@ public class RatingServiceImpl implements RatingService{
 		this.ratingRepository = ratingRepository;
 		this.customerRepository = customerRepository;
 		this.modelMapper = modelMapper;
+	}
+	
+	@Override
+	public List<RatingDto> getRatings(Integer productId) throws NotFoundExceptionRequest {
+		Product product = productRepository.findById(productId)
+				.orElseThrow(() -> new NotFoundExceptionRequest("Product with id "+
+						productId+" not found"));
+		return product.getRatings().stream().map(
+				rating -> modelMapper.map(rating, RatingDto.class)).collect(Collectors.toList());
 	}
 
 	@Override
@@ -68,9 +74,9 @@ public class RatingServiceImpl implements RatingService{
 
 	@Override
 	public void deleteRating(Integer ratingId) throws NotFoundExceptionRequest, NullPointerException,CustomerIsNotOwnerException {
-		CustomerPrincipal customerPrincipal = (CustomerPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Customer customer = customerRepository.findByUsername(customerPrincipal.getUsername()).orElseThrow(
-				() -> new UsernameNotFoundException("User not found with username "+ customerPrincipal.getUsername()));
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		Customer customer = customerRepository.findByUsername(username).orElseThrow(
+				() -> new UsernameNotFoundException("User not found with username "+ username));
 		Rating rating = ratingRepository.findById(ratingId).orElseThrow(
 				() -> new NotFoundExceptionRequest("Rating with id "+
 						ratingId+" not found"));
@@ -78,15 +84,6 @@ public class RatingServiceImpl implements RatingService{
 			throw new CustomerIsNotOwnerException("Customer can only delete ratings that he owns");
 		}
 		ratingRepository.delete(rating);
-	}
-
-	@Override
-	public List<RatingDto> getRatings(Integer productId) throws NotFoundExceptionRequest {
-		Product product = productRepository.findById(productId)
-				.orElseThrow(() -> new NotFoundExceptionRequest("Product with id "+
-						productId+" not found"));
-		return product.getRatings().stream().map(
-				rating -> modelMapper.map(rating, RatingDto.class)).collect(Collectors.toList());
 	}
 
 }

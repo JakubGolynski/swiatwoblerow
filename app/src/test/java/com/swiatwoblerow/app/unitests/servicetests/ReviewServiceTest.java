@@ -76,6 +76,9 @@ public class ReviewServiceTest {
 		product.setQuantity(1);
 		product.setMessage("test!@#Product");
 		product.setRating(5.0);
+		product.setOwner(customer);
+		product.setQuantityReviews(0);
+		product.setQuantityRatings(0);
 		
 		Set<Condition> conditions = new HashSet<>();
 		conditions.add(new Condition("USED"));
@@ -109,9 +112,6 @@ public class ReviewServiceTest {
 		customer.setRole(roleUser);
 		Set<Category> managedCategories = new HashSet<>();
 		customer.setManagedCategories(managedCategories);
-		product.setOwner(customer);
-		product.setQuantityReviews(0);
-		product.setQuantityRatings(0);
 		
 		reviewFilter = new ReviewFilter(0,5);
 	}
@@ -803,15 +803,5 @@ public class ReviewServiceTest {
 		assertThat(review.getQuantityThumbsUp()).isEqualTo(quantityThumbsUp);
 		assertThat(review.getQuantityThumbsDown()).isEqualTo(quantityThumbsDown);
 		assertThat(review.getCustomersWhoDislikedReview()).isNotEmpty();
-	}
-	
-	@Test
-	public void getReviewThumbsSuccess() {
-		
-	}
-	
-	@Test
-	public void getReviewThumbsFailBadReviewId() {
-		
 	}
 }
