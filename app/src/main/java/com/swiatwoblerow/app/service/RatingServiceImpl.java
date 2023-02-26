@@ -62,11 +62,13 @@ public class RatingServiceImpl implements RatingService{
 			throw new TooManyInsertException("Customer can add only one rating to certain product,"
 					+ " existing ratingId: "+existingRating.getId());
 		}
-		Integer quantityRatings = product.getQuantityRatings();
-		product.setQuantityRatings(quantityRatings+1);
 		Rating rating = new Rating(ratingDto.getValue(),
 				new Timestamp(System.currentTimeMillis()),customer,product);
 		ratingRepository.save(rating);
+		
+		Integer quantityRatings = product.getQuantityRatings();
+		product.setQuantityRatings(quantityRatings+1);
+		
 		productRepository.save(product);
 		RatingDto returnRatingDto = modelMapper.map(rating, RatingDto.class);
 		return returnRatingDto;
@@ -76,7 +78,7 @@ public class RatingServiceImpl implements RatingService{
 	public void deleteRating(Integer ratingId) throws NotFoundExceptionRequest, NullPointerException,CustomerIsNotOwnerException {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		Customer customer = customerRepository.findByUsername(username).orElseThrow(
-				() -> new UsernameNotFoundException("User not found with username "+ username));
+				() -> new UsernameNotFoundException("User not found with username: "+ username));
 		Rating rating = ratingRepository.findById(ratingId).orElseThrow(
 				() -> new NotFoundExceptionRequest("Rating with id "+
 						ratingId+" not found"));
