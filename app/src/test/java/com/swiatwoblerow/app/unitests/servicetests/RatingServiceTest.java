@@ -43,6 +43,7 @@ import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.ProductRepository;
 import com.swiatwoblerow.app.repository.RatingRepository;
 import com.swiatwoblerow.app.service.RatingServiceImpl;
+import com.swiatwoblerow.app.service.filter.RatingFilter;
 import com.swiatwoblerow.app.service.interfaces.RatingService;
 
 @ExtendWith(MockitoExtension.class)
@@ -133,15 +134,18 @@ public class RatingServiceTest {
 				.map(currentRating -> modelMapper.map(currentRating, RatingDto.class))
 				.collect(Collectors.toList());
 		
-		assertThat(ratingService.getRatings(id)).isEqualTo(ratingsDtos);
+		RatingFilter ratingFilter = new RatingFilter();
+		
+		assertThat(ratingService.getRatings(id,ratingFilter)).isEqualTo(ratingsDtos);
 	}
 	
 	@Test
 	public void getRatingsFailBadProductId() throws Exception{
 		Integer id = 11111123;
+		RatingFilter ratingFilter = new RatingFilter();
 		NotFoundExceptionRequest exception = assertThrows(NotFoundExceptionRequest.class,
 				() -> {
-					ratingService.getRatings(id);
+					ratingService.getRatings(id,ratingFilter);
 				});
 		
 		assertThat(exception).isExactlyInstanceOf(NotFoundExceptionRequest.class);

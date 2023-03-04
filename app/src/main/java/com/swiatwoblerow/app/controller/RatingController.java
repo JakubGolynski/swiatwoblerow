@@ -16,6 +16,7 @@ import com.swiatwoblerow.app.dto.RatingDto;
 import com.swiatwoblerow.app.exceptions.CustomerIsNotOwnerException;
 import com.swiatwoblerow.app.exceptions.NotFoundExceptionRequest;
 import com.swiatwoblerow.app.exceptions.TooManyInsertException;
+import com.swiatwoblerow.app.service.filter.RatingFilter;
 import com.swiatwoblerow.app.service.interfaces.RatingService;
 
 @RestController
@@ -41,7 +42,7 @@ public class RatingController {
 	}
 	
 	@GetMapping("/{id}/ratings")
-	public List<RatingDto> getRatings(@PathVariable int id) throws NotFoundExceptionRequest{
-		return ratingService.getRatings(id);
+	public List<RatingDto> getRatings(@PathVariable int id, RatingFilter ratingFilter) throws NotFoundExceptionRequest{
+		return ratingService.getRatings(id,ratingFilter);
 	}
 }

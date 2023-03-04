@@ -1,10 +1,15 @@
 package com.swiatwoblerow.app.service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -19,6 +24,7 @@ import com.swiatwoblerow.app.exceptions.TooManyInsertException;
 import com.swiatwoblerow.app.repository.CustomerRepository;
 import com.swiatwoblerow.app.repository.ProductRepository;
 import com.swiatwoblerow.app.repository.RatingRepository;
+import com.swiatwoblerow.app.service.filter.RatingFilter;
 import com.swiatwoblerow.app.service.interfaces.RatingService;
 
 @Service
@@ -38,12 +44,19 @@ public class RatingServiceImpl implements RatingService{
 	}
 	
 	@Override
-	public List<RatingDto> getRatings(Integer productId) throws NotFoundExceptionRequest {
+	public List<RatingDto> getRatings(Integer productId, RatingFilter ratingFilter) throws NotFoundExceptionRequest {
 		Product product = productRepository.findById(productId)
 				.orElseThrow(() -> new NotFoundExceptionRequest("Product with id "+
 						productId+" not found"));
+		
+		int startIndex = ratingFilter.getPage()*ratingFilter.getSize();
+		int endIndex = Math.min(startIndex + ratingFilter.getSize(), product.getRatings().size());
+		if((startIndex < 0) || (startIndex >= product.getRatings().size())) {
+			return new ArrayList<>();
+		}
 		return product.getRatings().stream().map(
-				rating -> modelMapper.map(rating, RatingDto.class)).collect(Collectors.toList());
+				rating -> modelMapper.map(rating, RatingDto.class)).collect(Collectors.toList())
+				.subList(startIndex, endIndex);
 	}
 
 	@Override
