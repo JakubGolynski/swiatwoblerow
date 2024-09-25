@@ -21,11 +21,9 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.Length;
 
-import lombok.Data;
 
 @Entity
 @Table(name="product")
-@Data
 public class Product {
 	
 	@Id
@@ -100,4 +98,117 @@ public class Product {
 		this.ratings = ratings;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public Double getRating() {
+		return rating;
+	}
+
+	public void setRating(Double rating) {
+		this.rating = rating;
+	}
+
+	public Set<Condition> getConditions() {
+		return conditions;
+	}
+
+	public void setConditions(Set<Condition> conditions) {
+		this.conditions = conditions;
+	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	public Customer getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Customer owner) {
+		this.owner = owner;
+	}
+
+	public Integer getQuantityReviews() {
+		return quantityReviews;
+	}
+
+	public void setQuantityReviews(Integer quantityReviews) {
+		this.quantityReviews = quantityReviews;
+	}
+
+	public List<Review> getReviews() {
+		return reviews;
+	}
+
+	public void setReviews(List<Review> reviews) {
+		this.reviews = reviews;
+	}
+
+	public Integer getQuantityRatings() {
+		return quantityRatings;
+	}
+
+	public void setQuantityRatings(Integer quantityRatings) {
+		this.quantityRatings = quantityRatings;
+	}
+
+	public List<Rating> getRatings() {
+		return ratings;
+	}
+
+	public void setRatings(List<Rating> ratings) {
+		this.ratings = ratings;
+	}
+
+	
 }

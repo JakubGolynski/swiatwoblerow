@@ -2,9 +2,7 @@ package com.swiatwoblerow.app.dto;
 
 import java.sql.Timestamp;
 
-import lombok.Data;
 
-@Data
 public class RatingDto {
 	
 	private Integer id;
@@ -25,5 +23,39 @@ public class RatingDto {
 		this.createdAt = createdAt;
 		this.ownerUsername = ownerUsername;
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Short getValue() {
+		return value;
+	}
+
+	public void setValue(Short value) {
+		this.value = value;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public String getOwnerUsername() {
+		return ownerUsername;
+	}
+
+	public void setOwnerUsername(String ownerUsername) {
+		this.ownerUsername = ownerUsername;
+	}
+	
+	
 	
 }

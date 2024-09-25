@@ -16,11 +16,9 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.Data;
 
 @Entity
 @Table(name="review")
-@Data
 public class Review {
 	
 	@Id
@@ -81,5 +79,87 @@ public class Review {
 		this.customersWhoLikedReview = customersWhoLikedReview;
 		this.customersWhoDislikedReview = customersWhoDislikedReview;
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public int getQuantityThumbsUp() {
+		return quantityThumbsUp;
+	}
+
+	public void setQuantityThumbsUp(int quantityThumbsUp) {
+		this.quantityThumbsUp = quantityThumbsUp;
+	}
+
+	public int getQuantityThumbsDown() {
+		return quantityThumbsDown;
+	}
+
+	public void setQuantityThumbsDown(int quantityThumbsDown) {
+		this.quantityThumbsDown = quantityThumbsDown;
+	}
+
+	public String getReviewOwner() {
+		return reviewOwner;
+	}
+
+	public void setReviewOwner(String reviewOwner) {
+		this.reviewOwner = reviewOwner;
+	}
+
+	public Customer getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Customer owner) {
+		this.owner = owner;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+
+	public Set<Customer> getCustomersWhoLikedReview() {
+		return customersWhoLikedReview;
+	}
+
+	public void setCustomersWhoLikedReview(Set<Customer> customersWhoLikedReview) {
+		this.customersWhoLikedReview = customersWhoLikedReview;
+	}
+
+	public Set<Customer> getCustomersWhoDislikedReview() {
+		return customersWhoDislikedReview;
+	}
+
+	public void setCustomersWhoDislikedReview(Set<Customer> customersWhoDislikedReview) {
+		this.customersWhoDislikedReview = customersWhoDislikedReview;
+	}
+	
+	
 
 }

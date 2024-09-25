@@ -4,9 +4,6 @@ import java.sql.Timestamp;
 
 import org.springframework.http.HttpStatus;
 
-import lombok.Data;
-
-@Data
 public class CustomerIsNotOwnerExceptionDto {
 
 	private HttpStatus status = HttpStatus.CONFLICT;
@@ -19,4 +16,29 @@ public class CustomerIsNotOwnerExceptionDto {
 		this.message = message;
 		this.timestamp = timestamp;
 	}
+
+	public HttpStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(HttpStatus status) {
+		this.status = status;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public Timestamp getTimestamp() {
+		return timestamp;
+	}
+
+	public void setTimestamp(Timestamp timestamp) {
+		this.timestamp = timestamp;
+	}
+	
 }

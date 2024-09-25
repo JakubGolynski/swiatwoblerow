@@ -1,8 +1,5 @@
 package com.swiatwoblerow.app.dto;
 
-import lombok.Data;
-
-@Data
 public class CategoryDto {
 	
 	private Integer id;
@@ -18,4 +15,19 @@ public class CategoryDto {
 		this.name = name;
 	}
 	
+	public Integer getId() {
+		return id;
+	}
+	
+	public void setId(Integer id) {
+		this.id = id;
+	}
+	
+	public String getName() {
+		return this.name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
 }

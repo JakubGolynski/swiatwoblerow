@@ -4,9 +4,7 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
-import lombok.Data;
 
-@Data
 public class ProductDto {
 	
 	private Integer id;
@@ -54,4 +52,101 @@ public class ProductDto {
 		this.conditions = conditions;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public Double getRating() {
+		return rating;
+	}
+
+	public void setRating(Double rating) {
+		this.rating = rating;
+	}
+
+	public Integer getQuantityRatings() {
+		return quantityRatings;
+	}
+
+	public void setQuantityRatings(Integer quantityRatings) {
+		this.quantityRatings = quantityRatings;
+	}
+
+	public Integer getQuantityReviews() {
+		return quantityReviews;
+	}
+
+	public void setQuantityReviews(Integer quantityReviews) {
+		this.quantityReviews = quantityReviews;
+	}
+
+	public CustomerDto getOwner() {
+		return owner;
+	}
+
+	public void setOwner(CustomerDto owner) {
+		this.owner = owner;
+	}
+
+	public CategoryDto getCategory() {
+		return category;
+	}
+
+	public void setCategory(CategoryDto category) {
+		this.category = category;
+	}
+
+	public Set<ConditionDto> getConditions() {
+		return conditions;
+	}
+
+	public void setConditions(Set<ConditionDto> conditions) {
+		this.conditions = conditions;
+	}
+
+	
 }

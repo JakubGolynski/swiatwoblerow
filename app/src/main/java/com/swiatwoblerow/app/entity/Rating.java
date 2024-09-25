@@ -12,11 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import lombok.Data;
 
 @Entity
 @Table(name="rating")
-@Data
 public class Rating {
 	
 	@Id
@@ -48,5 +46,46 @@ public class Rating {
 		this.owner = owner;
 		this.product = product;
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public Short getValue() {
+		return value;
+	}
+
+	public void setValue(Short value) {
+		this.value = value;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public Customer getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Customer owner) {
+		this.owner = owner;
+	}
+
+	public Product getProduct() {
+		return product;
+	}
+
+	public void setProduct(Product product) {
+		this.product = product;
+	}
+	
 	
 }

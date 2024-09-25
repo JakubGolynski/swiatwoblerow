@@ -1,8 +1,5 @@
 package com.swiatwoblerow.app.service.filter;
 
-import lombok.Data;
-
-@Data
 public class ReviewFilter {
 	
 	private Integer page = 0;
@@ -16,5 +13,23 @@ public class ReviewFilter {
 		this.page = page;
 		this.size = size;
 	}
+
+	public Integer getPage() {
+		return page;
+	}
+
+	public void setPage(Integer page) {
+		this.page = page;
+	}
+
+	public Integer getSize() {
+		return size;
+	}
+
+	public void setSize(Integer size) {
+		this.size = size;
+	}
+	
+	
 	
 }

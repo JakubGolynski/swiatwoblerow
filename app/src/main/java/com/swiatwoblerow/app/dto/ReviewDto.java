@@ -2,9 +2,7 @@ package com.swiatwoblerow.app.dto;
 
 import java.sql.Timestamp;
 
-import lombok.Data;
 
-@Data
 public class ReviewDto {
 
 	private Integer id;
@@ -32,5 +30,54 @@ public class ReviewDto {
 		this.quantityThumbsDown = quantityThumbsDown;
 		this.reviewOwner = reviewOwner;
 	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	public Timestamp getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(Timestamp createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public int getQuantityThumbsUp() {
+		return quantityThumbsUp;
+	}
+
+	public void setQuantityThumbsUp(int quantityThumbsUp) {
+		this.quantityThumbsUp = quantityThumbsUp;
+	}
+
+	public int getQuantityThumbsDown() {
+		return quantityThumbsDown;
+	}
+
+	public void setQuantityThumbsDown(int quantityThumbsDown) {
+		this.quantityThumbsDown = quantityThumbsDown;
+	}
+
+	public String getReviewOwner() {
+		return reviewOwner;
+	}
+
+	public void setReviewOwner(String reviewOwner) {
+		this.reviewOwner = reviewOwner;
+	}
+	
 	
 }
