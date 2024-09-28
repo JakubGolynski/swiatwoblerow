@@ -50,7 +50,7 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
 	private String parseJwt(HttpServletRequest request) {
 		String header = request.getHeader("Authorization");
-		if(header.startsWith("Bearer ")) {
+		if(header != null && header.startsWith("Bearer ")) {
 			return header.substring(7,header.length());
 		}
 		return null;
