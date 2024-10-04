@@ -1,6 +1,8 @@
 package com.swiatwoblerow.app.config;
 
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -8,13 +10,15 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.swiatwoblerow.app.config.jwt.JWTAuthorizationFilter;
 import com.swiatwoblerow.app.config.jwt.JwtAuthenticationEntryPoint;
@@ -58,7 +62,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET,"/reviews/**").permitAll()
 				.antMatchers(HttpMethod.GET,"/error").permitAll()
 			.anyRequest().authenticated().and()
-			.cors().and()
+			.cors().configurationSource(corsConfigurationSource()).and()
 			.csrf().disable()
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
@@ -67,15 +71,16 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 		http.addFilterBefore(jwtAuthorizationFilter(),UsernamePasswordAuthenticationFilter.class);
 	}
 	
-	@Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v2/api-docs",
-                                   "/configuration/ui",
-                                   "/swagger-resources/**",
-                                   "/configuration/security",
-                                   "/swagger-ui.html",
-                                   "/webjars/**");
-    }
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration corsConfiguration = new CorsConfiguration();
+		corsConfiguration.applyPermitDefaultValues();
+		corsConfiguration.addAllowedOrigin("*");
+		corsConfiguration.setAllowedHeaders(List.of("*"));
+		UrlBasedCorsConfigurationSource corsSource = new UrlBasedCorsConfigurationSource();
+		corsSource.registerCorsConfiguration("/**", corsConfiguration);
+		return corsSource;
+	}
 	
 	@Bean
 	public JWTAuthorizationFilter jwtAuthorizationFilter() {

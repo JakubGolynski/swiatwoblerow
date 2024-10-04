@@ -10,10 +10,7 @@ import com.swiatwoblerow.app.dto.RatingDto;
 import com.swiatwoblerow.app.entity.Customer;
 import com.swiatwoblerow.app.entity.Rating;
 
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
-
 @Configuration
-@EnableSwagger2
 public class Config {
 	@Bean
 	public ModelMapper modelMapper() {
