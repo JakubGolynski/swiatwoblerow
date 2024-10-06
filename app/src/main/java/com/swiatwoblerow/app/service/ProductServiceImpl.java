@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.swiatwoblerow.app.dto.ConditionDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -83,12 +84,16 @@ public class ProductServiceImpl implements ProductService {
 	public List<ProductDto> getProducts(ProductFilter productFilter) throws NotFoundExceptionRequest{
 		
 		Sort sortBy = Sort.by(Sort.Direction.ASC, productFilter.getSort());
-		
+//		List<Product> productList = productRepository.findByIdIn(productRepository.getProductIdList(productFilter),sortBy);
+//		HashSet<ConditionDto> =
 		return productRepository.findByIdIn(productRepository.getProductIdList(productFilter),sortBy).stream()
 				.map(product -> new ProductDto(
 						product.getId(), product.getName(), product.getPrice(), product.getCreatedAt(), product.getQuantity(),
-						null, product.getRating(), product.getQuantityRatings(), product.getQuantityReviews(),
-						null, new CategoryDto(product.getCategory().getId(), product.getCategory().getName()), new HashSet<>()))
+						product.getMessage(), product.getRating(), product.getQuantityRatings(), product.getQuantityReviews(),
+						product.getOwner().getUsername(), new CategoryDto(product.getCategory().getId(), product.getCategory().getName()),
+						product.getConditions().stream().map(condition -> new ConditionDto(condition.getId(), condition.getName()))
+								.collect(Collectors.toSet())
+						))
 				.collect(Collectors.toList());
 	}
 

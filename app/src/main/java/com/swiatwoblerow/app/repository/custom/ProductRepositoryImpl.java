@@ -1,22 +1,15 @@
 package com.swiatwoblerow.app.repository.custom;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 
-import com.swiatwoblerow.app.entity.Address;
-import com.swiatwoblerow.app.entity.Category;
-import com.swiatwoblerow.app.entity.Customer;
-import com.swiatwoblerow.app.entity.Product;
+import com.swiatwoblerow.app.entity.*;
 import com.swiatwoblerow.app.service.filter.ProductFilter;
 
 public class ProductRepositoryImpl implements ProductRepositoryCustom{
@@ -76,12 +69,21 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
 			finalPredicate = builder.and(finalPredicate,isCityEqual);
 		}
 		
-		if(!productFilter.getConditions().isEmpty()) {
-			Set<String> conditions = productFilter.getConditions().stream().collect(Collectors.toSet());
-			Predicate isConditionMember = root.join("conditions").get("name").in(conditions);
-			finalPredicate = builder.and(finalPredicate,isConditionMember);
-		}
-		
+//		if(!productFilter.getConditions().isEmpty()) {
+//			//SetJoin<Product, Condition> conditions = root.join("conditions",JoinType.INNER);
+//			Set<String> filterConditions = productFilter.getConditions().stream().collect(Collectors.toSet());
+//			Join<Product, Condition> conditions= root.join("conditions",JoinType.INNER);
+//			Predicate isConditionMember = builder.isMember(conditions.get("name"),filterConditions);
+//			finalPredicate = builder.and(finalPredicate,isConditionMember);
+//		}else{
+////			Set<String> conditions = new HashSet<>();
+////			SetJoin<Product, Condition> conditions =
+////			root.fetch("conditions",JoinType.INNER);
+////			Predicate addAllConditions = root.joinSet("conditions",JoinType.INNER);
+////			finalPredicate = builder.and(finalPredicate, addAllConditions);
+//		}
+		root.fetch("conditions",JoinType.LEFT);
+
 		return finalPredicate;
 	}
 }

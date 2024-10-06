@@ -25,7 +25,7 @@ public class ProductDto {
 	
 	private Integer quantityReviews;
 	
-	private CustomerDto owner;
+	private String owner;
 	
 	private CategoryDto category;
 	
@@ -36,7 +36,7 @@ public class ProductDto {
 	}
 
 	public ProductDto(Integer id, String name, Double price, Timestamp createdAt, Integer quantity, String message,
-			Double rating, Integer quantityRatings, Integer quantityReviews, CustomerDto owner, CategoryDto category,
+			Double rating, Integer quantityRatings, Integer quantityReviews, String owner, CategoryDto category,
 			Set<ConditionDto> conditions) {
 		this.id = id;
 		this.name = name;
@@ -124,11 +124,11 @@ public class ProductDto {
 		this.quantityReviews = quantityReviews;
 	}
 
-	public CustomerDto getOwner() {
+	public String getOwner() {
 		return owner;
 	}
 
-	public void setOwner(CustomerDto owner) {
+	public void setOwner(String owner) {
 		this.owner = owner;
 	}
 
