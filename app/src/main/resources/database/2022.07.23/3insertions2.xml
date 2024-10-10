@@ -17,10 +17,16 @@
 			<column name="name" value="electronic_devices"/>
 		</insert>
 		<insert tableName="category" >
-			<column name="name" value="computers"/>
+			<column name="name" value="diy"/>
 		</insert>
 		<insert tableName="category" >
 			<column name="name" value="fashion"/>
+		</insert>
+		<insert tableName="category" >
+			<column name="name" value="garden"/>
+		</insert>
+		<insert tableName="category" >
+			<column name="name" value="beauty"/>
 		</insert>
 	</changeSet>
 	<changeSet id="9" author="Goly">

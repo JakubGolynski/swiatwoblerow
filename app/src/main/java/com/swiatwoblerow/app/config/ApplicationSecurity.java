@@ -57,9 +57,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 				.antMatchers(HttpMethod.GET,"/categories/**").permitAll()
 				.antMatchers(HttpMethod.POST,"/categories").hasAnyRole("ADMIN")
 				.antMatchers(HttpMethod.DELETE,"/categories/**").hasAnyRole("ADMIN")
-				
 				.antMatchers(HttpMethod.GET,"/customers/**").hasAnyRole("ADMIN","MODERATOR")
-				.antMatchers(HttpMethod.GET,"/reviews/**").permitAll()
 				.antMatchers(HttpMethod.GET,"/error").permitAll()
 			.anyRequest().authenticated().and()
 			.cors().configurationSource(corsConfigurationSource()).and()

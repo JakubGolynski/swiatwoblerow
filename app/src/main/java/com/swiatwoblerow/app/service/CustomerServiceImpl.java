@@ -105,12 +105,11 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 						"with name "+customerDto.getAddress().getCountry().getName() +" does not exist"));
 		address.setCountry(country);
 		addressRepository.save(address);
-		Set<Category> managedCategories = new HashSet<>();
 		Customer customer = new Customer(
 				customerDto.getUsername(),customerDto.getPassword(),
 				customerDto.getFirstName(),customerDto.getLastName(),
 				customerDto.getEmail(),customerDto.getTelephone(),
-				address,role,managedCategories);
+				address,role);
 		
 		customerRepository.save(customer);
 		CustomerDto returnCustomerDto = modelMapper.map(customer, CustomerDto.class);	

@@ -18,8 +18,7 @@ public class Config {
 		
 		modelMapper.typeMap(Customer.class, CustomerDto.class)
 			.addMappings(mapper -> mapper.skip(CustomerDto::setPassword))
-			.addMappings(mapper -> mapper.skip(CustomerDto::setJwtToken))
-			.addMappings(mapper -> mapper.skip(CustomerDto::setRole));
+			.addMappings(mapper -> mapper.skip(CustomerDto::setJwtToken));
 		
 		modelMapper.typeMap(Rating.class, RatingDto.class)
 			.<String>addMapping(src -> src.getOwner().getUsername(),

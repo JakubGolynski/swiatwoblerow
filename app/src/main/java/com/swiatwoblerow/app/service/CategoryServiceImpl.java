@@ -51,7 +51,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public CategoryDto addCategory(String categoryName) throws AlreadyExistsException{
 		boolean isFound = categoryRepository.existsByName(categoryName);
-		if(isFound == true) {
+		if(isFound) {
 			throw new AlreadyExistsException("category with name "+
 					categoryName+" already exists in database");
 		}
@@ -63,7 +63,7 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public void deleteCategory(int categoryId) throws NotFoundExceptionRequest {
 		boolean isFound =  categoryRepository.existsById(categoryId);
-		if(isFound == false) {
+		if(isFound) {
 			throw new NotFoundExceptionRequest("Country with id "+
 					categoryId+" does not exist");
 		}

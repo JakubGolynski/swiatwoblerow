@@ -82,7 +82,7 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
 ////			Predicate addAllConditions = root.joinSet("conditions",JoinType.INNER);
 ////			finalPredicate = builder.and(finalPredicate, addAllConditions);
 //		}
-		root.fetch("conditions",JoinType.LEFT);
+//		root.fetch("conditions",JoinType.LEFT);
 
 		return finalPredicate;
 	}

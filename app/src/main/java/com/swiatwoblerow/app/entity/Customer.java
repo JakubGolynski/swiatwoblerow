@@ -1,17 +1,12 @@
 package com.swiatwoblerow.app.entity;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -51,18 +46,12 @@ public class Customer {
 	@JoinColumn(name="role_id")
 	private Role role;
 	
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name="customer_category",
-				joinColumns = @JoinColumn(name="customer_id"),
-				inverseJoinColumns = @JoinColumn(name="category_id"))
-	private Set<Category> managedCategories = new HashSet<>();
-	
 	public Customer() {
 		
 	}
 
 	public Customer(String username, String password, String firstName, String lastName, String email, String telephone,
-			Address address, Role role, Set<Category> managedCategories) {
+			Address address, Role role) {
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
@@ -71,7 +60,6 @@ public class Customer {
 		this.telephone = telephone;
 		this.address = address;
 		this.role = role;
-		this.managedCategories = managedCategories;
 	}
 
 	public Integer getId() {
@@ -145,14 +133,5 @@ public class Customer {
 	public void setRole(Role role) {
 		this.role = role;
 	}
-
-	public Set<Category> getManagedCategories() {
-		return managedCategories;
-	}
-
-	public void setManagedCategories(Set<Category> managedCategories) {
-		this.managedCategories = managedCategories;
-	}
-
 	
 }

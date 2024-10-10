@@ -52,9 +52,10 @@ public class JwtUtils {
 					.getSubject();
 	}
 	
-	public String generateJwtToken(String username) {
+	public String generateJwtToken(String username, String role) {
 		return Jwts.builder()
 				.setSubject(username)
+				.claim("role",role)
 				.setIssuedAt(new Date())
 				.setExpiration(new Date(System.currentTimeMillis()+expirationTime))
 				.signWith(SignatureAlgorithm.HS512, secretKey)

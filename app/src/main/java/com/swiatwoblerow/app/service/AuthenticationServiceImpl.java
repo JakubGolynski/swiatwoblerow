@@ -36,16 +36,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 	@Override
 	public CustomerDto login(CustomerDto customerDto) throws BadCredentialsException, UsernameNotFoundException {
-		UsernamePasswordAuthenticationToken tokenAuthetication = 
+		UsernamePasswordAuthenticationToken tokenAuthentication =
 				new UsernamePasswordAuthenticationToken(customerDto.getUsername(),customerDto.getPassword());
-		Authentication authetication = authenticationManager.authenticate(tokenAuthetication);
-		SecurityContextHolder.getContext().setAuthentication(authetication);
+		Authentication authentication = authenticationManager.authenticate(tokenAuthentication);
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 		
 		CustomerPrincipal customerPrincipal = (CustomerPrincipal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Customer customer = customerRepository.findByUsername(customerPrincipal.getUsername()).orElseThrow(
 				() -> new UsernameNotFoundException("User not found with username "+ customerPrincipal.getUsername()));
 		CustomerDto returnCustomerDto = modelMapper.map(customer, CustomerDto.class);
-		returnCustomerDto.setJwtToken(jwtUtils.generateJwtToken(customerPrincipal.getUsername()));
+		returnCustomerDto.setJwtToken(jwtUtils.generateJwtToken(customerPrincipal.getUsername(),customer.getRole().getName()));
 		return returnCustomerDto;
 	}
 
