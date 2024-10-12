@@ -7,14 +7,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -26,47 +27,45 @@ import com.swiatwoblerow.app.service.CustomerServiceImpl;
 
 @Configuration
 @EnableWebSecurity(debug = true)
-public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
+public class ApplicationSecurity{
 	
 	private CustomerServiceImpl customerService;
 	
 	private JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-	
-	
+
 	public ApplicationSecurity(CustomerServiceImpl customerService,
 			JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint) {
 		this.customerService = customerService;
 		this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
 	}
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception{
-		auth.authenticationProvider(authenticationProvider());
-	}
-	
-	@Override
-	protected void configure(HttpSecurity http) throws Exception{
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
 		
 		http
-			.authorizeRequests()
-				.antMatchers(HttpMethod.POST,"/login").permitAll()
-				.antMatchers(HttpMethod.GET,"/products/**").permitAll()
-				.antMatchers(HttpMethod.GET,"/countries/**").permitAll()
-				.antMatchers(HttpMethod.POST,"/countries").hasAnyRole("ADMIN")
-				.antMatchers(HttpMethod.DELETE,"/countries/**").hasAnyRole("ADMIN")
-				.antMatchers(HttpMethod.GET,"/categories/**").permitAll()
-				.antMatchers(HttpMethod.POST,"/categories").hasAnyRole("ADMIN")
-				.antMatchers(HttpMethod.DELETE,"/categories/**").hasAnyRole("ADMIN")
-				.antMatchers(HttpMethod.GET,"/customers/**").hasAnyRole("ADMIN","MODERATOR")
-				.antMatchers(HttpMethod.GET,"/error").permitAll()
-			.anyRequest().authenticated().and()
-			.cors().configurationSource(corsConfigurationSource()).and()
-			.csrf().disable()
-			.sessionManagement()
-			.sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-			.exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint);
+			.authorizeHttpRequests((authorize) -> authorize
+				.requestMatchers(HttpMethod.POST,"/login").permitAll()
+				.requestMatchers(HttpMethod.GET,"/products/**").permitAll()
+				.requestMatchers(HttpMethod.GET,"/countries/**").permitAll()
+				.requestMatchers(HttpMethod.POST,"/countries").hasAnyRole("ADMIN")
+				.requestMatchers(HttpMethod.DELETE,"/countries/**").hasAnyRole("ADMIN")
+				.requestMatchers(HttpMethod.GET,"/categories/**").permitAll()
+				.requestMatchers(HttpMethod.POST,"/categories").hasAnyRole("ADMIN")
+				.requestMatchers(HttpMethod.DELETE,"/categories/**").hasAnyRole("ADMIN")
+				.requestMatchers(HttpMethod.GET,"/customers/**").hasAnyRole("ADMIN","MODERATOR")
+				.requestMatchers(HttpMethod.GET,"/error").permitAll().anyRequest().authenticated()
+			)
+			.cors((cors) -> cors.configurationSource(corsConfigurationSource())
+			)
+			.csrf((csrf) -> csrf.disable()
+			)
+			.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			)
+			.exceptionHandling((exception) -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+			);
 			
 		http.addFilterBefore(jwtAuthorizationFilter(),UsernamePasswordAuthenticationFilter.class);
+		return http.build();
 	}
 	
 	@Bean
@@ -85,18 +84,12 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
 		return new JWTAuthorizationFilter();
 		}
 	
-	@Override
 	@Bean
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-	
-	@Bean
-	public DaoAuthenticationProvider authenticationProvider() {
+	public AuthenticationManager authenticationProvider() {
 		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
 		authenticationProvider.setUserDetailsService(customerService);
 		authenticationProvider.setPasswordEncoder(passwordEncoder());
-		return authenticationProvider;
+		return new ProviderManager(authenticationProvider);
 	}
 	
 	@Bean
