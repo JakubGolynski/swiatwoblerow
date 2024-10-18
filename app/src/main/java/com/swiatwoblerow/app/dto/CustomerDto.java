@@ -35,7 +35,7 @@ public class CustomerDto {
 	}
 
 	public CustomerDto(String username, String password, String firstName, String lastName, String email,
-			String telephone, String jwtToken, AddressDto address) {
+                       String telephone, String jwtToken, AddressDto address, RoleDto role) {
 		this.username = username;
 		this.password = password;
 		this.firstName = firstName;
@@ -44,7 +44,8 @@ public class CustomerDto {
 		this.telephone = telephone;
 		this.jwtToken = jwtToken;
 		this.address = address;
-	}
+        this.role = role;
+    }
 
 	public Integer getId() {
 		return id;
@@ -118,4 +119,11 @@ public class CustomerDto {
 		this.address = address;
 	}
 
+	public RoleDto getRole() {
+		return role;
+	}
+
+	public void setRole(RoleDto role) {
+		this.role = role;
+	}
 }

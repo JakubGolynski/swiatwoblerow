@@ -2,6 +2,8 @@ package com.swiatwoblerow.app.exceptions;
 
 import java.sql.Timestamp;
 
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,6 +18,7 @@ import com.swiatwoblerow.app.exceptions.dto.NotFoundExceptionDto;
 import com.swiatwoblerow.app.exceptions.dto.NullArgumentExceptionDto;
 import com.swiatwoblerow.app.exceptions.dto.TooManyInsertExceptionDto;
 
+@Order(Ordered.LOWEST_PRECEDENCE)
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler{
 	
