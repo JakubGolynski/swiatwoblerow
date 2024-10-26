@@ -64,8 +64,8 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
 			Join<Product,Customer> owner = root.join("owner",JoinType.INNER);
 			Join<Product,Address> address = owner.join("address",JoinType.INNER);
 			
-			Predicate isCityEqual = builder.equal(address.get("city"),
-					productFilter.getCity());
+			Predicate isCityEqual = builder.like(builder.upper(address.get("city")),
+					"%"+productFilter.getCity().toUpperCase()+"%");
 			finalPredicate = builder.and(finalPredicate,isCityEqual);
 		}
 		

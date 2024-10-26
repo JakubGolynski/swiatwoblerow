@@ -46,6 +46,7 @@ public class ApplicationSecurity{
 			.authorizeHttpRequests((authorize) -> authorize
 				.requestMatchers(HttpMethod.POST,"/login").permitAll()
 				.requestMatchers(HttpMethod.GET,"/products/**").permitAll()
+					.requestMatchers(HttpMethod.GET,"/conditions/**").permitAll()
 				.requestMatchers(HttpMethod.GET,"/countries/**").permitAll()
 				.requestMatchers(HttpMethod.POST,"/countries").hasAnyRole("ADMIN")
 				.requestMatchers(HttpMethod.DELETE,"/countries/**").hasAnyRole("ADMIN")
