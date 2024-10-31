@@ -16,7 +16,7 @@
 			<column name="quantity_thumbs_up" value="0"/> 
 			<column name="quantity_thumbs_down" value="0"/>
 			<column name="review_owner" value="user"/>
-			<column name="customer_id" value="2"/>
+			<column name="customer_id" value="3"/>
 			<column name="product_id" type="5"/>
 		</insert>
 		<insert tableName="review" schemaName="shoproject">
@@ -24,10 +24,259 @@
 			<column name="quantity_thumbs_up" value="0"/> 
 			<column name="quantity_thumbs_down" value="0"/>
 			<column name="review_owner" value="moderator"/>
-			<column name="customer_id" value="3"/>
+			<column name="customer_id" value="2"/>
 			<column name="product_id" type="5"/>
 		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Perfect choice for long trips. The capacity is impressive, and fuel efficiency is a plus!"/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user7"/>
+			<column name="customer_id" value="10"/>
+			<column name="product_id" type="4"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Fast delivery, and ideal for travel. Quiet, lightweight, and efficient!"/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user5"/>
+			<column name="customer_id" value="8"/>
+			<column name="product_id" type="5"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Perfect for a home office setup. High-quality build, as always impressed with this brand."/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user2"/>
+			<column name="customer_id" value="5"/>
+			<column name="product_id" type="9"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Incredibly comfortable and nice to wear. I didn't expect such quality at this price!"/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user4"/>
+			<column name="customer_id" value="7"/>
+			<column name="product_id" type="7"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="The sound quality is amazing! Perfect for long journeys. I recommend it to anyone who values comfort."/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user6"/>
+			<column name="customer_id" value="9"/>
+			<column name="product_id" type="2"/>
+		</insert>
+
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Modern design with an intuitive interface. The product matches the description and works perfectly!"/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user3"/>
+			<column name="customer_id" value="6"/>
+			<column name="product_id" type="10"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Highly recommend, works flawlessly, and the quality is exceptional."/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user7"/>
+			<column name="customer_id" value="10"/>
+			<column name="product_id" type="11"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Works wonderfully! It's quieter than I expected and looks sleek in the kitchen. Very satisfied."/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user5"/>
+			<column name="customer_id" value="8"/>
+			<column name="product_id" type="12"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="I'm impressed with the quality and ease of use. A really good buy!"/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user6"/>
+			<column name="customer_id" value="9"/>
+			<column name="product_id" type="13"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Great product, very durable. Has survived a few falls and still works flawlessly. Highly recommend!"/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user4"/>
+			<column name="customer_id" value="7"/>
+			<column name="product_id" type="15"/>
+		</insert>
+
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Looks modern and functions without a hitch. Quality exceeds my expectations!"/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user4"/>
+			<column name="customer_id" value="7"/>
+			<column name="product_id" type="18"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Stylish and elegant, definitely worth the purchase! I use it daily with no complaints."/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user1"/>
+			<column name="customer_id" value="4"/>
+			<column name="product_id" type="19"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Great choice for those looking for something comfortable and well-made."/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user3"/>
+			<column name="customer_id" value="6"/>
+			<column name="product_id" type="20"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Stylish and well-made. I've been using it for a few weeks, and it works perfectly!"/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user5"/>
+			<column name="customer_id" value="8"/>
+			<column name="product_id" type="21"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Excellent for gardening. Comfortable and well-made, does the job perfectly!"/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user2"/>
+			<column name="customer_id" value="5"/>
+			<column name="product_id" type="22"/>
+		</insert>
+
+
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Easy to use and perfect for my gardening needs. It's sturdy and well-designed."/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user1"/>
+			<column name="customer_id" value="4"/>
+			<column name="product_id" type="23"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Incredibly comfortable and nice to wear. I didn't expect such quality at this price!"/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user3"/>
+			<column name="customer_id" value="6"/>
+			<column name="product_id" type="24"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Great product, very durable. Has survived a few falls and still works flawlessly. Highly recommend!"/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user4"/>
+			<column name="customer_id" value="7"/>
+			<column name="product_id" type="24"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="The sound quality is amazing! Perfect for long journeys. I recommend it to anyone who values comfort."/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user7"/>
+			<column name="customer_id" value="10"/>
+			<column name="product_id" type="25"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Perfect choice for long trips. The capacity is impressive, and fuel efficiency is a plus!"/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user6"/>
+			<column name="customer_id" value="9"/>
+			<column name="product_id" type="25"/>
+		</insert>
+
+
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Works wonderfully! It's quieter than I expected and looks sleek in the kitchen. Very satisfied."/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user5"/>
+			<column name="customer_id" value="8"/>
+			<column name="product_id" type="28"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Simple to use, works exactly as described. I recommend it to anyone looking for something durable."/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user1"/>
+			<column name="customer_id" value="4"/>
+			<column name="product_id" type="29"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Perfect for a home office setup. High-quality build, as always impressed with this brand."/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user2"/>
+			<column name="customer_id" value="5"/>
+			<column name="product_id" type="30"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Stylish and well-made. I've been using it for a few weeks, and it works perfectly!"/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user5"/>
+			<column name="customer_id" value="8"/>
+			<column name="product_id" type="30"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="Modern design with an intuitive interface. The product matches the description and works perfectly!"/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user3"/>
+			<column name="customer_id" value="6"/>
+			<column name="product_id" type="31"/>
+		</insert>
+
+
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="This product is a game changer! It feels gentle on my skin and gives a natural glow. Would highly recommend."/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user4"/>
+			<column name="customer_id" value="7"/>
+			<column name="product_id" type="33"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="I am very impressed with the quality. The texture is smooth, and the scent is lovely. Perfect for daily use!"/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user2"/>
+			<column name="customer_id" value="5"/>
+			<column name="product_id" type="34"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="The effect is instant, and I love how my skin feels moisturized all day. Worth every penny!"/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user6"/>
+			<column name="customer_id" value="9"/>
+			<column name="product_id" type="35"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="A great product, especially for sensitive skin. It absorbs well and leaves my skin feeling fresh."/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user1"/>
+			<column name="customer_id" value="4"/>
+			<column name="product_id" type="36"/>
+		</insert>
+		<insert tableName="review" schemaName="shoproject">
+			<column name="message" value="The scent is light and refreshing, and it works wonders on my skin. I feel like I'm glowing after every use!"/>
+			<column name="quantity_thumbs_up" value="0"/>
+			<column name="quantity_thumbs_down" value="0"/>
+			<column name="review_owner" value="user7"/>
+			<column name="customer_id" value="10"/>
+			<column name="product_id" type="36"/>
+		</insert>
 	</changeSet>
+
 	
 	<changeSet id="17" author="Goly">
 		<insert tableName="rating" schemaName="shoproject">
@@ -40,5 +289,111 @@
 			<column name="customer_id" value="3"/>
 			<column name="product_id" value="5"/>
 		</insert>
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="4"/>
+			<column name="customer_id" value="3"/>
+			<column name="product_id" value="2"/>
+		</insert>
+			<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="3"/>
+			<column name="customer_id" value="4"/>
+			<column name="product_id" value="5"/>
+		</insert>
+			<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="3"/>
+			<column name="customer_id" value="3"/>
+			<column name="product_id" value="5"/>
+		</insert>
+			<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="5"/>
+			<column name="customer_id" value="6"/>
+			<column name="product_id" value="8"/>
+		</insert>
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="2"/>
+			<column name="customer_id" value="7"/>
+			<column name="product_id" value="12"/>
+		</insert>
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="4"/>
+			<column name="customer_id" value="8"/>
+			<column name="product_id" value="10"/>
+		</insert>
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="3"/>
+			<column name="customer_id" value="9"/>
+			<column name="product_id" value="20"/>
+		</insert>
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="1"/>
+			<column name="customer_id" value="5"/>
+			<column name="product_id" value="16"/>
+		</insert>
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="5"/>
+			<column name="customer_id" value="10"/>
+			<column name="product_id" value="3"/>
+		</insert>
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="4"/>
+			<column name="customer_id" value="3"/>
+			<column name="product_id" value="7"/>
+		</insert>
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="2"/>
+			<column name="customer_id" value="6"/>
+			<column name="product_id" value="18"/>
+		</insert>
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="5"/>
+			<column name="customer_id" value="5"/>
+			<column name="product_id" value="25"/>
+		</insert>
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="4"/>
+			<column name="customer_id" value="8"/>
+			<column name="product_id" value="14"/>
+		</insert>
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="3"/>
+			<column name="customer_id" value="7"/>
+			<column name="product_id" value="19"/>
+		</insert>
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="2"/>
+			<column name="customer_id" value="9"/>
+			<column name="product_id" value="22"/>
+		</insert>
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="5"/>
+			<column name="customer_id" value="10"/>
+			<column name="product_id" value="28"/>
+		</insert>
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="1"/>
+			<column name="customer_id" value="3"/>
+			<column name="product_id" value="9"/>
+		</insert>
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="3"/>
+			<column name="customer_id" value="4"/>
+			<column name="product_id" value="13"/>
+		</insert>
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="4"/>
+			<column name="customer_id" value="6"/>
+			<column name="product_id" value="31"/>
+		</insert>
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="2"/>
+			<column name="customer_id" value="8"/>
+			<column name="product_id" value="35"/>
+		</insert>
+		<insert tableName="rating" schemaName="shoproject">
+			<column name="value" value="5"/>
+			<column name="customer_id" value="5"/>
+			<column name="product_id" value="27"/>
+		</insert>
+
 	</changeSet>
 </databaseChangeLog>

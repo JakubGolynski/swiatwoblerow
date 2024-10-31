@@ -11,17 +11,17 @@ public class RatingDto {
 	
 	private Timestamp createdAt;
 	
-	private String ownerUsername;
+	private String owner;
 
 	public RatingDto() {
 		
 	}
 	
-	public RatingDto(Integer id, Short value, Timestamp createdAt, String ownerUsername) {
+	public RatingDto(Integer id, Short value, Timestamp createdAt, String owner) {
 		this.id = id;
 		this.value = value;
 		this.createdAt = createdAt;
-		this.ownerUsername = ownerUsername;
+		this.owner = owner;
 	}
 
 	public Integer getId() {
@@ -48,12 +48,12 @@ public class RatingDto {
 		this.createdAt = createdAt;
 	}
 
-	public String getOwnerUsername() {
-		return ownerUsername;
+	public String getOwner() {
+		return owner;
 	}
 
-	public void setOwnerUsername(String ownerUsername) {
-		this.ownerUsername = ownerUsername;
+	public void setOwner(String owner) {
+		this.owner = owner;
 	}
 	
 	

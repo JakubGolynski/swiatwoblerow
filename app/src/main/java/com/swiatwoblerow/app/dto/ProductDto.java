@@ -29,7 +29,7 @@ public class ProductDto {
 	
 	private CategoryDto category;
 	
-	private Set<ConditionDto> conditions = new HashSet<>();
+	private ConditionDto condition;
 	
 	public ProductDto() {
 		
@@ -37,7 +37,7 @@ public class ProductDto {
 
 	public ProductDto(Integer id, String name, Double price, Timestamp createdAt, Integer quantity, String message,
 			Double rating, Integer quantityRatings, Integer quantityReviews, String owner, CategoryDto category,
-			Set<ConditionDto> conditions) {
+			ConditionDto condition) {
 		this.id = id;
 		this.name = name;
 		this.price = price;
@@ -49,7 +49,7 @@ public class ProductDto {
 		this.quantityReviews = quantityReviews;
 		this.owner = owner;
 		this.category = category;
-		this.conditions = conditions;
+		this.condition = condition;
 	}
 
 	public Integer getId() {
@@ -140,12 +140,12 @@ public class ProductDto {
 		this.category = category;
 	}
 
-	public Set<ConditionDto> getConditions() {
-		return conditions;
+	public ConditionDto getCondition() {
+		return condition;
 	}
 
-	public void setConditions(Set<ConditionDto> conditions) {
-		this.conditions = conditions;
+	public void setCondition(ConditionDto condition) {
+		this.condition = condition;
 	}
 
 	

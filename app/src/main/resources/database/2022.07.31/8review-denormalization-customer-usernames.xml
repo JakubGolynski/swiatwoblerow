@@ -12,7 +12,7 @@
 	<changeSet id="23" author="Goly">
 		<addColumn schemaName="shoproject" tableName="review">
 		<column name="review_owner" type="varchar(50)">
-			<constraints nullable="false" unique="true"/>
+			<constraints nullable="false"/>
 		</column>
 	</addColumn>  
 	</changeSet>

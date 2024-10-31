@@ -1,6 +1,7 @@
 package com.swiatwoblerow.app.repository;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.EntityGraph;
@@ -13,6 +14,6 @@ import com.swiatwoblerow.app.repository.custom.ProductRepositoryCustom;
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Integer>, ProductRepositoryCustom{
 	
-	@EntityGraph(attributePaths = {"category"})
-	List<Product> findByIdIn(List<Integer> productIdList, Sort sortBy);
+	@EntityGraph(attributePaths = {"condition", "category", "owner"})
+	Optional<Product> findById(Integer id);
 }

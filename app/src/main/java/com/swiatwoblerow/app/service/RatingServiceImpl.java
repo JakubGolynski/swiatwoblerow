@@ -77,6 +77,9 @@ public class RatingServiceImpl implements RatingService{
 		
 		Integer quantityRatings = product.getQuantityRatings();
 		product.setQuantityRatings(quantityRatings+1);
+
+		Double currentRating = (quantityRatings*product.getRating()+ratingDto.getValue())/(quantityRatings+1);
+		product.setRating(currentRating);
 		
 		productRepository.save(product);
 		RatingDto returnRatingDto = modelMapper.map(rating, RatingDto.class);

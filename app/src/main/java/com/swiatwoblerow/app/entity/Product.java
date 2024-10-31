@@ -50,17 +50,15 @@ public class Product {
 	@Column(name="rating")
 	private Double rating;
 	
-	@ManyToMany(fetch=FetchType.LAZY)
-	@JoinTable(name="product_condition",
-				joinColumns = @JoinColumn(name="product_id"),
-				inverseJoinColumns = @JoinColumn(name="condition_id"))
-	private Set<Condition> conditions = new HashSet<>();
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn(name="condition_id")
+	private Condition condition;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="category_id")
 	private Category category;
 	
-	@ManyToOne(fetch=FetchType.LAZY)
+	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="customer_id")
 	private Customer owner;
 	
@@ -81,7 +79,7 @@ public class Product {
 	}
 
 	public Product(@Length(max = 50) String name, Double price, Timestamp createdAt, Integer quantity, String message,
-			Double rating, Set<Condition> conditions, Category category, Customer owner, Integer quantityReviews,
+			Double rating, Condition condition, Category category, Customer owner, Integer quantityReviews,
 			List<Review> reviews, Integer quantityRatings, List<Rating> ratings) {
 		this.name = name;
 		this.price = price;
@@ -89,7 +87,7 @@ public class Product {
 		this.quantity = quantity;
 		this.message = message;
 		this.rating = rating;
-		this.conditions = conditions;
+		this.condition = condition;
 		this.category = category;
 		this.owner = owner;
 		this.quantityReviews = quantityReviews;
@@ -154,12 +152,12 @@ public class Product {
 		this.rating = rating;
 	}
 
-	public Set<Condition> getConditions() {
-		return conditions;
+	public Condition getCondition() {
+		return condition;
 	}
 
-	public void setConditions(Set<Condition> conditions) {
-		this.conditions = conditions;
+	public void setCondition(Condition condition) {
+		this.condition = condition;
 	}
 
 	public Category getCategory() {

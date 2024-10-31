@@ -57,37 +57,155 @@
 			<column name="house_number" value="105A"/>
 			<column name="country_id" value="1"/>
 		</insert>
+		<insert tableName="address" >
+			<column name="city" value="Cracow"/>
+			<column name="street" value="Miodowa"/>
+			<column name="house_number" value="16"/>
+			<column name="country_id" value="1"/>
+		</insert>
+		<insert tableName="address" >
+			<column name="city" value="Berlin"/>
+			<column name="street" value="Rathausplatz"/>
+			<column name="house_number" value="12"/>
+			<column name="country_id" value="2"/>
+		</insert>
+		<insert tableName="address" >
+			<column name="city" value="Barcelona"/>
+			<column name="street" value="La Rambla"/>
+			<column name="house_number" value="100"/>
+			<column name="country_id" value="3"/>
+		</insert>
+		<insert tableName="address" >
+			<column name="city" value="Barcelona"/>
+			<column name="street" value="C. ST. ANTONI"/>
+			<column name="house_number" value="203"/>
+			<column name="country_id" value="3"/>
+		</insert>
+		<insert tableName="address" >
+			<column name="city" value="Moscow"/>
+			<column name="street" value="Red Square"/>
+			<column name="house_number" value="400"/>
+			<column name="country_id" value="4"/>
+		</insert>
+		<insert tableName="address" >
+			<column name="city" value="Petersburg"/>
+			<column name="street" value="Gorokhov Street"/>
+			<column name="house_number" value="16"/>
+			<column name="country_id" value="4"/>
+		</insert>
+		<insert tableName="address" >
+			<column name="city" value="New York"/>
+			<column name="street" value="Broadway"/>
+			<column name="house_number" value="232B"/>
+			<column name="country_id" value="5"/>
+		</insert>
+		<insert tableName="address" >
+			<column name="city" value="Chicago"/>
+			<column name="street" value="Time Out"/>
+			<column name="house_number" value="34"/>
+			<column name="country_id" value="5"/>
+		</insert>
 	</changeSet>
 	<changeSet id="6" author="Goly">
-		<insert tableName="customer" >
+		<insert tableName="customer">
 			<column name="username" value="goly"/>
 			<column name="password" value="$2a$12$pTUMC0sOtm3pU3a8bezWIOmEXQgGUAxAb8zpoIYcZ5pAyiMBG/H7e"/>
 			<column name="first_name" value="Jakub"/>
 			<column name="last_name" value="Golynski"/>
-			<column name="email" value="email1@gmail.com"/>
+			<column name="email" value="jakub.golynski@example.com"/>
 			<column name="telephone" value="515-152-123"/>
 			<column name="address_id" value="1"/>
 			<column name="role_id" value="3"/>
 		</insert>
-		<insert tableName="customer" >
-			<column name="username" value="user"/>
-			<column name="password" value="$2a$12$ySjONcOABYwPQ.suw3y3H.QEbwpKBncv9VxlnD22IzFvx/oVAXtDW"/>
-			<column name="first_name" value="Piotr"/>
-			<column name="last_name" value="Kowalski"/>
-			<column name="email" value="email2@gmail.com"/>
-			<column name="telephone" value="665-152-123"/>
-			<column name="address_id" value="1"/>
-			<column name="role_id" value="1"/>
-		</insert>
-		<insert tableName="customer" >
+		<insert tableName="customer">
 			<column name="username" value="moderator"/>
 			<column name="password" value="$2a$12$ntpsCb9ZhXGo6EzqWs/Vmuh0GdlJyQJArAMAWIC58jRXoIoyKv.2O"/>
 			<column name="first_name" value="Andrzej"/>
 			<column name="last_name" value="Ostrowski"/>
-			<column name="email" value="email3@gmail.com"/>
+			<column name="email" value="andrzej.ostrowski@example.com"/>
 			<column name="telephone" value="625-112-122"/>
 			<column name="address_id" value="2"/>
 			<column name="role_id" value="2"/>
+		</insert>
+		<insert tableName="customer">
+			<column name="username" value="user"/>
+			<column name="password" value="$2a$12$ySjONcOABYwPQ.suw3y3H.QEbwpKBncv9VxlnD22IzFvx/oVAXtDW"/>
+			<column name="first_name" value="Piotr"/>
+			<column name="last_name" value="Kowalski"/>
+			<column name="email" value="piotr.kowalski@example.com"/>
+			<column name="telephone" value="665-152-123"/>
+			<column name="address_id" value="3"/>
+			<column name="role_id" value="1"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user1"/>
+			<column name="password" value="$2a$12$QY909HKhm90nQWzDlIoEPeLobjlHkq/DawzgAIOgsT0D1oJDdI58i"/>
+			<column name="first_name" value="Grzesiek"/>
+			<column name="last_name" value="Balcerowicz"/>
+			<column name="email" value="grzesiek.balcerowicz@example.com"/>
+			<column name="telephone" value="664-154-423"/>
+			<column name="address_id" value="4"/>
+			<column name="role_id" value="1"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user2"/>
+			<column name="password" value="$2a$12$8HjDFUUJnzV4nDAprUvUz.pI5N40f3CsDiCDhh0jpnyeJFfD4FTx."/>
+			<column name="first_name" value="Anna"/>
+			<column name="last_name" value="Kowalska"/>
+			<column name="email" value="anna.kowalska@example.com"/>
+			<column name="telephone" value="515-152-108"/>
+			<column name="address_id" value="5"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user3"/>
+			<column name="password" value="$2a$12$NAu1voccGt8iQSrlENXS0OCnEU.fxyEUyGIuKs/q49xRZa0DaSQb6"/>
+			<column name="first_name" value="Michał"/>
+			<column name="last_name" value="Nowak"/>
+			<column name="email" value="michal.nowak@example.com"/>
+			<column name="telephone" value="535-132-133"/>
+			<column name="address_id" value="6"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user4"/>
+			<column name="password" value="$2a$12$LlUuQcYLOl370dZcUBkixO/ItnsM2/512Lur/PW1A5RCauKgHAK3a"/>
+			<column name="first_name" value="Katarzyna"/>
+			<column name="last_name" value="Wiśniewska"/>
+			<column name="email" value="katarzyna.wisniewska@example.com"/>
+			<column name="telephone" value="514-142-104"/>
+			<column name="address_id" value="7"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user5"/>
+			<column name="password" value="$2a$12$lnyFK1.a5XgXioVe2QpGn./BNj/wQP456AoA3qz6tKZyL6a3tDyoe"/>
+			<column name="first_name" value="Piotr"/>
+			<column name="last_name" value="Zieliński"/>
+			<column name="email" value="piotr.zielinski@example.com"/>
+			<column name="telephone" value="604-567-890"/>
+			<column name="address_id" value="8"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user6"/>
+			<column name="password" value="$2a$12$/VaPn/P/yyvjXMMUzQPGX.JPVzW35393kUD8lTFy8htbqcI9qoFLu"/>
+			<column name="first_name" value="Marta"/>
+			<column name="last_name" value="Kamińska"/>
+			<column name="email" value="marta.kaminska@example.com"/>
+			<column name="telephone" value="565-162-166"/>
+			<column name="address_id" value="9"/>
+			<column name="role_id" value="3"/>
+		</insert>
+		<insert tableName="customer" >
+			<column name="username" value="user7"/>
+			<column name="password" value="$2a$12$UhM7qp1t0CBh7COMleukNOXBcbADyoX95XGI6cUKWQQYd4J16hTeG"/>
+			<column name="first_name" value="Jakub"/>
+			<column name="last_name" value="Wójcik"/>
+			<column name="email" value="jakub.wojcik@example.com"/>
+			<column name="telephone" value="577-752-707"/>
+			<column name="address_id" value="10"/>
+			<column name="role_id" value="3"/>
 		</insert>
 	</changeSet>
 </databaseChangeLog>

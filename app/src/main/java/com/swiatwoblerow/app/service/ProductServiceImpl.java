@@ -1,14 +1,11 @@
 package com.swiatwoblerow.app.service;
 
 import java.sql.Timestamp;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.swiatwoblerow.app.dto.ConditionDto;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -63,10 +60,9 @@ public class ProductServiceImpl implements ProductService {
 		product.setQuantity(productDto.getQuantity());
 		product.setMessage(productDto.getMessage());
 		product.setRating(5.0);
-		Set<String> conditionNamesFromDto = productDto.getConditions().stream().map(
-				condition -> condition.getName()).collect(Collectors.toSet());
-		Set<Condition> conditions = conditionRepository.findByNameIn(conditionNamesFromDto);
-		product.setConditions(conditions);
+		String conditionName = productDto.getCondition().getName();
+		Condition condition = conditionRepository.findByName(conditionName);
+		product.setCondition(condition);
 		Category category = categoryRepository.findByName(productDto.getCategory().getName()).orElseThrow(
 				() -> new NotFoundExceptionRequest("Category with name "+
 						productDto.getCategory().getName()+" does not exist"));
@@ -76,23 +72,18 @@ public class ProductServiceImpl implements ProductService {
 		product.setQuantityRatings(0);
 		productRepository.save(product);
 		
-		ProductDto returnProductDto = modelMapper.map(product, ProductDto.class);
-		return returnProductDto;
+		return modelMapper.map(product, ProductDto.class);
 	}
 
 	@Override
 	public List<ProductDto> getProducts(ProductFilter productFilter) throws NotFoundExceptionRequest{
-		
-		Sort sortBy = Sort.by(Sort.Direction.ASC, productFilter.getSort());
-//		List<Product> productList = productRepository.findByIdIn(productRepository.getProductIdList(productFilter),sortBy);
-//		HashSet<ConditionDto> =
-		return productRepository.findByIdIn(productRepository.getProductIdList(productFilter),sortBy).stream()
+
+		return productRepository.getProductsList(productFilter).stream()
 				.map(product -> new ProductDto(
 						product.getId(), product.getName(), product.getPrice(), product.getCreatedAt(), product.getQuantity(),
 						product.getMessage(), product.getRating(), product.getQuantityRatings(), product.getQuantityReviews(),
-						product.getOwner().getUsername(), new CategoryDto(product.getCategory().getId(), product.getCategory().getName()),
-						product.getConditions().stream().map(condition -> new ConditionDto(condition.getId(), condition.getName()))
-								.collect(Collectors.toSet())
+						product.getOwner().getUsername(), new CategoryDto(),
+						new ConditionDto(product.getCondition().getId(),product.getCondition().getName())
 						))
 				.collect(Collectors.toList());
 	}
@@ -102,8 +93,7 @@ public class ProductServiceImpl implements ProductService {
 		Product product = productRepository.findById(id)
 				.orElseThrow(() -> new NotFoundExceptionRequest("Product with id "+
 		id+" not found"));
-		ProductDto productDto = modelMapper.map(product, ProductDto.class);
-		return productDto;
+		return modelMapper.map(product, ProductDto.class);
 	}
 
 }

@@ -1,9 +1,6 @@
 package com.swiatwoblerow.app.repository.custom;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -17,20 +14,29 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
 	private EntityManager entityManager;
 	
 	@Override
-	public List<Integer> getProductIdList(ProductFilter productFilter) {
+	public List<Product> getProductsList(ProductFilter productFilter) {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
-		CriteriaQuery<Integer> query = builder.createQuery(Integer.class);
+		CriteriaQuery<Product> query = builder.createQuery(Product.class);
 		Root<Product> root = query.from(Product.class);
 		
 		Predicate finalPredicate = createFinalPredicate(builder,root,productFilter);
-		
-		query.select(root.get("id"));
+
+		root.fetch("owner",JoinType.INNER);
+		root.fetch("condition",JoinType.INNER);
+
+		query.select(root);
 		query.where(finalPredicate);
+
+		setSortOnQuery(query,builder.asc(root.get(productFilter.getSort())));
 		
 		return entityManager.createQuery(query)
 				.setFirstResult(productFilter.getPage() * productFilter.getSize())
 				.setMaxResults(productFilter.getSize())
 				.getResultList();
+	}
+
+	private void setSortOnQuery(CriteriaQuery<Product> query, Order order){
+		query.orderBy(order);
 	}
 	
 	private Predicate createFinalPredicate(CriteriaBuilder builder, Root<Product> root, ProductFilter productFilter) {
@@ -66,23 +72,16 @@ public class ProductRepositoryImpl implements ProductRepositoryCustom{
 			
 			Predicate isCityEqual = builder.like(builder.upper(address.get("city")),
 					"%"+productFilter.getCity().toUpperCase()+"%");
+
 			finalPredicate = builder.and(finalPredicate,isCityEqual);
+
 		}
 		
-//		if(!productFilter.getConditions().isEmpty()) {
-//			//SetJoin<Product, Condition> conditions = root.join("conditions",JoinType.INNER);
-//			Set<String> filterConditions = productFilter.getConditions().stream().collect(Collectors.toSet());
-//			Join<Product, Condition> conditions= root.join("conditions",JoinType.INNER);
-//			Predicate isConditionMember = builder.isMember(conditions.get("name"),filterConditions);
-//			finalPredicate = builder.and(finalPredicate,isConditionMember);
-//		}else{
-////			Set<String> conditions = new HashSet<>();
-////			SetJoin<Product, Condition> conditions =
-////			root.fetch("conditions",JoinType.INNER);
-////			Predicate addAllConditions = root.joinSet("conditions",JoinType.INNER);
-////			finalPredicate = builder.and(finalPredicate, addAllConditions);
-//		}
-//		root.fetch("conditions",JoinType.LEFT);
+		if(!productFilter.getConditions().isEmpty()) {
+			Join<Product, Condition> condition = root.join("condition",JoinType.INNER);
+			Predicate isConditionMember = condition.get("name").in(productFilter.getConditions());
+			finalPredicate = builder.and(finalPredicate,isConditionMember);
+		}
 
 		return finalPredicate;
 	}

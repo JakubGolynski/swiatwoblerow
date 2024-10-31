@@ -1,9 +1,7 @@
 package com.swiatwoblerow.app.service;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -17,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import com.swiatwoblerow.app.dto.CustomerDto;
 import com.swiatwoblerow.app.entity.Address;
-import com.swiatwoblerow.app.entity.Category;
 import com.swiatwoblerow.app.entity.Country;
 import com.swiatwoblerow.app.entity.Customer;
 import com.swiatwoblerow.app.entity.Role;
@@ -31,6 +28,7 @@ import com.swiatwoblerow.app.service.filter.CustomerFilter;
 import com.swiatwoblerow.app.service.interfaces.CustomerService;
 import com.swiatwoblerow.app.validators.interfaces.CustomerValidator;
 
+
 @Service
 public class CustomerServiceImpl implements CustomerService, UserDetailsService {
 	
@@ -40,6 +38,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 	private RoleRepository roleRepository;
 	private CustomerValidator customerValidator;
 	private ModelMapper modelMapper;
+
 	
 	public CustomerServiceImpl(CustomerRepository customerRepository, AddressRepository addressRepository,
 			CountryRepository countryRepository, RoleRepository roleRepository, CustomerValidator customerValidator,
@@ -58,7 +57,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 		Customer customer = customerRepository.findByUsername(username)
 				.orElseThrow(() -> new UsernameNotFoundException("User"+
 				" not found with username: "+ username));
-		
+
 		List<GrantedAuthority> authorities = new ArrayList<>();
 		if(customer.getRole()!=null) {
 			Role role = customer.getRole();

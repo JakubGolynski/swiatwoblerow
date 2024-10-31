@@ -36,7 +36,8 @@
 			<column name="quantity" value="1"/>
 			<column name="message" value="Sprzedam mercedesa nówka sztuka funkiel"/>
 			<column name="rating" value="0"/>
-			<column name="customer_id" value="2"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="3"/>
 			<column name="category_id" value="1"/>
 		</insert>
 		<insert tableName="product" >
@@ -44,8 +45,11 @@
 			<column name="price" value="12955.99"/>
 			<column name="quantity" value="1"/>
 			<column name="message" value="Audi A3 pierwszy właściciel, zadbany egzemplarz"/>
-			<column name="rating" value="0"/>
-			<column name="customer_id" value="2"/>
+			<column name="rating" value="4"/>
+			<column name="quantity_ratings" value="1"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="3"/>
+			<column name="customer_id" value="5"/>
 			<column name="category_id" value="1"/>
 		</insert>
 		<insert tableName="product" >
@@ -53,17 +57,91 @@
 			<column name="price" value="23955.62"/>
 			<column name="quantity" value="1"/>
 			<column name="message" value="Okazja, samochód igiełka, serwisowany co roku"/>
-			<column name="rating" value="0"/>
-			<column name="customer_id" value="2"/>
+			<column name="rating" value="5"/>
+			<column name="quantity_ratings" value="1"/>
+			<column name="condition_id" value="3"/>
+			<column name="customer_id" value="6"/>
 			<column name="category_id" value="1"/>
 		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Opel Zafira"/>
+			<column name="price" value="12000"/>
+			<column name="quantity" value="1"/>
+			<column name="message" value="Samochód jest uszkodzony tylko blacharsko"/>
+			<column name="rating" value="0"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="2"/>
+			<column name="customer_id" value="7"/>
+			<column name="category_id" value="1"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Sporty Sedan"/>
+			<column name="price" value="18500"/>
+			<column name="quantity" value="1"/>
+			<column name="message" value="Sleek, fast, ideal for city driving"/>
+			<column name="rating" value="3"/>
+			<column name="quantity_ratings" value="3"/>
+			<column name="quantity_reviews" value="3"/>
+			<column name="condition_id" value="3"/>
+			<column name="customer_id" value="10"/>
+			<column name="category_id" value="1"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Electric Hatchback"/>
+			<column name="price" value="30500"/>
+			<column name="quantity" value="1"/>
+			<column name="message" value="Eco-friendly, minimal maintenance needed."/>
+			<column name="rating" value="0"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="6"/>
+			<column name="category_id" value="1"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Off-road Beast"/>
+			<column name="price" value="35000"/>
+			<column name="quantity" value="1"/>
+			<column name="message" value="Perfect for rugged terrains, powerful engine."/>
+			<column name="rating" value="4"/>
+			<column name="quantity_ratings" value="1"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="9"/>
+			<column name="category_id" value="1"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Vintage Coupe"/>
+			<column name="price" value="12000"/>
+			<column name="quantity" value="1"/>
+			<column name="message" value="Classic model, great condition for age."/>
+			<column name="rating" value="5"/>
+			<column name="quantity_ratings" value="1"/>
+			<column name="condition_id" value="3"/>
+			<column name="customer_id" value="5"/>
+			<column name="category_id" value="1"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Compact SUV"/>
+			<column name="price" value="25000"/>
+			<column name="quantity" value="1"/>
+			<column name="message" value="Family-friendly, low fuel consumption."/>
+			<column name="rating" value="1"/>
+			<column name="quantity_ratings" value="1"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="4"/>
+			<column name="category_id" value="1"/>
+		</insert>
+
 		
 		<insert tableName="product" >
 			<column name="name" value="Iphone X"/>
 			<column name="price" value="2955.62"/>
 			<column name="quantity" value="5"/>
 			<column name="message" value="Sprzedam 5 iphonów X, nówki, nieużywane, zapraszam do kontaktu"/>
-			<column name="rating" value="0"/>
+			<column name="rating" value="4"/>
+			<column name="quantity_ratings" value="1"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="1"/>
 			<column name="customer_id" value="2"/>
 			<column name="category_id" value="2"/>
 		</insert>
@@ -73,6 +151,8 @@
 			<column name="quantity" value="10"/>
 			<column name="message" value="Sprzedawane telefony są używane"/>
 			<column name="rating" value="0"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="1"/>
 			<column name="customer_id" value="2"/>
 			<column name="category_id" value="2"/>
 		</insert>
@@ -81,9 +161,300 @@
 			<column name="price" value="325.62"/>
 			<column name="quantity" value="3"/>
 			<column name="message" value="Krótka, niegłośna klawiatura membranowa"/>
-			<column name="rating" value="0"/>
+			<column name="rating" value="2"/>
+			<column name="quantity_ratings" value="1"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="1"/>
 			<column name="customer_id" value="2"/>
 			<column name="category_id" value="2"/>
 		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Smartwatch Pro"/>
+			<column name="price" value="249.99"/>
+			<column name="quantity" value="10"/>
+			<column name="message" value="Lightweight, with health tracking features."/>
+			<column name="rating" value="3"/>
+			<column name="quantity_ratings" value="1"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="9"/>
+			<column name="category_id" value="2"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Noise-canceling Headphones"/>
+			<column name="price" value="120"/>
+			<column name="quantity" value="8"/>
+			<column name="message" value="Immersive sound, long battery life."/>
+			<column name="rating" value="4"/>
+			<column name="quantity_ratings" value="1"/>
+			<column name="condition_id" value="3"/>
+			<column name="customer_id" value="3"/>
+			<column name="category_id" value="2"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="HD Projector"/>
+			<column name="price" value="300"/>
+			<column name="quantity" value="10"/>
+			<column name="message" value="Crisp image, suitable for home cinemas."/>
+			<column name="rating" value="0"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="2"/>
+			<column name="customer_id" value="3"/>
+			<column name="category_id" value="2"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Gaming Console X"/>
+			<column name="price" value="500"/>
+			<column name="quantity" value="15"/>
+			<column name="message" value="Next-gen gaming, powerful hardware."/>
+			<column name="rating" value="1"/>
+			<column name="quantity_ratings" value="1"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="5"/>
+			<column name="category_id" value="2"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Wireless Speaker"/>
+			<column name="price" value="80"/>
+			<column name="quantity" value="20"/>
+			<column name="message" value="Compact, excellent sound quality."/>
+			<column name="rating" value="0"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="6"/>
+			<column name="category_id" value="2"/>
+		</insert>
+
+
+		<insert tableName="product" >
+			<column name="name" value="Cordless Drill"/>
+			<column name="price" value="60"/>
+			<column name="quantity" value="20"/>
+			<column name="message" value="Lightweight, perfect for home projects."/>
+			<column name="rating" value="2"/>
+			<column name="quantity_ratings" value="1"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="3"/>
+			<column name="customer_id" value="4"/>
+			<column name="category_id" value="3"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Paint Sprayer"/>
+			<column name="price" value="45"/>
+			<column name="quantity" value="6"/>
+			<column name="message" value="Ideal for quick paint jobs, easy to clean."/>
+			<column name="rating" value="3"/>
+			<column name="quantity_ratings" value="1"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="8"/>
+			<column name="category_id" value="3"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Tool Kit 100 pcs"/>
+			<column name="price" value="90"/>
+			<column name="quantity" value="3"/>
+			<column name="message" value="Versatile, comes in a compact case."/>
+			<column name="rating" value="3"/>
+			<column name="quantity_ratings" value="1"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="9"/>
+			<column name="category_id" value="3"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Multi-tool Saw"/>
+			<column name="price" value="40"/>
+			<column name="quantity" value="5"/>
+			<column name="message" value="Reliable for cutting wood and metal."/>
+			<column name="rating" value="0"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="3"/>
+			<column name="customer_id" value="7"/>
+			<column name="category_id" value="3"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Electric Sander"/>
+			<column name="price" value="50"/>
+			<column name="quantity" value="2"/>
+			<column name="message" value="Smooth finish, dust collection system."/>
+			<column name="rating" value="2"/>
+			<column name="quantity_ratings" value="1"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="2"/>
+			<column name="customer_id" value="5"/>
+			<column name="category_id" value="3"/>
+		</insert>
+
+		<insert tableName="product" >
+			<column name="name" value="Leather Jacket"/>
+			<column name="price" value="100"/>
+			<column name="quantity" value="15"/>
+			<column name="message" value="Stylish and durable, comfortable fit."/>
+			<column name="rating" value="0"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="6"/>
+			<column name="category_id" value="4"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Silk Scarf"/>
+			<column name="price" value="30"/>
+			<column name="quantity" value="25"/>
+			<column name="message" value="Soft, elegant, perfect for any outfit."/>
+			<column name="rating" value="0"/>
+			<column name="quantity_reviews" value="2"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="10"/>
+			<column name="category_id" value="4"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Denim Jeans"/>
+			<column name="price" value="45"/>
+			<column name="quantity" value="12"/>
+			<column name="message" value="Stretchy, comfortable for daily wear."/>
+			<column name="rating" value="0"/>
+			<column name="quantity_reviews" value="2"/>
+			<column name="condition_id" value="3"/>
+			<column name="customer_id" value="3"/>
+			<column name="category_id" value="4"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Sneakers Classic"/>
+			<column name="price" value="60"/>
+			<column name="quantity" value="8"/>
+			<column name="message" value="Comfortable with great support."/>
+			<column name="rating" value="0"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="8"/>
+			<column name="category_id" value="4"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Casual T-shirt"/>
+			<column name="price" value="15"/>
+			<column name="quantity" value="50"/>
+			<column name="message" value="Breathable, soft cotton fabric."/>
+			<column name="rating" value="5"/>
+			<column name="quantity_ratings" value="1"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="7"/>
+			<column name="category_id" value="4"/>
+		</insert>
+
+
+
+		<insert tableName="product" >
+			<column name="name" value="Lawn Mower 5000"/>
+			<column name="price" value="150"/>
+			<column name="quantity" value="5"/>
+			<column name="message" value="High performance, easy maintenance."/>
+			<column name="rating" value="5"/>
+			<column name="quantity_ratings" value="1"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="9"/>
+			<column name="category_id" value="5"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Watering Can XL"/>
+			<column name="price" value="20"/>
+			<column name="quantity" value="12"/>
+			<column name="message" value="Large capacity, durable plastic."/>
+			<column name="rating" value="0"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="4"/>
+			<column name="category_id" value="5"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Hedge Trimmer"/>
+			<column name="price" value="55"/>
+			<column name="quantity" value="7"/>
+			<column name="message" value="Cuts quickly and smoothly."/>
+			<column name="rating" value="0"/>
+			<column name="quantity_reviews" value="2"/>
+			<column name="condition_id" value="3"/>
+			<column name="customer_id" value="3"/>
+			<column name="category_id" value="5"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Garden Rake"/>
+			<column name="price" value="10"/>
+			<column name="quantity" value="4"/>
+			<column name="message" value="Sturdy, easy grip, ideal for fallen leaves."/>
+			<column name="rating" value="4"/>
+			<column name="quantity_ratings" value="1"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="2"/>
+			<column name="customer_id" value="6"/>
+			<column name="category_id" value="5"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Patio Furniture Set"/>
+			<column name="price" value="500"/>
+			<column name="quantity" value="2"/>
+			<column name="message" value="Comfortable and weather-resistant."/>
+			<column name="rating" value="0"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="5"/>
+			<column name="category_id" value="5"/>
+		</insert>
+
+
+		<insert tableName="product" >
+			<column name="name" value="Face Cream Organic"/>
+			<column name="price" value="25"/>
+			<column name="quantity" value="30"/>
+			<column name="message" value="Hydrating with natural ingredients."/>
+			<column name="rating" value="0"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="8"/>
+			<column name="category_id" value="6"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Hair Dryer 2000W"/>
+			<column name="price" value="35"/>
+			<column name="quantity" value="10"/>
+			<column name="message" value="Fast drying, lightweight design."/>
+			<column name="rating" value="0"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="3"/>
+			<column name="customer_id" value="10"/>
+			<column name="category_id" value="6"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Makeup Set Pro"/>
+			<column name="price" value="50"/>
+			<column name="quantity" value="5"/>
+			<column name="message" value="All essentials in one kit."/>
+			<column name="rating" value="4"/>
+			<column name="quantity_ratings" value="1"/>
+			<column name="quantity_reviews" value="1"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="5"/>
+			<column name="category_id" value="6"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Perfume Floral"/>
+			<column name="price" value="60"/>
+			<column name="quantity" value="12"/>
+			<column name="message" value="Fresh, long-lasting fragrance."/>
+			<column name="rating" value="0"/>
+			<column name="quantity_reviews" value="2"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="3"/>
+			<column name="category_id" value="6"/>
+		</insert>
+		<insert tableName="product" >
+			<column name="name" value="Nail Polish Pack"/>
+			<column name="price" value="20"/>
+			<column name="quantity" value="15"/>
+			<column name="message" value="Vibrant colors, quick drying."/>
+			<column name="rating" value="0"/>
+			<column name="condition_id" value="1"/>
+			<column name="customer_id" value="6"/>
+			<column name="category_id" value="6"/>
+		</insert>
+
 	</changeSet>
 </databaseChangeLog>

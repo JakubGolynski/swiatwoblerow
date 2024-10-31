@@ -126,24 +126,23 @@
 			<column name="message" type="varchar(5000)"> 
 				<constraints nullable="true"/>
 			</column>
-			<column name="rating" type="double"> 
+			<column name="rating" type="double" defaultValueNumeric="0">
 				<constraints nullable="false"/>
+			</column>
+			<column name="quantity_reviews" type="integer" defaultValue="0">
+				<constraints nullable="false"/>
+			</column>
+			<column name="quantity_ratings" type="integer" defaultValue="0">
+				<constraints nullable="false" />
+			</column>
+			<column name="condition_id" type="integer">
+				<constraints references="condition(condition_id)" foreignKeyName="product_condition_id_fkey"/>
 			</column>
 			<column name="customer_id" type="integer">
 				<constraints references="customer(customer_id)" foreignKeyName="product_customer_id_fkey"/>
 			</column>
 			<column name="category_id" type="integer">
 				<constraints references="category(category_id)" foreignKeyName="product_category_id_fkey"/>
-			</column>
-			
-		</createTable>
-		<createTable tableName="product_condition">
-		
-			<column name="product_id" type="integer">
-				<constraints references="product(product_id)" foreignKeyName="product_condition_product_id_fkey" primaryKey="true"/>
-			</column>
-			<column name="condition_id" type="integer">
-				<constraints references="condition(condition_id)" foreignKeyName="product_condition_condition_id_fkey" primaryKey="true"/>
 			</column>
 			
 		</createTable>
