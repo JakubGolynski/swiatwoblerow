@@ -25,7 +25,6 @@ public class Config {
 				.addMappings(mapper -> mapper.skip(CustomerDto::setAddress))
 			.addMappings(mapper -> mapper.skip(CustomerDto::setPassword))
 			.addMappings(mapper -> mapper.skip(CustomerDto::setJwtToken))
-		.addMappings(mapper -> mapper.skip(CustomerDto::setId))
 		.addMappings(mapper -> mapper.skip(CustomerDto::setTelephone))
 		.addMappings(mapper -> mapper.skip(CustomerDto::setLastName))
 		.addMappings(mapper -> mapper.skip(CustomerDto::setFirstName))

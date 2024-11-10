@@ -2,6 +2,7 @@ package com.swiatwoblerow.app.controller;
 
 import java.util.List;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,7 @@ import com.swiatwoblerow.app.service.filter.CustomerFilter;
 import com.swiatwoblerow.app.service.interfaces.CustomerService;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping
 public class CustomerController {
 	
 	private CustomerService customerService;
@@ -30,7 +31,7 @@ public class CustomerController {
 		return customerService.getCustomers(customerFilter);
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/customers/{id}")
 	public CustomerDto getCustomer(@PathVariable int id) {
 		return customerService.getCustomer(id);
 	}
@@ -38,5 +39,10 @@ public class CustomerController {
 	@PostMapping
 	public CustomerDto addCustomer(@RequestBody CustomerDto customerDto) throws NotFoundExceptionRequest,AlreadyExistsException {
 		return customerService.addCustomer(customerDto);
+	}
+
+	@GetMapping("/customer/detail")
+	public CustomerDto getCustomerDetail() throws UsernameNotFoundException {
+		return customerService.getCustomerDetail();
 	}
 }

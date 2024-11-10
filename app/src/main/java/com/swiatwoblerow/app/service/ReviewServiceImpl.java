@@ -50,7 +50,7 @@ public class ReviewServiceImpl implements ReviewService {
 		Product product = productRepository.findById(productId)
 				.orElseThrow(() -> new NotFoundExceptionRequest("Product with id "+
 						productId+" not found"));
-		return reviewRepository.findAllByProduct(product,pageable).stream()
+		return reviewRepository.findByProduct(product,pageable).stream()
 				.map(review -> modelMapper.map(review, ReviewDto.class))
 				.collect(Collectors.toList());
 	}

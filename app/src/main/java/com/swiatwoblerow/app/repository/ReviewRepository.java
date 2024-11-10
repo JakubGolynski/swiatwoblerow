@@ -15,7 +15,7 @@ import com.swiatwoblerow.app.entity.Review;
 public interface ReviewRepository extends JpaRepository<Review, Integer> {
 	List<Review> findAllByProduct(Product product, Pageable pageable);
 	List<Review> findAllByProduct(Product product);
-	List<Review> findByProduct(Product product);
+	List<Review> findByProduct(Product product, Pageable pageable);
 	boolean existsByOwnerAndProduct(Customer owner, Product product);
 	boolean existsByIdAndCustomersWhoLikedReviewIn(Integer reviewId,Set<Customer> customersWhoLikedReview);
 	boolean existsByIdAndCustomersWhoDislikedReviewIn(Integer reviewId,Set<Customer> customersWhoDislikedReview);

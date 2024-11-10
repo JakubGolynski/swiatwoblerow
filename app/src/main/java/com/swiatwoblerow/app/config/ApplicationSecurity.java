@@ -53,7 +53,7 @@ public class ApplicationSecurity{
 				.requestMatchers(HttpMethod.GET,"/categories/**").permitAll()
 				.requestMatchers(HttpMethod.POST,"/categories").hasAnyRole("ADMIN")
 				.requestMatchers(HttpMethod.DELETE,"/categories/**").hasAnyRole("ADMIN")
-				.requestMatchers(HttpMethod.GET,"/customers/**").hasAnyRole("ADMIN","MODERATOR")
+//				.requestMatchers(HttpMethod.GET,"/customers/**").hasAnyRole("ADMIN","MODERATOR")
 				.requestMatchers(HttpMethod.GET,"/error").permitAll().anyRequest().authenticated()
 			)
 			.cors((cors) -> cors.configurationSource(corsConfigurationSource())

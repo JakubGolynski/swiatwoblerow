@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.swiatwoblerow.app.dto.AddressDto;
+import com.swiatwoblerow.app.dto.RoleDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -85,7 +88,15 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 		Customer customer = customerRepository.findById(id).orElseThrow(
 				() -> new UsernameNotFoundException("User"+
 						" not found with id: "+ id));
-		CustomerDto customerDto = modelMapper.map(customer, CustomerDto.class);
+		CustomerDto customerDto = new CustomerDto();
+		customerDto.setId(customer.getId());
+		customerDto.setUsername(customer.getUsername());
+		customerDto.setFirstName(customer.getFirstName());
+		customerDto.setLastName(customer.getLastName());
+		customerDto.setEmail(customer.getEmail());
+		customerDto.setTelephone(customer.getTelephone());
+		customerDto.setAddress(modelMapper.map(customer.getAddress(), AddressDto.class));
+		customerDto.setRole(modelMapper.map(customer.getRole(), RoleDto.class));
 		return customerDto; 
 	}
 
@@ -114,5 +125,23 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 		CustomerDto returnCustomerDto = modelMapper.map(customer, CustomerDto.class);	
 		return returnCustomerDto;
 	}
-	
+
+	@Override
+	public CustomerDto getCustomerDetail() throws UsernameNotFoundException {
+		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		Customer customer = customerRepository.findByUsername(username).orElseThrow(
+				() -> new UsernameNotFoundException("User "
+				+ "not found with username: "+username));
+		CustomerDto customerDto = new CustomerDto();
+		customerDto.setId(customer.getId());
+		customerDto.setUsername(customer.getUsername());
+		customerDto.setFirstName(customer.getFirstName());
+		customerDto.setLastName(customer.getLastName());
+		customerDto.setEmail(customer.getEmail());
+		customerDto.setTelephone(customer.getTelephone());
+		customerDto.setAddress(modelMapper.map(customer.getAddress(), AddressDto.class));
+		customerDto.setRole(modelMapper.map(customer.getRole(), RoleDto.class));
+		return customerDto;
+	}
+
 }

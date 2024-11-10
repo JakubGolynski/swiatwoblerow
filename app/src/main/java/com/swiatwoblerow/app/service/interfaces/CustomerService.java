@@ -16,4 +16,5 @@ public interface CustomerService {
 	public List<CustomerDto> getCustomers(CustomerFilter customerFilter);
 	public CustomerDto getCustomer(Integer id) throws UsernameNotFoundException;
 	public CustomerDto addCustomer(CustomerDto customerDto) throws NotFoundExceptionRequest, AlreadyExistsException;
+	public CustomerDto getCustomerDetail() throws UsernameNotFoundException;
 }
