@@ -79,12 +79,10 @@ public class ReviewServiceTest {
 		product.setOwner(customer);
 		product.setQuantityReviews(0);
 		product.setQuantityRatings(0);
-		
-		Set<Condition> conditions = new HashSet<>();
-		conditions.add(new Condition("USED"));
-		conditions.add(new Condition("DAMAGED"));
-		
-		product.setConditions(conditions);
+
+		Condition condition = new Condition("USED");
+		product.setCondition(condition);
+
 		Category category = new Category("test!@#Product");
 		product.setCategory(category);
 		
@@ -110,8 +108,6 @@ public class ReviewServiceTest {
 		
 		Role roleUser = new Role("ROLE_USER");
 		customer.setRole(roleUser);
-		Set<Category> managedCategories = new HashSet<>();
-		customer.setManagedCategories(managedCategories);
 		
 		reviewFilter = new ReviewFilter(0,5);
 	}

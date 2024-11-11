@@ -87,9 +87,7 @@ public class CustomerServiceTest {
 		customer.setAddress(address);
 		
 		Role roleUser = new Role("ROLE_USER2");
-		
-		Set<Category> managedCategories = new HashSet<>();
-		customer.setManagedCategories(managedCategories);
+
 		customer.setRole(roleUser);
 		
 		List<GrantedAuthority> authorities = new ArrayList<>();
@@ -133,8 +131,6 @@ public class CustomerServiceTest {
 		Role roleUser = new Role("ROLE_USER2");
 		
 		customer1.setRole(roleUser);
-		Set<Category> managedCategories = new HashSet<>();
-		customer1.setManagedCategories(managedCategories);
 		
 		Customer customer2 = new Customer();
 		String customer2Name = "test!@#łUsername";
@@ -147,7 +143,6 @@ public class CustomerServiceTest {
 		
 		customer2.setAddress(address);
 		customer2.setRole(roleUser);
-		customer2.setManagedCategories(managedCategories);
 		
 		List<Customer> customers = new ArrayList<>();
 		
@@ -198,8 +193,6 @@ public class CustomerServiceTest {
 		
 		Role roleUser = new Role("ROLE_USER");
 		customer.setRole(roleUser);
-		Set<Category> managedCategories = new HashSet<>();
-		customer.setManagedCategories(managedCategories);
 		
 		Optional<Customer> optionalCustomer = Optional.of(customer);
 		
@@ -248,8 +241,6 @@ public class CustomerServiceTest {
 		
 		Role roleUser = new Role("ROLE_USER");
 		customer.setRole(roleUser);
-		Set<Category> managedCategories = new HashSet<>();
-		customer.setManagedCategories(managedCategories);
 		
 		CustomerDto customerDto = modelMapper.map(customer, CustomerDto.class);
 		

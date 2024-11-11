@@ -82,11 +82,9 @@ public class ProductServiceTest {
 		product.setMessage("test!@#Product");
 		product.setRating(5.0);
 		
-		Set<Condition> conditions = new HashSet<>();
-		conditions.add(new Condition("USED"));
-		conditions.add(new Condition("DAMAGED"));
-		
-		product.setConditions(conditions);
+		Condition condition = new Condition("USED");
+		product.setCondition(condition);
+
 		Category category = new Category("test!@#Product");
 		product.setCategory(category);
 		
@@ -113,8 +111,7 @@ public class ProductServiceTest {
 		
 		Role roleUser = new Role("ROLE_USER");
 		customer.setRole(roleUser);
-		Set<Category> managedCategories = new HashSet<>();
-		customer.setManagedCategories(managedCategories);
+
 		product.setOwner(customer);
 		product.setQuantityReviews(0);
 		product.setQuantityRatings(0);
@@ -148,12 +145,10 @@ public class ProductServiceTest {
 		product.setQuantity(1);
 		product.setMessage("test!@#Product");
 		product.setRating(5.0);
-		
-		Set<Condition> conditions = new HashSet<>();
-		conditions.add(new Condition("USED"));
-		conditions.add(new Condition("DAMAGED"));
-		
-		product.setConditions(conditions);
+
+		Condition condition = new Condition("USED");
+		product.setCondition(condition);
+
 		Category category = new Category("test!@#Product");
 		product.setCategory(category);
 		
@@ -180,18 +175,13 @@ public class ProductServiceTest {
 		
 		Role roleUser = new Role("ROLE_USER");
 		customer.setRole(roleUser);
-		Set<Category> managedCategories = new HashSet<>();
-		customer.setManagedCategories(managedCategories);
 		product.setOwner(customer);
 		product.setQuantityReviews(0);
 		product.setQuantityRatings(0);
 		
 		// when and necessary variables
 		
-		Set<String> conditionNames = conditions.stream().map(
-				condition -> condition.getName()).collect(Collectors.toSet());
-		
-		when(conditionRepository.findByNameIn(conditionNames)).thenReturn(conditions);
+		when(conditionRepository.findByName("USED")).thenReturn(condition);
 		when(categoryRepository.findByName("test!@#Product")).thenReturn(Optional.of(category));
 		when(customerRepository.findByUsername(customerName)).thenReturn(Optional.of(customer));
 		

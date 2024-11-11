@@ -84,7 +84,6 @@ public class CustomerControllerTests {
 		customer.setRole(roleUser);
 		
 		Set<Category> managedCategories = new HashSet<>();
-		customer.setManagedCategories(managedCategories);
 		customerRepository.save(customer);
 		
 		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get("/customers/"+customer.getId())

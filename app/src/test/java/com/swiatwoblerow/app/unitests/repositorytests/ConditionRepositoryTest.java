@@ -21,28 +21,18 @@ public class ConditionRepositoryTest {
 	
 	@Test
 	public void conditionsShouldBeNullIfRepositoryIsEmpty() {
-		Set<String> conditions = new HashSet<>();
-		Set<Condition> conditionsFromDatabase = conditionRepository.findByNameIn(conditions);
-		assertThat(conditionsFromDatabase).isEmpty();
+		String condition = "USED";
+		Condition conditionFromDatabase = conditionRepository.findByName(condition);
+		assertThat(conditionFromDatabase).isNull();
 	}
 	
 	@Test
 	public void shouldFindConditionsIfExist() {
 		Condition conditionUsed = new Condition("USED");
-		Condition conditionDamaged = new Condition("DAMAGED");
 		conditionRepository.save(conditionUsed);
-		conditionRepository.save(conditionDamaged);
+
+		Condition conditionUsedFromDatabase = conditionRepository.findByName("USED");
 		
-		Set<Condition> conditionsExpected = new HashSet<>();
-		conditionsExpected.add(conditionUsed);
-		conditionsExpected.add(conditionDamaged);
-		
-		Set<String> conditionNames = new HashSet<>();
-		conditionNames.add("USED");
-		conditionNames.add("DAMAGED");
-		
-		Set<Condition> conditionsFromDatabase = conditionRepository.findByNameIn(conditionNames);
-		
-		assertThat(conditionsFromDatabase).isEqualTo(conditionsExpected);
+		assertThat(conditionUsedFromDatabase).isEqualTo(conditionUsed);
 	}
 }
