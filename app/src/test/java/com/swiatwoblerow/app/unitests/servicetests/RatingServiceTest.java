@@ -132,7 +132,9 @@ public class RatingServiceTest {
 		
 		RatingFilter ratingFilter = new RatingFilter();
 		
-		assertThat(ratingService.getRatings(id,ratingFilter)).isEqualTo(ratingsDtos);
+		assertThat(ratingService.getRatings(id,ratingFilter))
+				.usingRecursiveComparison()
+				.isEqualTo(ratingsDtos);
 	}
 	
 	@Test
@@ -183,7 +185,9 @@ public class RatingServiceTest {
 		ratingDto.setCreatedAt(null);
 		returnedRatingDto.setCreatedAt(null);
 		
-		assertThat(ratingDto).isEqualTo(returnedRatingDto);
+		assertThat(ratingDto)
+				.usingRecursiveComparison()
+				.isEqualTo(returnedRatingDto);
 		assertThat(returnedRatingDto).isNotNull();
 		assertThat(quantityRatingsBefore+1).isEqualTo(product.getQuantityRatings());
 	}

@@ -13,6 +13,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
+import com.swiatwoblerow.app.dto.AddressDto;
+import com.swiatwoblerow.app.dto.RoleDto;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -164,7 +166,9 @@ public class CustomerServiceTest {
 				customer -> modelMapper.map(customer, CustomerDto.class))
 				.collect(Collectors.toList());
 		
-		assertThat(returnCustomers).isEqualTo(customerService.getCustomers(customerFilter));
+		assertThat(returnCustomers)
+				.usingRecursiveComparison()
+				.isEqualTo(customerService.getCustomers(customerFilter));
 		assertThat(returnCustomers).isNotEmpty();
 		assertThat(returnCustomers).isNotNull();
 	}
@@ -197,10 +201,20 @@ public class CustomerServiceTest {
 		Optional<Customer> optionalCustomer = Optional.of(customer);
 		
 		when(customerRepository.findById(id)).thenReturn(optionalCustomer);
+
+		CustomerDto customerDto = new CustomerDto();
+		customerDto.setId(customer.getId());
+		customerDto.setUsername(customer.getUsername());
+		customerDto.setFirstName(customer.getFirstName());
+		customerDto.setLastName(customer.getLastName());
+		customerDto.setEmail(customer.getEmail());
+		customerDto.setTelephone(customer.getTelephone());
+		customerDto.setAddress(modelMapper.map(customer.getAddress(), AddressDto.class));
+		customerDto.setRole(modelMapper.map(customer.getRole(), RoleDto.class));
 		
-		CustomerDto customerDto = modelMapper.map(customer, CustomerDto.class);
-		
-		assertThat(customerDto).isEqualTo(customerService.getCustomer(id));
+		assertThat(customerDto)
+				.usingRecursiveComparison()
+				.isEqualTo(customerService.getCustomer(id));
 		assertThat(customerDto).isNotNull();
 	}
 	
@@ -220,8 +234,6 @@ public class CustomerServiceTest {
 	public void addCustomerSuccess() throws Exception{
 		Customer customer = new Customer();
 		String customerName = "test!@#łUsername";
-		Integer id = 1;
-		customer.setId(id);
 		customer.setUsername(customerName);
 		customer.setPassword("testłPassword");
 		customer.setFirstName("testł!@#");
@@ -248,11 +260,11 @@ public class CustomerServiceTest {
 		when(countryRepository.findByName("Poland")).thenReturn(Optional.of(country));
 		
 		//In addCustomer method, these fields are purged for security reasons
-		customerDto.setId(null);
-		customerDto.setUsername(null);
-		customerDto.setPassword(null);
 		
-		assertThat(customerDto).isEqualTo(customerService.addCustomer(customerDto));
+		assertThat(customerDto)
+				.usingRecursiveComparison()
+				.ignoringFields("id")
+				.isEqualTo(customerService.addCustomer(customerDto));
 		assertThat(customerDto).isNotNull();
 	}
 	

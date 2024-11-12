@@ -2,6 +2,8 @@ package com.swiatwoblerow.app.integrationtests;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
+
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -34,6 +36,7 @@ public class LoginControllerTests {
 	private ObjectMapper objectMapper;
 	
 	@Test
+	@Transactional
 	public void afterSucessfullLoginCheckTokenOnSomeEndpoint() throws Exception{
 		CustomerDto customerDto = new CustomerDto();
 		customerDto.setUsername("goly");
@@ -54,7 +57,7 @@ public class LoginControllerTests {
 		assertThat(returnedCustomerDto.getUsername()).isEqualTo(customerDto.getUsername());
 		assertThat(returnedCustomerDto.getPassword()).isNull();
 		
-		MvcResult mvcResult2 = mvc.perform(MockMvcRequestBuilders.get("/customers")
+		MvcResult mvcResult2 = mvc.perform(MockMvcRequestBuilders.get("/customers/1")
 				.characterEncoding("utf-8")
 				.header("Authorization", "Bearer "+returnedCustomerDto.getJwtToken())
 				.accept(MediaType.APPLICATION_JSON)
@@ -64,13 +67,14 @@ public class LoginControllerTests {
 				.andExpect(content().contentType(MediaType.APPLICATION_JSON))
 				.andReturn();
 		
-		List<CategoryDto> categories = objectMapper.readValue(
-				mvcResult2.getResponse().getContentAsString(), new TypeReference<List<CategoryDto>>(){});
+		CustomerDto customer = objectMapper.readValue(
+				mvcResult2.getResponse().getContentAsString(), CustomerDto.class);
 		
-		assertThat(categories).isNotEmpty();
+		assertThat(customer).isNotNull();
 	}
 	
 	@Test
+	@Transactional
 	public void afterUnsucessfullLoginReturnUnauthorized() throws Exception{
 		CustomerDto customerDto = new CustomerDto();
 		customerDto.setUsername("NotInDb");
@@ -92,6 +96,7 @@ public class LoginControllerTests {
 	}
 	
 	@Test
+	@Transactional
 	public void shouldGetJwt() throws Exception{
 		CustomerDto customerDto = new CustomerDto();
 		customerDto.setUsername("user");

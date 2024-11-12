@@ -21,17 +21,17 @@ public class ConditionRepositoryTest {
 	
 	@Test
 	public void conditionsShouldBeNullIfRepositoryIsEmpty() {
-		String condition = "USED";
+		String condition = "NOEXISTS";
 		Condition conditionFromDatabase = conditionRepository.findByName(condition);
 		assertThat(conditionFromDatabase).isNull();
 	}
 	
 	@Test
 	public void shouldFindConditionsIfExist() {
-		Condition conditionUsed = new Condition("USED");
+		Condition conditionUsed = new Condition("TEST");
 		conditionRepository.save(conditionUsed);
 
-		Condition conditionUsedFromDatabase = conditionRepository.findByName("USED");
+		Condition conditionUsedFromDatabase = conditionRepository.findByName("TEST");
 		
 		assertThat(conditionUsedFromDatabase).isEqualTo(conditionUsed);
 	}

@@ -135,11 +135,14 @@ public class ReviewServiceTest {
 		Pageable pageable = PageRequest.of(0, 5);
 		
 		when(productRepository.findById(id)).thenReturn(Optional.of(product));
-		when(reviewRepository.findAllByProduct(product,pageable)).thenReturn(listOfReviews);
+		when(reviewRepository.findByProduct(product,pageable)).thenReturn(listOfReviews);
+
 		List<ReviewDto> listOfReviewDtos = listOfReviews.stream()
 				.map(currentReview -> modelMapper.map(currentReview, ReviewDto.class))
 				.collect(Collectors.toList());
-		assertThat(reviewService.getReviews(id,reviewFilter)).isEqualTo(listOfReviewDtos);
+		assertThat(reviewService.getReviews(id,reviewFilter))
+				.usingRecursiveComparison()
+				.isEqualTo(listOfReviewDtos);
 		
 	}
 	
@@ -166,6 +169,7 @@ public class ReviewServiceTest {
 
 		when(customerRepository.findByUsername(customer.getUsername())).thenReturn(Optional.of(customer));
 		when(productRepository.findById(id)).thenReturn(Optional.of(product));
+		when(reviewRepository.existsByOwnerAndProduct(customer, product)).thenReturn(false);
 		
 		Authentication authentication = Mockito.mock(Authentication.class);
 		when(authentication.getName()).thenReturn(customer.getUsername());
@@ -178,14 +182,16 @@ public class ReviewServiceTest {
 
 		reviewDto.setReviewOwner(customer.getUsername());
 		
-		
 		assertThat(new Date(reviewDto.getCreatedAt().getTime()))
 		.isBeforeOrEqualTo(new Date(returnedReviewDto.getCreatedAt().getTime()));
 	
 		reviewDto.setCreatedAt(null);
 		returnedReviewDto.setCreatedAt(null);
 	
-		assertThat(returnedReviewDto).isEqualTo(reviewDto);
+		assertThat(returnedReviewDto)
+				.usingRecursiveComparison()
+				.ignoringFields("id")
+				.isEqualTo(reviewDto);
 		assertThat(returnedReviewDto).isNotNull();
 	}
 	

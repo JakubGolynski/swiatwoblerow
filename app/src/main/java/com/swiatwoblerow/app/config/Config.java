@@ -1,18 +1,11 @@
 package com.swiatwoblerow.app.config;
 
-import com.swiatwoblerow.app.dto.ConditionDto;
-import com.swiatwoblerow.app.dto.ProductDto;
-import com.swiatwoblerow.app.entity.Condition;
-import com.swiatwoblerow.app.entity.Product;
+import com.swiatwoblerow.app.dto.*;
+import com.swiatwoblerow.app.entity.*;
 import org.modelmapper.ModelMapper;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import com.swiatwoblerow.app.dto.CustomerDto;
-import com.swiatwoblerow.app.dto.RatingDto;
-import com.swiatwoblerow.app.entity.Customer;
-import com.swiatwoblerow.app.entity.Rating;
 
 @Configuration
 public class Config {
@@ -33,6 +26,10 @@ public class Config {
 		modelMapper.typeMap(Rating.class, RatingDto.class)
 			.<String>addMapping(src -> src.getOwner().getUsername(),
 					(dest,value) -> dest.setOwner(value));
+
+		modelMapper.typeMap(Review.class, ReviewDto.class)
+				.<String>addMapping(src -> src.getOwner().getUsername(),
+						(dest,value) -> dest.setReviewOwner(value));
 
 		modelMapper.typeMap(CustomerDto.class, Customer.class)
 				.addMappings(mapper -> mapper.skip(Customer::setRole));

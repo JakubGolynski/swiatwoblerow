@@ -8,12 +8,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import java.util.HashSet;
 import java.util.Set;
 
+import com.swiatwoblerow.app.config.jwt.JWTAuthorizationFilter;
+import com.swiatwoblerow.app.service.interfaces.CustomerService;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -56,37 +60,12 @@ public class CustomerControllerTests {
 	private CountryRepository countryRepository;
 	
 	@Test
+	@Transactional
 	public void shouldGetUserSuccess() throws Exception {
+
+		Customer customerGoly = customerRepository.findByUsername("goly").orElse(null);
 		
-		Customer customer = new Customer();
-		String customerName = "test!@#łUsername";
-		customer.setUsername(customerName);
-		customer.setPassword("testłPassword");
-		customer.setFirstName("testł!@#");
-		customer.setLastName("testł!@#");
-		customer.setEmail("testł!@#");
-		customer.setTelephone("+48512806005");
-		
-		Address address = new Address();
-		address.setCity("Warsaw");
-		address.setStreet("Piłsudskiego");
-		address.setHouseNumber("471A");
-		addressRepository.save(address);
-		
-		Country country = new Country("Test");
-		countryRepository.save(country);
-		address.setCountry(country);
-		customer.setAddress(address);
-		
-		Role roleUser = new Role("ROLE_BAKER");
-		roleRepository.save(roleUser);
-		
-		customer.setRole(roleUser);
-		
-		Set<Category> managedCategories = new HashSet<>();
-		customerRepository.save(customer);
-		
-		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get("/customers/"+customer.getId())
+		MvcResult mvcResult = mvc.perform(MockMvcRequestBuilders.get("/customers/"+customerGoly.getId())
 				.header("Authorization", "Bearer " + getJwt("goly", "goly"))
 //				.characterEncoding("utf-8")
 				.accept(MediaType.APPLICATION_JSON)
@@ -97,14 +76,12 @@ public class CustomerControllerTests {
 		
 		CustomerDto returnedCustomerDto = objectMapper.readValue(
 				mvcResult.getResponse().getContentAsString(), CustomerDto.class);
-		
-		CustomerDto customerDto = modelMapper.map(customer, CustomerDto.class);
-		
-//		assertThat(customerDto).isEqualTo(returnedCustomerDto);
+
+
 		assertThat(returnedCustomerDto.getJwtToken()).isNull();
 		assertThat(returnedCustomerDto.getAddress().getCountry()).isNotNull();
 		assertThat(returnedCustomerDto.getPassword()).isNull();
-		assertThat(returnedCustomerDto.getUsername()).isEqualTo(customer.getUsername());
+		assertThat(returnedCustomerDto.getUsername()).isEqualTo(customerGoly.getUsername());
 		assertThat(returnedCustomerDto.getRole()).isNotNull();
 		assertThat(returnedCustomerDto.getEmail()).isNotNull();
 		assertThat(returnedCustomerDto.getFirstName()).isNotNull();
@@ -113,6 +90,7 @@ public class CustomerControllerTests {
 	}
 	
 	@Test
+	@Transactional
 	public void shouldGetUserUnauthenticated() throws Exception {
 		mvc.perform(MockMvcRequestBuilders.get("/customers/1")
 				.characterEncoding("utf-8")

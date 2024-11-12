@@ -120,7 +120,9 @@ public class ProductServiceTest {
 		
 		ProductDto productDto = modelMapper.map(product, ProductDto.class);
 		
-		assertThat(productService.getProduct(id)).isEqualTo(productDto);
+		assertThat(productService.getProduct(id))
+				.usingRecursiveComparison()
+				.isEqualTo(productDto);
 		assertThat(productService.getProduct(id)).isNotNull();
 	}
 	
@@ -203,7 +205,9 @@ public class ProductServiceTest {
 		productDto.setCreatedAt(null);
 		returnedProductDto.setCreatedAt(null);
 		
-		assertThat(returnedProductDto).isEqualTo(productDto);
+		assertThat(returnedProductDto)
+				.usingRecursiveComparison()
+				.isEqualTo(productDto);
 		assertThat(returnedProductDto).isNotNull();
 	}
 	
@@ -245,8 +249,12 @@ public class ProductServiceTest {
 		String customerName = "test!@#łUsername";
 		customer.setUsername(customerName);
 
+		Condition condition = new Condition("USEDTEST");
+		product.setCondition(condition);
+
 		// when and necessary variables	
 		when(customerRepository.findByUsername(customerName)).thenReturn(Optional.of(customer));
+		when(conditionRepository.findByName(condition.getName())).thenReturn(condition);
 		
 		Authentication authentication = Mockito.mock(Authentication.class);
 		when(authentication.getName()).thenReturn(customerName);
