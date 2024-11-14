@@ -26,7 +26,6 @@ import com.swiatwoblerow.app.config.jwt.JwtAuthenticationEntryPoint;
 import com.swiatwoblerow.app.service.CustomerServiceImpl;
 
 @Configuration
-@EnableWebSecurity(debug = true)
 public class ApplicationSecurity{
 	
 	private CustomerServiceImpl customerService;
