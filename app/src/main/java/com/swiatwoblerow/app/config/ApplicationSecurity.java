@@ -44,7 +44,8 @@ public class ApplicationSecurity{
 		
 		http
 			.authorizeHttpRequests((authorize) -> authorize
-							.requestMatchers(HttpMethod.GET, "/**").permitAll()
+							.requestMatchers(HttpMethod.GET, "/actuator").permitAll()
+							.requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
 				.requestMatchers(HttpMethod.POST,"/login").permitAll()
 				.requestMatchers(HttpMethod.GET,"/products/**").permitAll()
 					.requestMatchers(HttpMethod.GET,"/conditions/**").permitAll()
