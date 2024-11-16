@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.swiatwoblerow.app.dto.AddressDto;
 import com.swiatwoblerow.app.dto.RoleDto;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.GrantedAuthority;
@@ -55,6 +56,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 	}
 
 	@Override
+	@Transactional
 	public UserDetails loadUserByUsername(String username)
 											throws UsernameNotFoundException {
 		Customer customer = customerRepository.findByUsername(username)
