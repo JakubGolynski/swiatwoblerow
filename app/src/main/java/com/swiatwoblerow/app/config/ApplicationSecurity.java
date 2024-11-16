@@ -26,6 +26,7 @@ import com.swiatwoblerow.app.config.jwt.JwtAuthenticationEntryPoint;
 import com.swiatwoblerow.app.service.CustomerServiceImpl;
 
 @Configuration
+@EnableWebSecurity(debug = true)
 public class ApplicationSecurity{
 	
 	private CustomerServiceImpl customerService;
@@ -43,6 +44,7 @@ public class ApplicationSecurity{
 		
 		http
 			.authorizeHttpRequests((authorize) -> authorize
+							.requestMatchers(HttpMethod.GET, "/**").permitAll()
 				.requestMatchers(HttpMethod.POST,"/login").permitAll()
 				.requestMatchers(HttpMethod.GET,"/products/**").permitAll()
 					.requestMatchers(HttpMethod.GET,"/conditions/**").permitAll()
